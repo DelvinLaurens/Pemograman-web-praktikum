@@ -1,0 +1,181 @@
+.tampilan-utama {
+    position: relative;
+    padding: 100px 0 120px 0;
+    background-color: #1E3A8A; 
+    overflow: hidden;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.tampilan-utama h1 {
+    font-size: 2.8rem;
+    margin-bottom: 15px;
+    color: #FFFFFF; 
+}
+
+.hero-desc {
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+    color: #F3F4F6;
+}
+
+.search-bar form {
+    background-color: #FFFFFF;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 950px;
+    margin: 0 auto;
+}
+
+.search-bar input, .search-bar select, .btn-search {
+    height: 50px; 
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+}
+
+.search-bar input {
+    flex: 2; 
+    padding: 0 15px;
+}
+
+.search-bar select {
+    flex: 1; 
+    padding: 0 15px;
+    cursor: pointer;
+    background-color: #FFFFFF;
+}
+
+.btn-search {
+    background-color: #F59E0B;
+    color: #FFFFFF;
+    border: none;
+    padding: 0 35px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-search:hover {
+    background-color: #D97706;
+}
+
+.kampanye {
+    padding: 30px 0;
+}
+
+.section-title {
+    font-size: 2rem;
+    color: #1E3A8A; 
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.kampanye-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 30px; 
+}
+
+.card {
+    background-color: #FFFFFF; 
+    border-radius: 15px; 
+    overflow: hidden; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.card:hover {
+    transform: translateY(-10px); 
+    box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+}
+
+.card-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 3px solid #F59E0B; 
+}
+
+.card-content {
+    padding: 25px;
+}
+
+.card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 5px;
+    color: #1E3A8A; 
+}
+
+.deskripsi {
+    font-size: 0.9rem;
+    color: #6B7280;
+    margin-bottom: 10px;
+    height: 40px;
+}
+
+.penyelenggara {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.info-dana {
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.info-dana span {
+    font-weight: 700;
+    color: #1E3A8A; 
+}
+
+.progress-bar {
+    background-color: #E5E7EB; 
+    height: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.progress {
+    background-color: #F59E0B; 
+    height: 100%;
+    border-radius: 10px;
+}
+
+.waktu {
+    font-size: 0.9rem;
+    color: #DC2626; 
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.btn-detail {
+    display: block;
+    text-align: center;
+    background-color: #FFFFFF;
+    color: #1E3A8A; 
+    border: 2px solid #1E3A8A;
+    padding: 10px 0;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-detail:hover {
+    background-color: #1E3A8A;
+    color: #FFFFFF;
+}

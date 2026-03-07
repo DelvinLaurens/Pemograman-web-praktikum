@@ -1,0 +1,163 @@
+.halaman-detail {
+    padding: 40px 0 80px 0;
+}
+
+.btn-kembali {
+    display: inline-block;
+    margin-bottom: 25px;
+    color: #1E3A8A;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.btn-kembali:hover {
+    color: #F59E0B; 
+}
+
+.detail-kampanye {
+    display: grid;
+    grid-template-columns: 2fr 1fr; 
+    gap: 40px;
+    align-items: start; 
+}
+
+.detail-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.detail-kategori-lokasi {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.badge-kategori, .badge-lokasi {
+    background-color: #E5E7EB;
+    color: #1F2937;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.judul-detail {
+    font-size: 2rem;
+    color: #1E3A8A;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.penyelenggara-detail {
+    color: #6B7280;
+    margin-bottom: 30px;
+    font-size: 1.05rem;
+}
+
+.deskripsi-kampanye h3 {
+    font-size: 1.3rem;
+    color: #1E3A8A;
+    margin-bottom: 15px;
+}
+
+.deskripsi-kampanye p {
+    margin-bottom: 15px;
+    text-align: justify;
+    line-height: 1.8;
+}
+
+.box-donasi {
+    background-color: #FFFFFF;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 100px; 
+}
+
+.teks-target {
+    font-size: 1rem;
+    color: #6B7280;
+    margin-bottom: 5px;
+}
+
+.teks-terkumpul {
+    font-size: 1.3rem;
+    color: #1E3A8A;
+    margin-bottom: 20px;
+}
+
+.teks-terkumpul strong {
+    font-size: 1.6rem;
+}
+
+.progress-bar-detail {
+    background-color: #E5E7EB;
+    height: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progress-detail {
+    background-color: #F59E0B;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.teks-persen {
+    font-size: 0.85rem;
+    color: #6B7280;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.teks-waktu {
+    font-size: 1rem;
+    color: #DC2626;
+    margin-bottom: 25px;
+    background-color: #FEE2E2;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.btn-donasi-sekarang {
+    display: block;
+    width: 100%;
+    background-color: #F59E0B;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 15px 0;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    transition: 0.3s;
+}
+
+.btn-donasi-sekarang:hover {
+    background-color: #D97706;
+}
+
+.info-rekening h4 {
+    font-size: 1rem;
+    color: #1E3A8A;
+    margin-bottom: 10px;
+}
+
+.info-rekening ul {
+    list-style-type: none;
+    padding-left: 0;
+    color: #4B5563;
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+.info-rekening li::before {
+    content: "✔️ ";
+}
