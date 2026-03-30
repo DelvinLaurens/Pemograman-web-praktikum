@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - DemiSesama</title>
+    <!-- fav icon -->
+    <link rel="icon" type="image/png" href="Asset/tangan2 tnpa bg.png">
+    <link rel="stylesheet" href="CSS/login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Font Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <header>
+        <div class="container nav-wrapper">
+            <div class="logo">DemiSesama.</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="#">Kategori</a></li>
+                    <li><a href="login.html" class="btn-login active">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="login-bg">
+        <div class="container login-wrapper">
+            <div class="login-card">
+                <h2 class="text-center">Selamat Datang</h2>
+                <p class="text-center desc-login">Masuk untuk mulai berdonasi atau mengelola kampanye Anda.</p>
+                <form action="#" class="login-form">
+                    
+                    <div class="input-group">
+                        <label for="role">Masuk Sebagai</label>
+                        <select name="role" id="role" required>
+                            <option value="donatur">Donatur</option>
+                            <option value="pengelola">Pengelola Kampanye</option>
+                        </select>
+                    </div>
+
+                    <!-- Input Username / Email -->
+                    <div class="input-group">
+                        <label for="email">Email / Username</label>
+                        <input type="text" id="email" placeholder="Masukkan email atau username" required>
+                    </div>
+
+                    <!-- Input Password -->
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Masukkan password" required>
+                    </div>
+
+                    <button type="button" class="btn-submit-login">Masuk Sekarang</button>
+                    
+                    <p class="text-center link-daftar">Belum punya akun? <a href="#">Daftar di sini</a></p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>&copy; 2026 DemiSesama - Dibuat oleh Kelompok Demi4.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
