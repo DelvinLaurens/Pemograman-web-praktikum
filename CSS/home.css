@@ -1,7 +1,7 @@
 .tampilan-utama {
     position: relative;
     padding: 100px 0 120px 0;
-    background-color: #1E3A8A; 
+    background-color: var(--primary); 
     overflow: hidden;
 }
 
@@ -13,17 +13,17 @@
 .tampilan-utama h1 {
     font-size: 2.8rem;
     margin-bottom: 15px;
-    color: #FFFFFF; 
+    color: var(--white); 
 }
 
 .hero-desc {
     max-width: 700px;
     margin: 0 auto 40px auto;
-    color: #F3F4F6;
+    color: var(--bg-body);
 }
 
 .search-bar form {
-    background-color: #FFFFFF;
+    background-color: var(--white);
     padding: 15px;
     border-radius: 10px;
     display: flex;
@@ -37,7 +37,7 @@
 
 .search-bar input, .search-bar select, .btn-search {
     height: 50px; 
-    border: 1px solid #D1D5DB;
+    border: 1px solid var(--border);
     border-radius: 6px;
     outline: none;
     font-family: 'Poppins', sans-serif;
@@ -53,12 +53,12 @@
     flex: 1; 
     padding: 0 15px;
     cursor: pointer;
-    background-color: #FFFFFF;
+    background-color: var(--white);
 }
 
 .btn-search {
-    background-color: #F59E0B;
-    color: #FFFFFF;
+    background-color: var(--button);
+    color: var(--white);
     border: none;
     padding: 0 35px;
     font-weight: 600;
@@ -67,7 +67,7 @@
 }
 
 .btn-search:hover {
-    background-color: #D97706;
+    background-color: var(--button-hover);
 }
 
 .kampanye {
@@ -76,7 +76,7 @@
 
 .section-title {
     font-size: 2rem;
-    color: #1E3A8A; 
+    color: var(--primary); 
     margin-bottom: 30px;
     text-align: left;
 }
@@ -88,7 +88,7 @@
 }
 
 .card {
-    background-color: #FFFFFF; 
+    background-color: var(--white); 
     border-radius: 15px; 
     overflow: hidden; 
     box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
@@ -104,7 +104,7 @@
     width: 100%;
     height: 220px;
     object-fit: cover;
-    border-bottom: 3px solid #F59E0B; 
+    border-bottom: 3px solid var(--button); 
 }
 
 .card-content {
@@ -114,12 +114,12 @@
 .card h3 {
     font-size: 1.25rem;
     margin-bottom: 5px;
-    color: #1E3A8A; 
+    color: var(--primary); 
 }
 
 .deskripsi {
     font-size: 0.9rem;
-    color: #6B7280;
+    color: var(--text-desc);
     margin-bottom: 10px;
     height: 40px;
 }
@@ -139,11 +139,11 @@
 
 .info-dana span {
     font-weight: 700;
-    color: #1E3A8A; 
+    color: var(--primary); 
 }
 
 .progress-bar {
-    background-color: #E5E7EB; 
+    background-color: var(--border); 
     height: 10px;
     border-radius: 10px;
     overflow: hidden;
@@ -151,14 +151,14 @@
 }
 
 .progress {
-    background-color: #F59E0B; 
+    background-color: var(--button); 
     height: 100%;
     border-radius: 10px;
 }
 
 .waktu {
     font-size: 0.9rem;
-    color: #DC2626; 
+    color: var(--danger); 
     font-weight: 600;
     margin-bottom: 20px;
 }
@@ -166,9 +166,9 @@
 .btn-detail {
     display: block;
     text-align: center;
-    background-color: #FFFFFF;
-    color: #1E3A8A; 
-    border: 2px solid #1E3A8A;
+    background-color: var(--white);
+    color: var(--primary); 
+    border: 2px solid var(--primary);
     padding: 10px 0;
     border-radius: 8px;
     font-weight: 600;
@@ -176,6 +176,6 @@
 }
 
 .btn-detail:hover {
-    background-color: #1E3A8A;
-    color: #FFFFFF;
+    background-color: var(--primary);
+    color: var(--white);
 }

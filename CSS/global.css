@@ -1,3 +1,18 @@
+/*Panggil warna disini*/
+:root{
+    --primary: #1E3A8A;       /* Biru Navy (Warna Utama) */
+    --primary-hover: #3B82F6; /* Biru Terang (Untuk hover) */
+    --button: #F59E0B;        /* Oranye (Tombol/Aksen) */
+    --button-hover: #D97706;  /* Oranye Gelap (Hover tombol) */
+    --bg-body: #F3F4F6;       /* Abu-abu terang untuk background web */
+    --white: #FFFFFF;         /* Putih */
+    --main-text: #1F2937;     /* Abu-abu gelap untuk judul/teks utama */
+    --text-desc: #6B7280;    /* Abu-abu pudar untuk deskripsi */
+    --border: #E5E7EB;        /* Warna garis tepi / border */
+    --danger: #DC2626;        /* Merah untuk teks "Sisa Waktu" */
+}
+
+/*base website jadi tempat deklarasi font body, container dll */
 * {
     margin: 0;
     padding: 0;
@@ -6,8 +21,8 @@
 }
 
 body {
-    background-color: #F3F4F6;
-    color: #1F2937;
+    background-color: var(--bg-body);
+    color: var(--main-text);
     line-height: 1.6;
 }
 
@@ -25,8 +40,9 @@ a {
     text-align: center;
 }
 
+/*header dan navigasi */
 header {
-    background-color: #FFFFFF;
+    background-color: var(--white);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
@@ -46,7 +62,7 @@ header {
     gap: 0px;
     font-size: 24px;
     font-weight: 700;
-    color: #1E3A8A;
+    color: var(--primary);
     text-decoration: none;
 }
 
@@ -64,37 +80,38 @@ nav ul {
 }
 
 nav a {
-    color: #1F2937;
+    color: var(--main-text);
     font-weight: 500;
     transition: 0.3s;
 }
 
 nav a:hover, nav a.active {
-    color: #1E3A8A;
+    color: var(--primary);
     font-weight: 600;
 }
 
 .btn-login {
-    background-color: #1E3A8A;
-    color: #FFFFFF;
+    background-color: var(--primary);
+    color: var(--white);
     padding: 10px 25px;
     border-radius: 50px;
 }
 
 .btn-login:hover {
-    background-color: #3B82F6;
-    color: #FFFFFF;
+    background-color: var(--primary-hover);
+    color: var(--white);
 }
 
+/* Footer sini lee */
 footer {
-    background-color: #1E3A8A;
-    color: #FFFFFF; 
+    background-color: var(--primary);
+    color: var(--white); 
     padding: 30px 0;
     margin-top: 40px;
 }
 
 footer p {
-    color: #9CA3AF;
+    color: var(--text-desc);
     display: flex;
     justify-content: center;
 }

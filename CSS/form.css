@@ -1,22 +1,20 @@
-/* =========================================
-   DESAIN HALAMAN FORMULIR (DONASI & LOGIN)
-   ========================================= */
+/* DESAIN HALAMAN FORMULIR (DONASI & LOGIN) */
 
    .halaman-form {
     padding: 60px 0;
-    background-color: #F3F4F6; /* Latar abu-abu terang */
-    min-height: 80vh; /* Memastikan layar tidak terpotong */
+    background-color: var(--bg-body); 
+    min-height: 80vh; 
 }
 
 .form-container {
     display: flex;
-    justify-content: center; /* Membuat kotak form berada tepat di tengah layar */
+    justify-content: center;
 }
 
 .form-card {
-    background-color: #FFFFFF;
+    background-color: var(--white);
     width: 100%;
-    max-width: 600px; /* Lebar maksimal form donasi */
+    max-width: 600px; 
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -26,36 +24,34 @@
     text-align: center;
     margin-bottom: 30px;
     padding-bottom: 20px;
-    border-bottom: 2px dashed #E5E7EB;
+    border-bottom: 2px dashed var(--border);
 }
 
 .ringkasan-donasi h2 {
-    color: #1E3A8A; /* Biru Navy */
+    color: var(--primary); 
     margin-bottom: 10px;
 }
 
 .ringkasan-donasi p {
-    color: #4B5563;
+    color: var(--text-desc);
 }
 
 .ringkasan-donasi strong {
-    color: #F59E0B; /* Oranye */
+    color: var(--button);
     font-size: 1.1rem;
 }
 
-/* =========================================
-   STYLING ELEMEN INPUT FORM
-   ========================================= */
+/* ELEMEN INPUT FORM */
 .form-group {
     margin-bottom: 20px;
     display: flex;
-    flex-direction: column; /* Membuat label berada di ATAS input */
+    flex-direction: column;
 }
 
 .form-group label {
     font-weight: 600;
     margin-bottom: 8px;
-    color: #1F2937;
+    color: var(--main-text);
     font-size: 0.95rem;
 }
 
@@ -63,7 +59,7 @@
 .form-group select, 
 .form-group textarea {
     padding: 12px 15px;
-    border: 1px solid #D1D5DB;
+    border: 1px solid var(--border);
     border-radius: 8px;
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
@@ -75,28 +71,26 @@
 .form-group input:focus, 
 .form-group select:focus, 
 .form-group textarea:focus {
-    border-color: #1E3A8A;
+    border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2);
 }
 
 .form-group small {
-    color: #6B7280;
+    color: var(--text-desc);
     font-size: 0.8rem;
     margin-top: 5px;
 }
 
 .input-file {
     padding: 10px !important;
-    background-color: #F9FAFB;
+    background-color: var(--bg-body);
 }
 
-/* =========================================
-   TOMBOL SUBMIT
-   ========================================= */
+/* TOMBOL SUBMIT */
 .btn-submit-form {
     width: 100%;
-    background-color: #F59E0B;
-    color: #FFFFFF;
+    background-color: var(--button);
+    color: var(--white);
     padding: 15px;
     border: none;
     border-radius: 8px;
@@ -108,7 +102,7 @@
 }
 
 .btn-submit-form:hover {
-    background-color: #D97706;
+    background-color: var(--button);
 }
 
 /* =========================================
@@ -137,18 +131,17 @@
 
 .btn-kembali-home {
     display: inline-block;
-    background-color: #1E3A8A;
-    color: #FFFFFF;
+    background-color: var(--primary);
+    color: var(--white);
     padding: 10px 20px;
     border-radius: 8px;
     font-weight: 600;
 }
 
-/* INI TRIKNYA: Saat form di-submit, URL jadi #berhasil, lalu CSS ini menyembunyikan form dan menampilkan pesan sukses! */
 #berhasil:target {
     display: block;
 }
 
 #berhasil:target ~ .form-donasi {
-    display: none; /* Menyembunyikan form setelah sukses (Opsional, tapi ini trik keren) */
+    display: none; 
 }
