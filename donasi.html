@@ -21,8 +21,9 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="index.html">Beranda</a></li>
-                    <li><a href="index.html">Kategori</a></li>
+                    <li><a href="index.html" class="active">Beranda</a></li>
+                    <li><a href="index.html#kampanye">Donasi</a></li>
+                    <li><a href="galang-dana.html">Galang Dana</a></li>
                     <li><a href="login.html" class="btn-login">Login</a></li>
                 </ul>
             </nav>
@@ -41,22 +42,22 @@
 
                 <form action="#berhasil" class="form-donasi">
                     <div class="form-group">
-                        <label for="nama">Nama Lengkap</label>
+                        <label for="nama">Nama Lengkap<span class="required">*</span></label>
                         <input type="text" id="nama" name="nama" placeholder="Masukkan nama Anda..." required>
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Alamat Email</label>
+                        <label for="email">Alamat Email<span class="required">*</span></label>
                         <input type="email" id="email" name="email" placeholder="Masukkan email aktif..." required>
                     </div>
 
                     <div class="form-group">
-                        <label for="nominal">Nominal Donasi (Rp)</label>
+                        <label for="nominal">Nominal Donasi (Rp)<span class="required">*</span></label>
                         <input type="number" id="nominal" name="nominal" placeholder="Contoh: 50000" min="10000" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="metode">Metode Pembayaran</label>
+                        <label for="metode">Metode Pembayaran<span class="required">*</span></label>
                         <select name="metode" id="metode" required>
                             <option value="">-- Pilih Metode --</option>
                             <option value="QRIS">QRIS</option>
@@ -73,7 +74,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="bukti">Upload Bukti Transfer (JPG/PNG/PDF)</label>
+                        <label for="bukti">Upload Bukti Transfer (JPG/PNG/PDF)<span class="required">*</span></label>
                         <input type="file" id="bukti" name="bukti" accept=".jpg, .jpeg, .png, .pdf" required class="input-file">
                         <small>Maksimal ukuran file 2MB.</small>
                     </div>

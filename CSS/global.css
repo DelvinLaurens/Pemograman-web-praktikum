@@ -115,3 +115,15 @@ footer p {
     display: flex;
     justify-content: center;
 }
+
+/* ini untuk pencet tombol donasi tidak langsung kepental*/
+html {
+    scroll-behavior: smooth;
+}
+
+/*tanda merah ux*/
+.required {
+    color: var(--danger);
+    margin-left: 4px;
+    font-weight: bold;
+}

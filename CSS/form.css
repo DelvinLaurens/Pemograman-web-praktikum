@@ -105,10 +105,10 @@
     background-color: var(--button);
 }
 
-/* =========================================
-   TRIK PESAN SUKSES (CSS TARGET)
-   ========================================= */
-/* Awalnya pesan sukses disembunyikan */
+/* 
+pesan sukses
+*/
+
 .pesan-sukses {
     display: none; 
     text-align: center;
@@ -145,3 +145,4 @@
 #berhasil:target ~ .form-donasi {
     display: none; 
 }
+
