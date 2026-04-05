@@ -127,3 +127,22 @@ html {
     margin-left: 4px;
     font-weight: bold;
 }
+
+.logo-website {
+    height: 55px;
+    width: auto;
+    display: block;
+}
+
+/*bagian login*/
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.link-kembali-login {
+    font-size: 0.9rem;
+    color: var(--text-desc);
+}

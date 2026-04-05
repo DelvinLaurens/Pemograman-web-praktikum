@@ -83,3 +83,5 @@ DemiSesama/
 - Form donasi dan login belum terhubung ke backend
 - Seluruh data yang ditampilkan merupakan data dummy
 ---
+## !Disclaimer
+- di file ini ada folder js dan php itu digunakan untuk belajar jadi belum ada push nya hehe. folder itu digunakan untuk ngulik ngulik aja
