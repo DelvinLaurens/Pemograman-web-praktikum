@@ -1,6 +1,10 @@
 # DemiSesama 
 DemiSesama adalah website crowdfunding sosial yang menjadi jembatan kebaikan antara donatur dan penggalang dana. Platform ini membantu masyarakat menemukan dan mendukung kampanye sosial seperti bantuan bencana alam, pendidikan, kesehatan, dan pembangunan fasilitas umum.
 
+Anggota Kelompok:
+1.Delvin Laurens - 71241097
+2.Jeremy Zadrimman Kause - 71241163
+3.Waraney Maikel Nathaniel Mambu - 71241164
 ---
 
 ## Deskripsi Project
