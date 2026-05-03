@@ -12,23 +12,7 @@
 </head>
 <body>
     
-    <!-- HEADER -->
-    <header>
-        <div class="container nav-wrapper">
-            <div class="logo">
-                <img src="Asset/tangan2 tnpa bg.png" alt="logo website" style="height: 40px; margin-right: 10px;">
-                <span>DemiSesama.</span>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="index.html" class="active">Beranda</a></li>
-                    <li><a href="index.html#kampanye">Donasi</a></li>
-                    <li><a href="galang-dana.html">Galang Dana</a></li>
-                    <li><a href="login.html" class="btn-login">Login</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <?php include_once("./Component/nav_com.php") ?>
 
     <!-- KONTEN UTAMA: FORM DONASI -->
     <main class="halaman-form">

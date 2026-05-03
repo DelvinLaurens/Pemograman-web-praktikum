@@ -23,7 +23,7 @@
             </div>
             <nav>
                 <ul>
-                    <a href="index.html" class="link-kembali-login">← Kembali ke Beranda</a>
+                    <a href="index.php" class="link-kembali-login">← Kembali ke Beranda</a>
                 </ul>
             </nav>
         </div>

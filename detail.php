@@ -11,22 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <div class="container nav-wrapper">
-            <div class="logo">
-                <img src="Asset/tangan2 tnpa bg.png" alt="logo website" class="logo-website">
-                <span>DemiSesama.</span>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="index.html" class="active">Beranda</a></li>
-                    <li><a href="index.html#kampanye">Donasi</a></li>
-                    <li><a href="galang-dana.html">Galang Dana</a></li>
-                    <li><a href="login.html" class="btn-login">Login</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <?php include_once("./Component/nav_com.php") ?>
 
     <main class="halaman-detail">
         <div class="container">
