@@ -129,6 +129,7 @@
                             <a href="detail.php" class="btn-detail">Lihat Detail</a>
                         </div>
                     </div>
+
                     <!-- Penggalangan dana 4 -->
                     <div class="card">
                         <img src="Asset/banjir bali.jpg" alt="Kampanye 4" class="card-img">
@@ -147,7 +148,7 @@
                             <a href="detail.php" class="btn-detail">Lihat Detail</a>
                         </div>
                     </div>
-                    <!-- Penggalangan dana 5 -->
+
                     <div class="card">
                         <img src="Asset/bantuan penddikan desa.jpg" alt="Kampanye 5" class="card-img">
                         <div class="card-content">
@@ -159,12 +160,13 @@
                                 <p class="terkumpul">Terkumpul: <span>Rp 122.050.000</span></p>
                             </div>
                             <div class="progress-bar">
-                                <div class="progress" style="width: 80%;"></div> 
+                                <div class="progress" style="width: 80%;"></div>
                             </div>
                             <p class="waktu">Sisa Waktu: 29 hari</p>
                             <a href="detail.php" class="btn-detail">Lihat Detail</a>
                         </div>
                     </div>
+
                     <!-- Penggalangan dana 6 -->
                     <div class="card">
                         <img src="Asset/reboisasi hutan.jpg" alt="Kampanye 6" class="card-img">
