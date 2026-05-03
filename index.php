@@ -21,10 +21,10 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="index.html" class="active">Beranda</a></li>
-                    <li><a href="index.html#kampanye">Donasi</a></li>
-                    <li><a href="galang-dana.html">Galang Dana</a></li>
-                    <li><a href="login.html" class="btn-login">Login</a></li>
+                    <li><a href="index.php" class="active">Beranda</a></li>
+                    <li><a href="index.php#kampanye">Donasi</a></li>
+                    <li><a href="galang-dana.php">Galang Dana</a></li>
+                    <li><a href="login.php" class="btn-login">Login</a></li>
                 </ul>
             </nav>
         </div>
@@ -97,7 +97,7 @@
                                 <div class="progress" style="width: 12%;"></div> 
                             </div>
                             <p class="waktu">Sisa Waktu: 13 hari</p>
-                            <a href="detail.html" class="btn-detail">Lihat Detail</a>
+                            <a href="detail.php" class="btn-detail">Lihat Detail</a>
                         </div>
                     </div>
 
@@ -116,7 +116,7 @@
                                 <div class="progress" style="width: 13%;"></div> 
                             </div>
                             <p class="waktu">Sisa Waktu: 50 hari</p>
-                            <a href="detail.html" class="btn-detail">Lihat Detail</a>
+                            <a href="detail.php" class="btn-detail">Lihat Detail</a>
                         </div>
                     </div>
 
@@ -135,7 +135,7 @@
                                 <div class="progress" style="width: 2%;"></div> 
                             </div>
                             <p class="waktu">Sisa Waktu: 29 hari</p>
-                            <a href="detail.html" class="btn-detail">Lihat Detail</a>
+                            <a href="detail.php" class="btn-detail">Lihat Detail</a>
                         </div>
                     </div>
                     <!-- Penggalangan dana 4 -->
@@ -153,7 +153,7 @@
                                 <div class="progress" style="width: 5%;"></div> 
                             </div>
                             <p class="waktu">Sisa Waktu: 45 hari</p>
-                            <a href="detail.html" class="btn-detail">Lihat Detail</a>
+                            <a href="detail.php" class="btn-detail">Lihat Detail</a>
                         </div>
                     </div>
                     <!-- Penggalangan dana 5 -->
@@ -171,7 +171,7 @@
                                 <div class="progress" style="width: 80%;"></div> 
                             </div>
                             <p class="waktu">Sisa Waktu: 29 hari</p>
-                            <a href="detail.html" class="btn-detail">Lihat Detail</a>
+                            <a href="detail.php" class="btn-detail">Lihat Detail</a>
                         </div>
                     </div>
                     <!-- Penggalangan dana 6 -->
@@ -189,7 +189,7 @@
                                 <div class="progress" style="width: 75%;"></div> 
                             </div>
                             <p class="waktu">Sisa Waktu: 10 hari</p>
-                            <a href="detail.html" class="btn-detail">Lihat Detail</a>
+                            <a href="detail.php" class="btn-detail">Lihat Detail</a>
                         </div>
                     </div>
 
