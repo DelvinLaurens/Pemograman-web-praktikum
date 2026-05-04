@@ -1,4 +1,11 @@
 <?php
+if (!function_exists('e')) {
+    function e($value) {
+        return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+    }
+}
+
+if (!function_exists('cardKampanye')) {
 function cardKampanye($data) {
 
     $target_rupiah = "Rp " . number_format($data['target_dana'], 0, ',', '.');
@@ -15,18 +22,24 @@ function cardKampanye($data) {
     $batas_waktu = new DateTime($data['batas_waktu']);
     $sisa_waktu = $tanggal_sekarang->diff($batas_waktu);
     $sisa_hari = $sisa_waktu->days;
-    
+
     if ($batas_waktu < $tanggal_sekarang) {
         $sisa_hari = 0; 
     }
 
+    $id_kampanye = e($data['id_kampanye']);
+    $judul_kampanye = e($data['judul_kampanye']);
+    $deskripsi = e($data['deskripsi']);
+    $nama_penyelenggara = e($data['nama_penyelenggara']);
+    $gambar_poster = e($data['gambar_poster']);
+
     echo <<<HTML
-    <div class="card">
-        <img src="{$data['gambar_poster']}" alt="{$data['judul_kampanye']}" class="card-img">
+    <div class="card muncul-saat-scroll">
+        <img src="{$gambar_poster}" alt="{$judul_kampanye}" class="card-img">
         <div class="card-content">
-            <h3>{$data['judul_kampanye']}</h3>
-            <p class="deskripsi">{$data['deskripsi']}</p>
-            <p class="penyelenggara">Oleh: {$data['nama_penyelenggara']}</p>
+            <h3>{$judul_kampanye}</h3>
+            <p class="deskripsi">{$deskripsi}</p>
+            <p class="penyelenggara">Oleh: {$nama_penyelenggara}</p>
             <div class="info-dana">
                 <p class="target">Target: <span>{$target_rupiah}</span></p>
                 <p class="terkumpul">Terkumpul: <span>{$terkumpul_rupiah}</span></p>
@@ -35,9 +48,10 @@ function cardKampanye($data) {
                 <div class="progress" style="width: {$persentase_bulat}%;"></div> 
             </div>
             <p class="waktu">Sisa Waktu: {$sisa_hari} hari</p>
-            <a href="detail.php?id={$data['id_kampanye']}" class="btn-detail">Lihat Detail</a>
+            <a href="detail.php?id={$id_kampanye}" class="btn-detail">Lihat Detail</a>
         </div>
     </div>
     HTML;
     }
+}
 ?>

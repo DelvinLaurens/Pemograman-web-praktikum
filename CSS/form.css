@@ -1,6 +1,5 @@
-/* DESAIN HALAMAN FORMULIR (DONASI & LOGIN) */
-
-   .halaman-form {
+/* DESAIN HALAMAN FORMULIR */
+.halaman-form {
     padding: 60px 0;
     background-color: var(--bg-body); 
     min-height: 80vh; 
@@ -16,8 +15,9 @@
     width: 100%;
     max-width: 600px; 
     padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid rgba(229, 231, 235, 0.85);
+    border-radius: 8px;
+    box-shadow: var(--shadow-soft);
 }
 
 .ringkasan-donasi {
@@ -30,6 +30,7 @@
 .ringkasan-donasi h2 {
     color: var(--primary); 
     margin-bottom: 10px;
+    line-height: 1.25;
 }
 
 .ringkasan-donasi p {
@@ -64,7 +65,8 @@
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
     outline: none;
-    transition: 0.3s;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    width: 100%;
 }
 
 /* Efek saat kolom isian diklik */
@@ -98,11 +100,12 @@
     font-weight: bold;
     cursor: pointer;
     margin-top: 10px;
-    transition: 0.3s;
+    transition: background-color 0.25s ease, transform 0.25s ease;
 }
 
 .btn-submit-form:hover {
-    background-color: var(--button);
+    background-color: var(--button-hover);
+    transform: translateY(-1px);
 }
 
 /* 
@@ -115,7 +118,7 @@ pesan sukses
     padding: 30px;
     background-color: #ECFDF5;
     border: 2px solid #10B981;
-    border-radius: 10px;
+    border-radius: 8px;
     margin-top: 20px;
 }
 
@@ -136,13 +139,43 @@ pesan sukses
     padding: 10px 20px;
     border-radius: 8px;
     font-weight: 600;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.btn-kembali-home:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
 }
 
 #berhasil:target {
     display: block;
 }
 
-#berhasil:target ~ .form-donasi {
-    display: none; 
+.form-card:has(#berhasil:target) .form-donasi {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .halaman-form {
+        padding: 42px 0;
+    }
+
+    .form-card {
+        padding: 28px;
+    }
+
+    .ringkasan-donasi {
+        margin-bottom: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-card {
+        padding: 22px;
+    }
+
+    .btn-submit-form {
+        font-size: 1rem;
+    }
 }
 

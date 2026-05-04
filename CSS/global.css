@@ -10,6 +10,8 @@
     --text-desc: #6B7280;    /* Abu-abu pudar untuk deskripsi */
     --border: #E5E7EB;        /* Warna garis tepi / border */
     --danger: #DC2626;        /* Merah untuk teks "Sisa Waktu" */
+    --shadow-soft: 0 12px 28px rgba(15, 23, 42, 0.08);
+    --shadow-hover: 0 18px 38px rgba(15, 23, 42, 0.14);
 }
 
 /*base website jadi tempat deklarasi font body, container dll */
@@ -24,6 +26,7 @@ body {
     background-color: var(--bg-body);
     color: var(--main-text);
     line-height: 1.6;
+    min-height: 100vh;
 }
 
 .container {
@@ -36,6 +39,19 @@ a {
     text-decoration: none;
 }
 
+img {
+    max-width: 100%;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid rgba(245, 158, 11, 0.35);
+    outline-offset: 3px;
+}
+
 .text-center {
     text-align: center;
 }
@@ -43,10 +59,11 @@ a {
 /*header dan navigasi */
 header {
     background-color: var(--white);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 14px rgba(15, 23, 42, 0.08);
     position: sticky;
     top: 0;
     z-index: 100;
+    border-bottom: 1px solid rgba(229, 231, 235, 0.8);
 }
 
 .nav-wrapper {
@@ -59,11 +76,12 @@ header {
 .logo {
     display: flex;
     align-items: center;
-    gap: 0px;
+    gap: 10px;
     font-size: 24px;
     font-weight: 700;
     color: var(--primary);
     text-decoration: none;
+    line-height: 1;
 }
 
 .logo-website{
@@ -75,14 +93,14 @@ header {
 nav ul {
     list-style: none;
     display: flex;
-    gap: 30px;
+    gap: 24px;
     align-items: center;
 }
 
 nav a {
     color: var(--main-text);
     font-weight: 500;
-    transition: 0.3s;
+    transition: color 0.25s ease, background-color 0.25s ease;
 }
 
 nav a:hover, nav a.active {
@@ -94,7 +112,7 @@ nav a:hover, nav a.active {
     background-color: var(--primary);
     color: var(--white);
     padding: 10px 25px;
-    border-radius: 50px;
+    border-radius: 8px;
 }
 
 .btn-login:hover {
@@ -111,7 +129,7 @@ footer {
 }
 
 footer p {
-    color: var(--text-desc);
+    color: rgba(255, 255, 255, 0.82);
     display: flex;
     justify-content: center;
 }
@@ -128,21 +146,71 @@ html {
     font-weight: bold;
 }
 
-.logo-website {
-    height: 55px;
-    width: auto;
-    display: block;
-}
-
 /*bagian login*/
 .logo-link {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: inherit;
+    color: var(--primary);
+}
+
+.logo-link:hover {
+    color: var(--primary);
 }
 
 .link-kembali-login {
     font-size: 0.9rem;
     color: var(--text-desc);
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    .nav-wrapper {
+        height: auto;
+        padding-top: 14px;
+        padding-bottom: 14px;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .logo-website {
+        height: 48px;
+    }
+
+    nav ul {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    nav a {
+        display: inline-block;
+        padding: 8px 10px;
+        font-size: 0.92rem;
+    }
+
+    .btn-login {
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 20px;
+    }
+
+    .logo-website {
+        height: 42px;
+    }
+
+    footer {
+        padding: 24px 0;
+    }
 }

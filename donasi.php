@@ -6,8 +6,8 @@
     <title>Formulir Donasi - DemiSesama</title>
     <!-- fav icon -->
     <link rel="icon" type="image/png" href="Asset/tangan2 tnpa bg.png">
-    <link rel="stylesheet" href="CSS/global.css">
-    <link rel="stylesheet" href="CSS/form.css">
+    <link rel="stylesheet" href="CSS/global.css?v=3">
+    <link rel="stylesheet" href="CSS/form.css?v=3">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -28,11 +28,6 @@
                     <div class="form-group">
                         <label for="nama">Nama Lengkap<span class="required">*</span></label>
                         <input type="text" id="nama" name="nama" placeholder="Masukkan nama Anda..." required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Alamat Email<span class="required">*</span></label>
-                        <input type="email" id="email" name="email" placeholder="Masukkan email aktif..." required>
                     </div>
 
                     <div class="form-group">
@@ -65,13 +60,6 @@
 
                     <button type="submit" class="btn-submit-form">Kirim Donasi Sekarang</button>
                 </form>
-
-                <div id="berhasil" class="pesan-sukses">
-                    <h3>🎉 Donasi Berhasil!</h3>
-                    <p>Terima kasih! Bukti transfer Anda sedang diverifikasi oleh sistem kami.</p>
-                    <a href="index.html" class="btn-kembali-home">Kembali ke Beranda</a>
-                </div>
-
             </div>
         </div>
     </main>

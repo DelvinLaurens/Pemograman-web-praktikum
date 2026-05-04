@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galang Dana - DemiSesama</title>
     <link rel="icon" type="image/png" href="Asset/tangan2 tnpa bg.png">
-    <link rel="stylesheet" href="CSS/global.css">
-    <link rel="stylesheet" href="CSS/form.css">
+    <link rel="stylesheet" href="CSS/global.css?v=3">
+    <link rel="stylesheet" href="CSS/form.css?v=3">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -64,7 +64,7 @@
                 <div id="berhasil" class="pesan-sukses">
                     <h3>Kampanye Berhasil Diajukan!</h3>
                     <p>Kampanye Anda sedang dalam tahap peninjauan oleh admin. Kami akan menghubungi Anda melalui email.</p>
-                    <a href="index.html" class="btn-kembali-home">Kembali ke Beranda</a>
+                    <a href="index.php" class="btn-kembali-home">Kembali ke Beranda</a>
                 </div>
 
             </div>

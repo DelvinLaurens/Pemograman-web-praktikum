@@ -6,8 +6,8 @@
     <title>Detail Kampanye - DemiSesama</title>
     <!-- fav icon -->
     <link rel="icon" type="image/png" href="Asset/tangan2 tnpa bg.png">
-    <link rel="stylesheet" href="CSS/global.css">
-    <link rel="stylesheet" href="CSS/styledetail.css">
+    <link rel="stylesheet" href="CSS/global.css?v=3">
+    <link rel="stylesheet" href="CSS/styledetail.css?v=3">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -21,7 +21,7 @@
                     
                     <div class="detail-kategori-lokasi">
                         <span class="badge-kategori">Bencana Alam</span>
-                        <span class="badge-lokasi">📍 Melawi, Kalimantan Barat</span>
+                        <span class="badge-lokasi">Lokasi: Melawi, Kalimantan Barat</span>
                     </div>
                     <h2 class="judul-detail">Bantu Warga Terdampak Banjir Melawi</h2>
                     <p class="penyelenggara-detail">Diselenggarakan oleh: <strong>Sdr. Roihan Jaidid</strong></p>
@@ -40,8 +40,8 @@
                             <div class="progress-detail" style="width: 12%;"></div> 
                         </div>
                         <p class="teks-persen">Terkumpul 12% dari target</p>
-                        <p class="teks-waktu">⏳ Waktu tersisa: <strong>13 Hari Lagi</strong></p>
-                        <a href="donasi.html" class="btn-donasi-sekarang">Donasi Sekarang</a>
+                        <p class="teks-waktu">Waktu tersisa: <strong>13 Hari Lagi</strong></p>
+                        <a href="donasi.php" class="btn-donasi-sekarang">Donasi Sekarang</a>
                         <div class="info-rekening">
                             <h4>Metode Pembayaran:</h4>
                             <ul>

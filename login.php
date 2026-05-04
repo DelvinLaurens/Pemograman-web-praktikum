@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - DemiSesama</title>
     <link rel="icon" type="image/png" href="Asset/tangan2 tnpa bg.png">
-    <link rel="stylesheet" href="CSS/global.css">
-    <link rel="stylesheet" href="CSS/login.css">
+    <link rel="stylesheet" href="CSS/global.css?v=3">
+    <link rel="stylesheet" href="CSS/login.css?v=3">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -16,14 +16,14 @@
     <header>
         <div class="container nav-wrapper">
             <div class="logo">
-                <a href="index.html" class="logo-link">
-                    <img src="Asset/tangan2 tnpa bg.png" alt="logo website" style="height: 40px; margin-right: 10px;">
+                <a href="index.php" class="logo-link">
+                    <img src="Asset/tangan2 tnpa bg.png" alt="logo website" class="logo-website">
                     <span>DemiSesama.</span>
                 </a>
             </div>
             <nav>
                 <ul>
-                    <a href="index.php" class="link-kembali-login">← Kembali ke Beranda</a>
+                    <li><a href="index.php" class="link-kembali-login">Kembali ke Beranda</a></li>
                 </ul>
             </nav>
         </div>

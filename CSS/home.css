@@ -1,9 +1,8 @@
 .tampilan-utama {
     position: relative;
-    padding: 100px 0 120px 0;
+    padding: 96px 0 112px 0;
     background-color: var(--primary); 
     overflow: hidden;
-    
 }
 
 .hero-content {
@@ -12,27 +11,26 @@
 }
 
 .tampilan-utama h1 {
-    font-size: 2.8rem;
+    font-size: 2.75rem;
     margin-bottom: 15px;
     color: var(--white); 
-    animation: fade 2s ease forwards;
+    line-height: 1.2;
 }
 
 .hero-desc {
     max-width: 700px;
     margin: 0 auto 40px auto;
     color: var(--bg-body);
-    animation: fade 2s ease forwards;
 }
 
 .search-bar form {
     background-color: var(--white);
     padding: 15px;
-    border-radius: 10px;
+    border-radius: 8px;
     display: flex;
     gap: 15px;
     align-items: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.24);
     width: 100%;
     max-width: 950px;
     margin: 0 auto;
@@ -41,7 +39,7 @@
 .search-bar input, .search-bar select, .btn-search {
     height: 50px; 
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 8px;
     outline: none;
     font-family: 'Poppins', sans-serif;
     font-size: 15px;
@@ -50,6 +48,7 @@
 .search-bar input {
     flex: 2; 
     padding: 0 15px;
+    min-width: 180px;
 }
 
 .search-bar select {
@@ -57,6 +56,7 @@
     padding: 0 15px;
     cursor: pointer;
     background-color: var(--white);
+    min-width: 140px;
 }
 
 .btn-search {
@@ -66,11 +66,12 @@
     padding: 0 35px;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.3s;
+    transition: background-color 0.25s ease, transform 0.25s ease;
 }
 
 .btn-search:hover {
     background-color: var(--button-hover);
+    transform: translateY(-1px);
 }
 
 .untuk-filter {
@@ -84,7 +85,7 @@
 }
 
 .kampanye {
-    padding: 30px 0;
+    padding: 44px 0 24px;
 }
 
 .section-title {
@@ -92,37 +93,38 @@
     color: var(--primary); 
     margin-bottom: 30px;
     text-align: left;
+    line-height: 1.25;
 }
 
 .kampanye-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); 
-    gap: 30px; 
+    gap: 24px; 
 }
 
 .card {
     background-color: var(--white); 
-    border-radius: 15px; 
+    border-radius: 8px; 
     overflow: hidden; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+    border: 1px solid rgba(229, 231, 235, 0.85);
+    box-shadow: var(--shadow-soft); 
     transition: transform 0.3s ease, box-shadow 0.3s ease; 
-    animation: fade 3s ease forwards;
 }
 
 .card:hover {
-    transform: translateY(-10px); 
-    box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+    transform: translateY(-8px); 
+    box-shadow: var(--shadow-hover);
 }
 
 .card-img {
     width: 100%;
-    height: 220px;
+    height: 210px;
     object-fit: cover;
     border-bottom: 3px solid var(--button); 
 }
 
 .card-content {
-    padding: 25px;
+    padding: 22px;
 }
 
 .card h3 {
@@ -135,7 +137,7 @@
     font-size: 0.9rem;
     color: var(--text-desc);
     margin-bottom: 10px;
-    height: 40px;
+    min-height: 44px;
 }
 
 .penyelenggara {
@@ -148,6 +150,7 @@
     font-size: 0.9rem;
     display: flex;
     justify-content: space-between;
+    gap: 10px;
     margin-bottom: 8px;
 }
 
@@ -186,20 +189,123 @@
     padding: 10px 0;
     border-radius: 8px;
     font-weight: 600;
-    transition: 0.3s;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
 }
 
 .btn-detail:hover {
     background-color: var(--primary);
     color: var(--white);
+    transform: translateY(-1px);
 }
 
-/* animasi transisi */
-  @keyframes fade {
-    from {
-      opacity: 0;
+/* animasi muncul saat discroll */
+.animasi-scroll-siap .muncul-saat-scroll {
+    opacity: 0;
+    transform: translateY(70px) scale(0.97);
+    filter: blur(6px);
+    transition: opacity 0.9s ease, transform 0.9s ease, filter 0.9s ease;
+    transition-delay: var(--reveal-delay, 0ms);
+}
+
+.animasi-scroll-siap .muncul-saat-scroll.sudah-terlihat {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+}
+
+.animasi-scroll-siap .card.muncul-saat-scroll {
+    transition: opacity 0.9s ease, transform 0.9s ease, filter 0.9s ease, box-shadow 0.3s ease;
+}
+
+.animasi-scroll-siap .card.muncul-saat-scroll.sudah-terlihat:hover {
+    transform: translateY(-8px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animasi-scroll-siap .muncul-saat-scroll {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        transition: none;
     }
-    to {
-      opacity: 1;
+}
+
+@media (max-width: 1024px) {
+    .kampanye-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
-  }
+
+    .search-bar form {
+        flex-wrap: wrap;
+    }
+
+    .search-bar input {
+        flex: 1 1 100%;
+    }
+
+    .search-bar select,
+    .btn-search {
+        flex: 1 1 calc(50% - 15px);
+    }
+}
+
+@media (max-width: 768px) {
+    .tampilan-utama {
+        padding: 72px 0 86px;
+    }
+
+    .tampilan-utama h1 {
+        font-size: 2.1rem;
+    }
+
+    .hero-desc {
+        margin-bottom: 28px;
+        font-size: 0.95rem;
+    }
+
+    .search-bar form {
+        padding: 14px;
+        gap: 10px;
+    }
+
+    .search-bar input,
+    .search-bar select,
+    .btn-search {
+        width: 100%;
+        flex: 1 1 100%;
+    }
+
+    .kampanye {
+        padding-top: 34px;
+    }
+
+    .section-title {
+        font-size: 1.55rem;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .kampanye-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card-img {
+        height: 200px;
+    }
+
+    .info-dana {
+        flex-direction: column;
+        gap: 2px;
+    }
+}
+
+@media (max-width: 420px) {
+    .tampilan-utama h1 {
+        font-size: 1.85rem;
+    }
+
+    .card-content {
+        padding: 18px;
+    }
+}

@@ -1,5 +1,5 @@
 .login-bg {
-    padding: 80px 0;
+    padding: 76px 0;
     background-color: var(--bg-body);
     min-height: 80vh;
     display: flex;
@@ -16,8 +16,9 @@
     width: 100%;
     max-width: 450px;
     padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid rgba(229, 231, 235, 0.85);
+    border-radius: 8px;
+    box-shadow: var(--shadow-soft);
 }
 
 .login-card h2 {
@@ -53,7 +54,7 @@
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
     outline: none;
-    transition: 0.3s;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .input-group input:focus, 
@@ -73,7 +74,7 @@
     font-weight: bold;
     cursor: pointer;
     margin-top: 10px;
-    transition: 0.3s;
+    transition: background-color 0.25s ease, transform 0.25s ease;
 }
 
 .btn-submit-login:hover {
@@ -95,5 +96,29 @@
 
 .link-daftar a:hover {
     text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .login-bg {
+        padding: 48px 0;
+    }
+
+    .login-card {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        padding: 24px;
+    }
+
+    .login-card h2 {
+        font-size: 1.55rem;
+    }
+
+    .btn-submit-login {
+        font-size: 1rem;
+    }
 }
 
