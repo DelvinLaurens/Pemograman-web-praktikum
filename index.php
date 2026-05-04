@@ -1,4 +1,7 @@
-<?php include_once("./Component/db_conn.php"); ?>
+<?php
+session_start();
+include_once("./Component/db_conn.php");
+?>
 
 <!DOCTYPE html>
 <html lang="id">

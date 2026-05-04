@@ -1,10 +1,49 @@
+<?php
+session_start();
+require_once("./Component/db_conn.php");
+require_once("./Component/donasi_helper.php");
+
+$id_kampanye = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+if (!$id_kampanye) {
+    $id_kampanye = 1;
+}
+
+$stmt = mysqli_prepare(
+    $conn,
+    "SELECT k.*, p.nama_penyelenggara
+     FROM kampanye k
+     INNER JOIN penyelenggara p ON p.id_penyelenggara = k.id_penyelenggara
+     WHERE k.id_kampanye = ?"
+);
+
+$kampanye = null;
+if ($stmt) {
+    mysqli_stmt_bind_param($stmt, "i", $id_kampanye);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $kampanye = $result ? mysqli_fetch_assoc($result) : null;
+    mysqli_stmt_close($stmt);
+}
+
+if ($kampanye) {
+    $target = (float) $kampanye['target_dana'];
+    $terkumpul = (float) $kampanye['dana_terkumpul'];
+    $persentase = $target > 0 ? min(round(($terkumpul / $target) * 100), 100) : 0;
+
+    $hari_ini = new DateTime();
+    $batas_waktu = new DateTime($kampanye['batas_waktu']);
+    $sisa_hari = $batas_waktu < $hari_ini ? 0 : $hari_ini->diff($batas_waktu)->days;
+    $kategori = ucwords(str_replace('_', ' ', $kampanye['kategori']));
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Kampanye - DemiSesama</title>
-    <!-- fav icon -->
     <link rel="icon" type="image/png" href="Asset/tangan2 tnpa bg.png">
     <link rel="stylesheet" href="CSS/global.css?v=3">
     <link rel="stylesheet" href="CSS/styledetail.css?v=3">
@@ -15,44 +54,53 @@
 
     <main class="halaman-detail">
         <div class="container">
-            <div class="detail-kampanye">
-                <div class="konten-utama">
-                    <img src="Asset/banjir melawi.jpg" alt="Banjir Melawi" class="detail-image">
-                    
-                    <div class="detail-kategori-lokasi">
-                        <span class="badge-kategori">Bencana Alam</span>
-                        <span class="badge-lokasi">Lokasi: Melawi, Kalimantan Barat</span>
-                    </div>
-                    <h2 class="judul-detail">Bantu Warga Terdampak Banjir Melawi</h2>
-                    <p class="penyelenggara-detail">Diselenggarakan oleh: <strong>Sdr. Roihan Jaidid</strong></p>
-                    
-                    <div class="deskripsi-kampanye">
-                        <h3>Cerita Kampanye</h3>
-                        <p>Banjir bandang telah melanda daerah Melawi pada awal tahun 2026. Ratusan rumah terendam dan warga terpaksa mengungsi ke tempat yang lebih aman tanpa membawa banyak harta benda.</p>
-                        <p>Saat ini, warga sangat membutuhkan bantuan mendesak berupa bahan pokok (sembako), pakaian layak pakai, obat-obatan, dan selimut. Mari ulurkan tangan dan bantu saudara-saudara kita di Melawi agar bisa segera bangkit dari musibah ini.</p>
+            <?php if (!$kampanye): ?>
+                <div class="detail-kampanye">
+                    <div class="konten-utama">
+                        <h2 class="judul-detail">Kampanye tidak ditemukan</h2>
+                        <p class="deskripsi">Data kampanye yang Anda buka belum tersedia.</p>
+                        <a href="index.php#kampanye" class="btn-donasi-sekarang">Kembali ke Daftar Kampanye</a>
                     </div>
                 </div>
-                <div class="konten-samping">
-                    <div class="box-donasi">
-                        <p class="teks-target">Target Dana: <span>Rp 100.000.000</span></p>
-                        <p class="teks-terkumpul">Terkumpul: <strong>Rp 12.674.000</strong></p>
-                        <div class="progress-bar-detail">
-                            <div class="progress-detail" style="width: 12%;"></div> 
+            <?php else: ?>
+                <div class="detail-kampanye">
+                    <div class="konten-utama">
+                        <img src="<?php echo e($kampanye['gambar_poster']); ?>" alt="<?php echo e($kampanye['judul_kampanye']); ?>" class="detail-image">
+
+                        <div class="detail-kategori-lokasi">
+                            <span class="badge-kategori"><?php echo e($kategori); ?></span>
+                            <span class="badge-lokasi">Lokasi: <?php echo e($kampanye['lokasi']); ?></span>
                         </div>
-                        <p class="teks-persen">Terkumpul 12% dari target</p>
-                        <p class="teks-waktu">Waktu tersisa: <strong>13 Hari Lagi</strong></p>
-                        <a href="donasi.php" class="btn-donasi-sekarang">Donasi Sekarang</a>
-                        <div class="info-rekening">
-                            <h4>Metode Pembayaran:</h4>
-                            <ul>
-                                <li>Transfer Bank (BCA, Mandiri, BNI, BRI)</li>
-                                <li>E-Wallet (GoPay, OVO, Dana, LinkAja)</li>
-                                <li>QRIS</li>
-                            </ul>
+                        <h2 class="judul-detail"><?php echo e($kampanye['judul_kampanye']); ?></h2>
+                        <p class="penyelenggara-detail">Diselenggarakan oleh: <strong><?php echo e($kampanye['nama_penyelenggara']); ?></strong></p>
+
+                        <div class="deskripsi-kampanye">
+                            <h3>Cerita Kampanye</h3>
+                            <p><?php echo nl2br(e($kampanye['deskripsi'])); ?></p>
+                        </div>
+                    </div>
+                    <div class="konten-samping">
+                        <div class="box-donasi">
+                            <p class="teks-target">Target Dana: <span><?php echo formatRupiah($kampanye['target_dana']); ?></span></p>
+                            <p class="teks-terkumpul">Terkumpul: <strong><?php echo formatRupiah($kampanye['dana_terkumpul']); ?></strong></p>
+                            <div class="progress-bar-detail">
+                                <div class="progress-detail" style="width: <?php echo $persentase; ?>%;"></div>
+                            </div>
+                            <p class="teks-persen">Terkumpul <?php echo $persentase; ?>% dari target</p>
+                            <p class="teks-waktu">Waktu tersisa: <strong><?php echo $sisa_hari; ?> Hari Lagi</strong></p>
+                            <a href="donasi.php?id=<?php echo (int) $kampanye['id_kampanye']; ?>" class="btn-donasi-sekarang">Donasi Sekarang</a>
+                            <div class="info-rekening">
+                                <h4>Metode Pembayaran:</h4>
+                                <ul>
+                                    <li>QRIS</li>
+                                    <li>GoPay dan DANA</li>
+                                    <li>BCA VA dan Mandiri VA</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php endif; ?>
         </div>
     </main>
     <footer>

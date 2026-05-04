@@ -120,6 +120,26 @@ nav a:hover, nav a.active {
     color: var(--white);
 }
 
+.nav-user {
+    display: inline-block;
+    color: var(--text-desc);
+    font-size: 0.9rem;
+    font-weight: 500;
+    max-width: 190px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.btn-logout {
+    background-color: var(--button);
+}
+
+.btn-logout:hover {
+    background-color: var(--button-hover);
+}
+
 /* Footer sini lee */
 footer {
     background-color: var(--primary);

@@ -20,6 +20,10 @@
     box-shadow: var(--shadow-soft);
 }
 
+.form-card-wide {
+    max-width: 840px;
+}
+
 .ringkasan-donasi {
     text-align: center;
     margin-bottom: 30px;
@@ -83,9 +87,194 @@
     margin-top: 5px;
 }
 
+.form-group input[readonly] {
+    background-color: #F9FAFB;
+    color: var(--text-desc);
+    cursor: not-allowed;
+}
+
 .input-file {
     padding: 10px !important;
     background-color: var(--bg-body);
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.summary-grid div {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    background-color: #F9FAFB;
+}
+
+.summary-grid span {
+    display: block;
+    color: var(--text-desc);
+    font-size: 0.82rem;
+    margin-bottom: 4px;
+}
+
+.summary-grid strong {
+    color: var(--main-text);
+    font-size: 0.96rem;
+    overflow-wrap: anywhere;
+}
+
+.status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.status-verified {
+    background-color: #DCFCE7;
+    color: #166534;
+}
+
+.status-rejected,
+.status-expired {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}
+
+.countdown-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    background-color: #F9FAFB;
+}
+
+.countdown-box span {
+    color: var(--text-desc);
+    font-size: 0.82rem;
+}
+
+.countdown-box strong {
+    color: var(--danger);
+    min-width: 58px;
+    text-align: right;
+}
+
+.metode-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
+    gap: 18px;
+    margin: 24px 0;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background-color: #F9FAFB;
+}
+
+.metode-box h3 {
+    color: var(--primary);
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+}
+
+.metode-box p,
+.instruksi-bayar li {
+    color: var(--text-desc);
+    font-size: 0.92rem;
+}
+
+.instruksi-bayar ol {
+    padding-left: 20px;
+}
+
+.qris-frame {
+    width: min(100%, 280px);
+    margin-top: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background-color: var(--white);
+    padding: 12px;
+}
+
+.qris-frame img {
+    display: block;
+    width: 100%;
+}
+
+.rekening-card {
+    display: grid;
+    gap: 6px;
+    margin-top: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: var(--white);
+    padding: 14px;
+}
+
+.rekening-card span {
+    color: var(--text-desc);
+    font-size: 0.8rem;
+}
+
+.rekening-card strong {
+    color: var(--main-text);
+    font-size: 1rem;
+}
+
+.pesan-error,
+.pesan-info,
+.pesan-sukses-inline {
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+}
+
+.pesan-error {
+    background-color: #FEF2F2;
+    border: 1px solid #FECACA;
+    color: #991B1B;
+}
+
+.pesan-info {
+    background-color: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    color: #1E3A8A;
+}
+
+.pesan-info a {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.pesan-sukses-inline {
+    background-color: #ECFDF5;
+    border: 1px solid #A7F3D0;
+    color: #047857;
+}
+
+.btn-link-center {
+    display: block;
+    text-align: center;
 }
 
 /* TOMBOL SUBMIT */
@@ -166,6 +355,20 @@ pesan sukses
 
     .ringkasan-donasi {
         margin-bottom: 24px;
+    }
+
+    .summary-grid,
+    .metode-box {
+        grid-template-columns: 1fr;
+    }
+
+    .status-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .countdown-box {
+        justify-content: space-between;
     }
 }
 
