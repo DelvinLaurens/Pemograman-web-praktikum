@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once("./Component/db_conn.php");
-require_once("./Component/donation_service.php");
+require_once("../components/db_conn.php");
+require_once("../components/donation_service.php");
 
 $id_kampanye = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$id_kampanye) {
@@ -12,9 +12,9 @@ if (!$id_kampanye) {
     $id_kampanye = 1;
 }
 
-$current_url = "donasi.php?id=" . urlencode((string) $id_kampanye);
+$current_url = "pages/donasi.php?id=" . urlencode((string) $id_kampanye);
 if (empty($_SESSION['id_donatur'])) {
-    header("Location: login.php?redirect=" . urlencode($current_url));
+    header("Location: " . url_for('auth/login.php') . "?redirect=" . urlencode($current_url));
     exit;
 }
 
@@ -24,11 +24,17 @@ $donatur = getDonorById($conn, $_SESSION['id_donatur']);
 if (!$donatur) {
     session_unset();
     session_destroy();
-    header("Location: login.php?redirect=" . urlencode($current_url));
+    header("Location: " . url_for('auth/login.php') . "?redirect=" . urlencode($current_url));
     exit;
 }
 
 $methods = paymentMethods();
+foreach ($methods as $method_key => $method) {
+    if (!empty($method['image'])) {
+        $methods[$method_key]['image'] = asset_url($method['image']);
+    }
+}
+
 $errors = [];
 $selected_method = $_POST['metode'] ?? '';
 $nominal = $_POST['nominal'] ?? '';
@@ -45,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $kampanye) {
     );
 
     if ($result['success']) {
-        header("Location: verif.php?id=" . urlencode((string) $result['id_donasi']));
+        header("Location: " . url_for("pages/verif.php?id=" . urlencode((string) $result['id_donasi'])));
         exit;
     }
 
@@ -63,14 +69,14 @@ $persentase = $target > 0 ? min(round(($terkumpul / $target) * 100), 100) : 0;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulir Donasi - DemiSesama</title>
-    <link rel="icon" type="image/png" href="Asset/tangan2 tnpa bg.png">
-    <link rel="stylesheet" href="CSS/global.css?v=3">
-    <link rel="stylesheet" href="CSS/form.css?v=3">
+    <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/form.css?v=3'); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <?php include_once("./Component/nav_com.php") ?>
+    <?php include_once("../components/nav.php") ?>
 
     <main class="halaman-form">
         <div class="container form-container">
@@ -80,7 +86,7 @@ $persentase = $target > 0 ? min(round(($terkumpul / $target) * 100), 100) : 0;
                         <h2>Kampanye tidak ditemukan</h2>
                         <p>Silakan kembali ke daftar kampanye dan pilih donasi yang tersedia.</p>
                     </div>
-                    <a href="index.php#kampanye" class="btn-kembali-home">Kembali ke Kampanye</a>
+                    <a href="<?php echo url_for('index.php#kampanye'); ?>" class="btn-kembali-home">Kembali ke Kampanye</a>
                 <?php else: ?>
                     <div class="ringkasan-donasi">
                         <h2>Formulir Donasi</h2>
@@ -110,7 +116,7 @@ $persentase = $target > 0 ? min(round(($terkumpul / $target) * 100), 100) : 0;
                         </div>
                     <?php endif; ?>
 
-                    <form method="POST" action="donasi.php?id=<?php echo (int) $kampanye['id_kampanye']; ?>" class="form-donasi">
+                    <form method="POST" action="<?php echo url_for('pages/donasi.php?id=' . (int) $kampanye['id_kampanye']); ?>" class="form-donasi">
                         <input type="hidden" name="id_kampanye" value="<?php echo (int) $kampanye['id_kampanye']; ?>">
 
                         <div class="form-group">
@@ -140,6 +146,15 @@ $persentase = $target > 0 ? min(round(($terkumpul / $target) * 100), 100) : 0;
                             </select>
                         </div>
 
+                        <div class="payment-preview" id="payment-preview" hidden>
+                            <div>
+                                <span>Detail Pembayaran</span>
+                                <strong id="payment-preview-label"></strong>
+                                <p id="payment-preview-instruction"></p>
+                            </div>
+                            <div class="payment-preview-target" id="payment-preview-target"></div>
+                        </div>
+
                         <div class="form-group">
                             <label for="pesan">Pesan Dukungan (Opsional)</label>
                             <textarea id="pesan" name="pesan" rows="4" placeholder="Tulis doa untuk kampanye ini..."><?php echo e($pesan); ?></textarea>
@@ -152,10 +167,55 @@ $persentase = $target > 0 ? min(round(($terkumpul / $target) * 100), 100) : 0;
         </div>
     </main>
 
-    <footer>
-        <div class="container text-center">
-            <p>&copy; 2026 DemiSesama</p>
-        </div>
-    </footer>
+    <?php include_once("../components/footer.php") ?>
+    <script>
+        const paymentMethods = <?php echo json_encode($methods, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
+        const methodSelect = document.getElementById('metode');
+        const preview = document.getElementById('payment-preview');
+        const previewLabel = document.getElementById('payment-preview-label');
+        const previewInstruction = document.getElementById('payment-preview-instruction');
+        const previewTarget = document.getElementById('payment-preview-target');
+
+        const escapeHtml = (value) => String(value || '').replace(/[&<>"']/g, (char) => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        })[char]);
+
+        const updatePaymentPreview = () => {
+            const method = paymentMethods[methodSelect.value];
+
+            if (!method) {
+                preview.hidden = true;
+                previewLabel.textContent = '';
+                previewInstruction.textContent = '';
+                previewTarget.innerHTML = '';
+                return;
+            }
+
+            preview.hidden = false;
+            previewLabel.textContent = method.label || methodSelect.value;
+            previewInstruction.textContent = method.instruction || '';
+
+            if (method.type === 'qris' && method.image) {
+                previewTarget.innerHTML = `<img src="${escapeHtml(method.image)}" alt="Kode QRIS">`;
+                return;
+            }
+
+            previewTarget.innerHTML = `
+                <span>Nomor Tujuan</span>
+                <strong>${escapeHtml(method.account || '-')}</strong>
+                <span>Atas Nama</span>
+                <strong>${escapeHtml(method.account_name || '-')}</strong>
+            `;
+        };
+
+        if (methodSelect) {
+            methodSelect.addEventListener('change', updatePaymentPreview);
+            updatePaymentPreview();
+        }
+    </script>
 </body>
 </html>

@@ -42,6 +42,41 @@
     padding: 12px 14px;
 }
 
+.login-role-toggle {
+    background-color: #F8FAFC;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: grid;
+    gap: 6px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: 22px;
+    padding: 6px;
+}
+
+.login-role-toggle label {
+    align-items: center;
+    border-radius: 7px;
+    color: var(--text-desc);
+    cursor: pointer;
+    display: flex;
+    font-size: 0.92rem;
+    font-weight: 700;
+    justify-content: center;
+    min-height: 42px;
+}
+
+.login-role-toggle label.active {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.login-role-toggle input {
+    height: 1px;
+    opacity: 0;
+    position: absolute;
+    width: 1px;
+}
+
 .input-group {
     margin-bottom: 20px;
     display: flex;

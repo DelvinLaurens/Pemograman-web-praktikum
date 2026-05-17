@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . "/path_helper.php";
+
 if (!function_exists('e')) {
     function e($value) {
         return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
@@ -31,7 +33,8 @@ function cardKampanye($data) {
     $judul_kampanye = e($data['judul_kampanye']);
     $deskripsi = e($data['deskripsi']);
     $nama_penyelenggara = e($data['nama_penyelenggara']);
-    $gambar_poster = e($data['gambar_poster']);
+    $gambar_poster = e(asset_url($data['gambar_poster']));
+    $detail_url = e(url_for("pages/detail.php?id={$id_kampanye}"));
 
     echo <<<HTML
     <div class="card muncul-saat-scroll">
@@ -48,7 +51,7 @@ function cardKampanye($data) {
                 <div class="progress" style="width: {$persentase_bulat}%;"></div> 
             </div>
             <p class="waktu">Sisa Waktu: {$sisa_hari} hari</p>
-            <a href="detail.php?id={$id_kampanye}" class="btn-detail">Lihat Detail</a>
+            <a href="{$detail_url}" class="btn-detail">Lihat Detail</a>
         </div>
     </div>
     HTML;

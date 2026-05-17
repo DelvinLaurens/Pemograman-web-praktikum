@@ -1,6 +1,7 @@
 <?php
 session_start();
-include_once("./Component/db_conn.php");
+include_once("./components/db_conn.php");
+require_once("./components/path_helper.php");
 ?>
 
 <!DOCTYPE html>
@@ -10,17 +11,17 @@ include_once("./Component/db_conn.php");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DemiSesama</title>
     <!-- fav icon -->
-    <link rel="icon" type="image/png" href="Asset/tangan2 tnpa bg.png">
+    <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
     <script>document.documentElement.classList.add("animasi-scroll-siap");</script>
-    <link rel="stylesheet" href="CSS/global.css?v=3">
-    <link rel="stylesheet" href="CSS/home.css?v=3">
+    <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/home.css?v=3'); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <?php include_once("./Component/nav_com.php") ?>
+    <?php include_once("./components/nav.php") ?>
 
     <main>
         <section class="tampilan-utama">
@@ -30,7 +31,7 @@ include_once("./Component/db_conn.php");
                 <p class="hero-desc">Demi Sesama hadir sebagai jembatan kebaikan. Di sini, setiap donasi menjadi harapan bagi mereka yang membutuhkan. Mari bersama-sama membantu, berbagi, dan menciptakan dunia yang lebih peduli.</p>
 
                 <div class="search-bar">
-                    <form method="GET" action="#kampanye">
+                    <form method="GET" action="<?php echo url_for('index.php#kampanye'); ?>">
                         <i class="fas fa-search"></i>
                         <input type="text" name="keyword" placeholder="Cari judul kampanye..." value="<?php echo htmlspecialchars($_GET['keyword'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
@@ -74,18 +75,14 @@ include_once("./Component/db_conn.php");
             <div class="container">
                 <h2 class="section-title">Kampanye Mendesak</h2>
                 <div class="kampanye-grid">
-                    <?php include_once("./Component/kampanye_dinamis_com.php"); ?>
+                    <?php include_once("./components/campaign_list.php"); ?>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <div class="container text-center">
-            <p>&copy; 2026 DemiSesama</p>
-        </div>
-    </footer>
+    <?php include_once("./components/footer.php") ?>
 
-    <script src="JS/script.js?v=3"></script>
+    <script src="<?php echo asset_url('js/script.js?v=3'); ?>"></script>
 </body>
 </html>

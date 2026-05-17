@@ -309,3 +309,29 @@
         padding: 18px;
     }
 }
+
+.pagination-kampanye {
+    display: flex;
+    gap: 8px;
+    grid-column: 1 / -1;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.page-link {
+    align-items: center;
+    background-color: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--primary);
+    display: inline-flex;
+    font-weight: 700;
+    height: 38px;
+    justify-content: center;
+    width: 38px;
+}
+
+.page-link.active {
+    background-color: var(--primary);
+    color: var(--white);
+}

@@ -239,6 +239,53 @@
     font-size: 1rem;
 }
 
+.payment-preview {
+    border: 1px solid #BFDBFE;
+    border-radius: 8px;
+    background-color: #EFF6FF;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(180px, 0.8fr);
+    gap: 16px;
+    margin: 6px 0 20px;
+    padding: 16px;
+}
+
+.payment-preview span,
+.payment-preview-target span {
+    color: var(--text-desc);
+    display: block;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+}
+
+.payment-preview strong,
+.payment-preview-target strong {
+    color: var(--main-text);
+    display: block;
+    font-size: 1rem;
+    overflow-wrap: anywhere;
+}
+
+.payment-preview p {
+    color: var(--text-desc);
+    font-size: 0.9rem;
+    margin-top: 8px;
+}
+
+.payment-preview-target {
+    background-color: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.payment-preview-target img {
+    display: block;
+    margin: 0 auto;
+    max-height: 180px;
+    object-fit: contain;
+}
+
 .pesan-error,
 .pesan-info,
 .pesan-sukses-inline {
@@ -358,7 +405,8 @@ pesan sukses
     }
 
     .summary-grid,
-    .metode-box {
+    .metode-box,
+    .payment-preview {
         grid-template-columns: 1fr;
     }
 

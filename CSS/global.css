@@ -140,18 +140,90 @@ nav a:hover, nav a.active {
     background-color: var(--button-hover);
 }
 
-/* Footer sini lee */
-footer {
-    background-color: var(--primary);
-    color: var(--white); 
-    padding: 30px 0;
-    margin-top: 40px;
+/* footer */
+.site-footer {
+    background: linear-gradient(180deg, #173579 0%, #10265F 100%);
+    color: var(--white);
+    padding: 46px 0 22px;
+    margin-top: 56px;
 }
 
-footer p {
-    color: rgba(255, 255, 255, 0.82);
+.footer-main {
+    display: grid;
+    grid-template-columns: 1.45fr 0.75fr 0.95fr 1.15fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.footer-logo:hover {
+    color: var(--white);
+}
+
+.footer-logo img {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 16px rgba(15, 23, 42, 0.18));
+}
+
+.site-footer p {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.92rem;
+}
+
+.footer-column h3,
+.footer-impact span {
+    display: block;
+    color: var(--white);
+    font-size: 0.98rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.footer-column ul {
+    list-style: none;
+}
+
+.footer-column li + li {
+    margin-top: 9px;
+}
+
+.footer-column a {
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 0.92rem;
+    transition: color 0.25s ease;
+}
+
+.footer-column a:hover {
+    color: var(--button);
+}
+
+.footer-impact {
+    border-left: 3px solid var(--button);
+    padding-left: 18px;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-top: 34px;
+    padding-top: 18px;
+}
+
+.footer-bottom p {
+    font-size: 0.84rem;
 }
 
 /* ini untuk pencet tombol donasi tidak langsung kepental*/
@@ -219,6 +291,25 @@ html {
     .btn-login {
         padding: 8px 16px;
     }
+
+    .site-footer {
+        padding: 34px 0 20px;
+    }
+
+    .footer-main {
+        grid-template-columns: 1fr 1fr;
+        gap: 26px;
+    }
+
+    .footer-brand,
+    .footer-impact {
+        grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
 }
 
 @media (max-width: 480px) {
@@ -230,7 +321,11 @@ html {
         height: 42px;
     }
 
-    footer {
-        padding: 24px 0;
+    .footer-main {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-impact {
+        padding-left: 14px;
     }
 }

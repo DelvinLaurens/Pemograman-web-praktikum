@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/donasi_helper.php";
+require_once __DIR__ . "/donation_helper.php";
 
 if (!function_exists('getCampaignForDonation')) {
     function getCampaignForDonation($conn, $id_kampanye) {
@@ -277,7 +277,7 @@ if (!function_exists('uploadDonationProof')) {
 
         $id_donasi = (int) $donation['id_donasi'];
         $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $upload_dir = dirname(__DIR__) . "/Asset/bukti-transfer";
+        $upload_dir = dirname(__DIR__) . "/assets/uploads/bukti-transfer";
 
         if (!is_dir($upload_dir) && !mkdir($upload_dir, 0775, true)) {
             return ['success' => false, 'errors' => ['Folder upload bukti transfer belum bisa dibuat.'], 'path' => null];
@@ -285,7 +285,7 @@ if (!function_exists('uploadDonationProof')) {
 
         $file_name = "donasi-" . $id_donasi . "-" . time() . "." . $ext;
         $target_path = $upload_dir . "/" . $file_name;
-        $db_path = "Asset/bukti-transfer/" . $file_name;
+        $db_path = "assets/uploads/bukti-transfer/" . $file_name;
 
         if (!move_uploaded_file($file['tmp_name'], $target_path)) {
             return ['success' => false, 'errors' => ['File bukti transfer belum bisa disimpan.'], 'path' => null];

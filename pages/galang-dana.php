@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once("../components/path_helper.php");
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -7,14 +8,14 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galang Dana - DemiSesama</title>
-    <link rel="icon" type="image/png" href="Asset/tangan2 tnpa bg.png">
-    <link rel="stylesheet" href="CSS/global.css?v=3">
-    <link rel="stylesheet" href="CSS/form.css?v=3">
+    <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/form.css?v=3'); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     
-    <?php include_once("./Component/nav_com.php") ?>
+    <?php include_once("../components/nav.php") ?>
 
     <main class="halaman-form">
         <div class="container form-container">
@@ -24,7 +25,7 @@ session_start();
                     <h2>Mulai Galang Dana</h2>
                     <p>Isi formulir di bawah ini untuk mengajukan bantuan atau kampanye sosial Anda.</p>
                 </div>
-                <form action="#berhasil" class="form-donasi">
+                <form action="<?php echo url_for('pages/galang-dana.php#berhasil'); ?>" class="form-donasi">
                     <div class="form-group">
                         <label for="judul">Judul Kampanye<span class="required">*</span></label>
                         <input type="text" id="judul" name="judul" placeholder="Contoh: Bantu Renovasi Sekolah Dasar" required>
@@ -67,17 +68,13 @@ session_start();
                 <div id="berhasil" class="pesan-sukses">
                     <h3>Kampanye Berhasil Diajukan!</h3>
                     <p>Kampanye Anda sedang dalam tahap peninjauan oleh admin. Kami akan menghubungi Anda melalui email.</p>
-                    <a href="index.php" class="btn-kembali-home">Kembali ke Beranda</a>
+                    <a href="<?php echo url_for('index.php'); ?>" class="btn-kembali-home">Kembali ke Beranda</a>
                 </div>
 
             </div>
         </div>
     </main>
 
-    <footer>
-        <div class="container text-center">
-            <p>&copy; 2026 DemiSesama</p>
-        </div>
-    </footer>
+    <?php include_once("../components/footer.php") ?>
 </body>
 </html>

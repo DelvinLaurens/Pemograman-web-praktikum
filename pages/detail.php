@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once("./Component/db_conn.php");
-require_once("./Component/donasi_helper.php");
+require_once("../components/db_conn.php");
+require_once("../components/donation_helper.php");
 
 $id_kampanye = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
@@ -35,6 +35,7 @@ if ($kampanye) {
     $batas_waktu = new DateTime($kampanye['batas_waktu']);
     $sisa_hari = $batas_waktu < $hari_ini ? 0 : $hari_ini->diff($batas_waktu)->days;
     $kategori = ucwords(str_replace('_', ' ', $kampanye['kategori']));
+    $metode_kampanye = campaignPaymentMethodLabels($kampanye);
 }
 ?>
 
@@ -44,13 +45,13 @@ if ($kampanye) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Kampanye - DemiSesama</title>
-    <link rel="icon" type="image/png" href="Asset/tangan2 tnpa bg.png">
-    <link rel="stylesheet" href="CSS/global.css?v=3">
-    <link rel="stylesheet" href="CSS/styledetail.css?v=3">
+    <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/detail.css?v=3'); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <?php include_once("./Component/nav_com.php") ?>
+    <?php include_once("../components/nav.php") ?>
 
     <main class="halaman-detail">
         <div class="container">
@@ -59,13 +60,13 @@ if ($kampanye) {
                     <div class="konten-utama">
                         <h2 class="judul-detail">Kampanye tidak ditemukan</h2>
                         <p class="deskripsi">Data kampanye yang Anda buka belum tersedia.</p>
-                        <a href="index.php#kampanye" class="btn-donasi-sekarang">Kembali ke Daftar Kampanye</a>
+                        <a href="<?php echo url_for('index.php#kampanye'); ?>" class="btn-donasi-sekarang">Kembali ke Daftar Kampanye</a>
                     </div>
                 </div>
             <?php else: ?>
                 <div class="detail-kampanye">
                     <div class="konten-utama">
-                        <img src="<?php echo e($kampanye['gambar_poster']); ?>" alt="<?php echo e($kampanye['judul_kampanye']); ?>" class="detail-image">
+                        <img src="<?php echo e(asset_url($kampanye['gambar_poster'])); ?>" alt="<?php echo e($kampanye['judul_kampanye']); ?>" class="detail-image">
 
                         <div class="detail-kategori-lokasi">
                             <span class="badge-kategori"><?php echo e($kategori); ?></span>
@@ -88,13 +89,13 @@ if ($kampanye) {
                             </div>
                             <p class="teks-persen">Terkumpul <?php echo $persentase; ?>% dari target</p>
                             <p class="teks-waktu">Waktu tersisa: <strong><?php echo $sisa_hari; ?> Hari Lagi</strong></p>
-                            <a href="donasi.php?id=<?php echo (int) $kampanye['id_kampanye']; ?>" class="btn-donasi-sekarang">Donasi Sekarang</a>
+                            <a href="<?php echo url_for('pages/donasi.php?id=' . (int) $kampanye['id_kampanye']); ?>" class="btn-donasi-sekarang">Donasi Sekarang</a>
                             <div class="info-rekening">
                                 <h4>Metode Pembayaran:</h4>
                                 <ul>
-                                    <li>QRIS</li>
-                                    <li>GoPay dan DANA</li>
-                                    <li>BCA VA dan Mandiri VA</li>
+                                    <?php foreach ($metode_kampanye as $metode): ?>
+                                        <li><?php echo e($metode); ?></li>
+                                    <?php endforeach; ?>
                                 </ul>
                             </div>
                         </div>
@@ -103,10 +104,6 @@ if ($kampanye) {
             <?php endif; ?>
         </div>
     </main>
-    <footer>
-        <div class="container text-center">
-            <p>&copy; 2026 DemiSesama</p>
-        </div>
-    </footer>
+    <?php include_once("../components/footer.php") ?>
 </body>
 </html>

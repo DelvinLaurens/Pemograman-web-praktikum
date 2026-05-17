@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . "/path_helper.php";
+
 if (!function_exists('e')) {
     function e($value) {
         return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
@@ -11,13 +13,13 @@ if (!function_exists('formatRupiah')) {
     }
 }
 
-if (!function_exists('paymentMethods')) {
-    function paymentMethods() {
+if (!function_exists('defaultPaymentMethods')) {
+    function defaultPaymentMethods() {
         return [
             'qris' => [
                 'label' => 'QRIS',
                 'type' => 'qris',
-                'image' => 'Asset/qris-demo.svg',
+                'image' => 'assets/images/payments/qris-demo.svg',
                 'instruction' => 'Scan kode QRIS menggunakan aplikasi mobile banking atau e-wallet Anda.',
             ],
             'gopay' => [
@@ -34,12 +36,26 @@ if (!function_exists('paymentMethods')) {
                 'account_name' => 'Yayasan DemiSesama',
                 'instruction' => 'Transfer ke nomor DANA berikut sesuai nominal donasi.',
             ],
+            'ovo' => [
+                'label' => 'OVO',
+                'type' => 'ewallet',
+                'account' => '0812-3456-7890',
+                'account_name' => 'Yayasan DemiSesama',
+                'instruction' => 'Transfer ke nomor OVO berikut sesuai nominal donasi.',
+            ],
             'bcava' => [
                 'label' => 'BCA Virtual Account',
                 'type' => 'bank',
                 'account' => '8808 1234 5678',
                 'account_name' => 'DemiSesama BCA',
                 'instruction' => 'Bayar melalui menu Virtual Account BCA sesuai nominal donasi.',
+            ],
+            'briva' => [
+                'label' => 'BRI Virtual Account',
+                'type' => 'bank',
+                'account' => '77788 1234 5678',
+                'account_name' => 'DemiSesama BRI',
+                'instruction' => 'Bayar melalui menu BRIVA sesuai nominal donasi.',
             ],
             'mandiriva' => [
                 'label' => 'Mandiri Virtual Account',
@@ -49,6 +65,50 @@ if (!function_exists('paymentMethods')) {
                 'instruction' => 'Bayar melalui menu Virtual Account Mandiri sesuai nominal donasi.',
             ],
         ];
+    }
+}
+
+if (!function_exists('paymentMethodsTableAvailable')) {
+    function paymentMethodsTableAvailable($conn) {
+        $result = mysqli_query($conn, "SHOW TABLES LIKE 'metode_pembayaran'");
+        return $result && mysqli_num_rows($result) > 0;
+    }
+}
+
+if (!function_exists('paymentMethods')) {
+    function paymentMethods($active_only = true) {
+        global $conn;
+
+        if (isset($conn) && $conn && paymentMethodsTableAvailable($conn)) {
+            $where = $active_only ? "WHERE aktif = 1" : "";
+            $result = mysqli_query(
+                $conn,
+                "SELECT kode, label, tipe, nomor_tujuan, nama_pemilik, instruksi, gambar
+                 FROM metode_pembayaran
+                 {$where}
+                 ORDER BY label ASC"
+            );
+            $methods = [];
+
+            if ($result) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $methods[$row['kode']] = [
+                        'label' => $row['label'],
+                        'type' => $row['tipe'],
+                        'account' => $row['nomor_tujuan'],
+                        'account_name' => $row['nama_pemilik'],
+                        'instruction' => $row['instruksi'],
+                        'image' => $row['gambar'],
+                    ];
+                }
+            }
+
+            if (!empty($methods)) {
+                return $methods;
+            }
+        }
+
+        return defaultPaymentMethods();
     }
 }
 
@@ -70,6 +130,31 @@ if (!function_exists('getPaymentMethod')) {
         $key = normalizePaymentMethod($method);
 
         return $methods[$key] ?? null;
+    }
+}
+
+if (!function_exists('campaignPaymentMethodCodes')) {
+    function campaignPaymentMethodCodes($campaign) {
+        return array_keys(paymentMethods());
+    }
+}
+
+if (!function_exists('paymentMethodsForCampaign')) {
+    function paymentMethodsForCampaign($campaign, $active_only = true) {
+        return paymentMethods($active_only);
+    }
+}
+
+if (!function_exists('campaignPaymentMethodLabels')) {
+    function campaignPaymentMethodLabels($campaign, $active_only = true) {
+        $methods = paymentMethods($active_only);
+        $labels = [];
+
+        foreach ($methods as $code => $method) {
+            $labels[] = $method['label'] ?? $code;
+        }
+
+        return $labels;
     }
 }
 

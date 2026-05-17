@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once("./Component/db_conn.php");
-require_once("./Component/donation_service.php");
+require_once("../components/db_conn.php");
+require_once("../components/donation_service.php");
 
 $id_donasi = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$id_donasi) {
@@ -9,13 +9,13 @@ if (!$id_donasi) {
 }
 
 if (!$id_donasi) {
-    header("Location: index.php#kampanye");
+    header("Location: " . url_for('index.php#kampanye'));
     exit;
 }
 
-$current_url = "verif.php?id=" . urlencode((string) $id_donasi);
+$current_url = "pages/verif.php?id=" . urlencode((string) $id_donasi);
 if (empty($_SESSION['id_donatur'])) {
-    header("Location: login.php?redirect=" . urlencode($current_url));
+    header("Location: " . url_for('auth/login.php') . "?redirect=" . urlencode($current_url));
     exit;
 }
 
@@ -57,13 +57,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $donasi) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi Pembayaran - DemiSesama</title>
-    <link rel="icon" type="image/png" href="Asset/tangan2 tnpa bg.png">
-    <link rel="stylesheet" href="CSS/global.css?v=3">
-    <link rel="stylesheet" href="CSS/form.css?v=3">
+    <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/form.css?v=3'); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <?php include_once("./Component/nav_com.php") ?>
+    <?php include_once("../components/nav.php") ?>
 
     <main class="halaman-form">
         <div class="container form-container">
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $donasi) {
                         <h2>Donasi tidak ditemukan</h2>
                         <p>Data donasi tidak tersedia atau bukan milik akun Anda.</p>
                     </div>
-                    <a href="index.php#kampanye" class="btn-kembali-home">Kembali ke Kampanye</a>
+                    <a href="<?php echo url_for('index.php#kampanye'); ?>" class="btn-kembali-home">Kembali ke Kampanye</a>
                 <?php else: ?>
                     <div class="ringkasan-donasi">
                         <h2>Verifikasi Pembayaran</h2>
@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $donasi) {
 
                                 <?php if ($payment['type'] === 'qris'): ?>
                                     <div class="qris-frame">
-                                        <img src="<?php echo e($payment['image']); ?>" alt="Kode QRIS DemiSesama">
+                                        <img src="<?php echo e(asset_url($payment['image'])); ?>" alt="Kode QRIS DemiSesama">
                                     </div>
                                 <?php else: ?>
                                     <div class="rekening-card">
@@ -153,14 +153,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $donasi) {
                         <div class="pesan-error">
                             <p>Waktu pembayaran sudah habis. Donasi ini ditandai kadaluarsa dan tidak akan memenuhi database aktif.</p>
                         </div>
-                        <a href="donasi.php?id=<?php echo (int) $donasi['id_kampanye']; ?>" class="btn-submit-form btn-link-center">Buat Donasi Baru</a>
+                        <a href="<?php echo url_for('pages/donasi.php?id=' . (int) $donasi['id_kampanye']); ?>" class="btn-submit-form btn-link-center">Buat Donasi Baru</a>
                     <?php elseif (!empty($donasi['bukti_transfer'])): ?>
                         <div class="pesan-info">
                             <p>Bukti transfer sudah diterima. Status tetap <strong>PENDING</strong> sampai penyelenggara melakukan verifikasi.</p>
-                            <a href="<?php echo e($donasi['bukti_transfer']); ?>" target="_blank" rel="noopener">Lihat bukti transfer</a>
+                            <a href="<?php echo e(asset_url($donasi['bukti_transfer'])); ?>" target="_blank" rel="noopener">Lihat bukti transfer</a>
                         </div>
                     <?php else: ?>
-                        <form method="POST" action="verif.php?id=<?php echo (int) $donasi['id_donasi']; ?>" enctype="multipart/form-data" class="form-donasi" id="form-upload-bukti">
+                        <form method="POST" action="<?php echo url_for('pages/verif.php?id=' . (int) $donasi['id_donasi']); ?>" enctype="multipart/form-data" class="form-donasi" id="form-upload-bukti">
                             <input type="hidden" name="id_donasi" value="<?php echo (int) $donasi['id_donasi']; ?>">
 
                             <div class="form-group">
@@ -169,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $donasi) {
                                 <small>Maksimal ukuran file 2MB.</small>
                             </div>
 
-                            <button type="submit" class="btn-submit-form">Kirim Bukti Transfer</button>
+                            <button type="submit" class="btn-submit-form">Konfirmasi Pembayaran</button>
                         </form>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -177,11 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $donasi) {
         </div>
     </main>
 
-    <footer>
-        <div class="container text-center">
-            <p>&copy; 2026 DemiSesama</p>
-        </div>
-    </footer>
+    <?php include_once("../components/footer.php") ?>
 
     <script>
         const countdown = document.getElementById('countdown');
