@@ -202,3 +202,11 @@ Catatan ini dibuat agar anggota tim atau AI assistant dapat memahami konteks pro
    - Validasi upload image yang lebih ketat.
    - Optimasi query database.
    - Responsive dashboard UI.
+
+8. **Tambahkan Konten di Database**
+
+   - butuh lebih banyak konten di database.
+   - terlalu sedikit acara penggalangan dananya
+   - tambahkan minimal 25
+
+9. **tampilan login harus di perbaiki sih**
