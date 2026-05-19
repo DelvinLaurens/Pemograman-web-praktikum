@@ -87,7 +87,7 @@ Catatan ini dibuat agar anggota tim atau AI assistant dapat memahami konteks pro
 | Galang dana masuk database | Form galang dana user tersimpan sebagai pengajuan campaign | Donatur/User, Pengelola | `pages/galang-dana.php`, `admin/kampanye.php`, `database/demi_sesama.sql` | done |
 | Approval campaign | Admin menerima/menolak pengajuan campaign sebelum tampil di homepage | Pengelola | `admin/`, `components/admin_service.php`, `database/demi_sesama.sql` | done |
 | Alasan penolakan donasi | Admin dapat mencatat alasan ketika menolak bukti pembayaran | Pengelola | `admin/donasi.php`, `components/admin_service.php`, `database/demi_sesama.sql` | optional |
-| Preview bukti transfer | Admin melihat bukti transfer langsung tanpa membuka tab baru | Pengelola | `admin/donasi.php`, `css/admin.css`, `assets/uploads/bukti-transfer/` | planned |
+| Preview bukti transfer | Admin melihat bukti transfer langsung tanpa membuka tab baru | Pengelola | `admin/donasi.php`, `css/admin.css`, `assets/uploads/bukti-transfer/` | done |
 | Pagination admin | Tabel donasi/kampanye tetap rapi saat data banyak | Pengelola | `admin/donasi.php`, `admin/kampanye.php`, `components/admin_service.php` | planned |
 | Dashboard chart | Dashboard menampilkan grafik ringkas donasi/campaign | Pengelola | `admin/dashboard.php`, `css/admin.css`, `js/script.js` | planned |
 | Campaign status system | Campaign memiliki status `pending`, `approved`, `rejected`, dan `completed` | Pengelola | `admin/kampanye.php`, `pages/galang-dana.php`, `database/demi_sesama.sql` | planned |
