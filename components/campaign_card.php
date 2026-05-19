@@ -29,6 +29,22 @@ function cardKampanye($data) {
         $sisa_hari = 0; 
     }
 
+    $is_db_completed = (isset($data['status']) && $data['status'] === 'completed');
+    $is_target_reached = ((float)$data['dana_terkumpul'] >= (float)$data['target_dana']);
+    $is_expired = ($batas_waktu < $tanggal_sekarang);
+
+    if ($is_db_completed || $is_target_reached || $is_expired) {
+        $waktu_html = '<span style="color: #dc3545; font-weight: bold;">Selesai (Penggalangan Ditutup)</span>';
+        $btn_class = 'btn-detail btn-completed';
+        $btn_style = 'style="background-color: #6c757d; color: white;"';
+        $btn_text = 'Lihat Histori Kampanye';
+    } else {
+        $waktu_html = "Sisa Waktu: {$sisa_hari} hari";
+        $btn_class = 'btn-detail';
+        $btn_style = '';
+        $btn_text = 'Lihat Detail';
+    }
+
     $id_kampanye = e($data['id_kampanye']);
     $judul_kampanye = e($data['judul_kampanye']);
     $deskripsi = e($data['deskripsi']);
@@ -50,8 +66,8 @@ function cardKampanye($data) {
             <div class="progress-bar">
                 <div class="progress" style="width: {$persentase_bulat}%;"></div> 
             </div>
-            <p class="waktu">Sisa Waktu: {$sisa_hari} hari</p>
-            <a href="{$detail_url}" class="btn-detail">Lihat Detail</a>
+            <p class="waktu">{$waktu_html}</p>
+            <a href="{$detail_url}" class="{$btn_class}" {$btn_style}>{$btn_text}</a>
         </div>
     </div>
     HTML;

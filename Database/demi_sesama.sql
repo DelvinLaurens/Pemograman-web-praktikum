@@ -49,6 +49,7 @@ CREATE TABLE `kampanye` (
   `dana_terkumpul` int(15) NOT NULL DEFAULT 0,
   `batas_waktu` date NOT NULL,
   `gambar_poster` varchar(255) NOT NULL,
+  `status` ENUM('pending', 'approved', 'rejected', 'completed') NOT NULL DEFAULT 'pending',
   PRIMARY KEY (`id_kampanye`),
   KEY `id_penyelenggara` (`id_penyelenggara`),
   CONSTRAINT `kampanye_ibfk_1`

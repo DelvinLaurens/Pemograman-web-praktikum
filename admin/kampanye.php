@@ -35,6 +35,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $errors = $result['errors'];
     }
+
+    if ($action === 'approve') {
+        $id_kampanye = filter_input(INPUT_POST, 'id_kampanye', FILTER_VALIDATE_INT);
+        $stmt = $conn->prepare("UPDATE kampanye SET status = 'approved' WHERE id_kampanye = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $id_kampanye);
+            if ($stmt->execute()) {
+                header("Location: " . url_for('admin/kampanye.php?saved=1'));
+                exit;
+            }
+        }
+    }
+
+    if ($action === 'reject') {
+        $id_kampanye = filter_input(INPUT_POST, 'id_kampanye', FILTER_VALIDATE_INT);
+        $stmt = $conn->prepare("UPDATE kampanye SET status = 'rejected' WHERE id_kampanye = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $id_kampanye);
+            if ($stmt->execute()) {
+                header("Location: " . url_for('admin/kampanye.php?saved=1'));
+                exit;
+            }
+        }
+    }
 }
 
 if (isset($_GET['saved'])) {
@@ -167,6 +191,7 @@ $kategori_options = [
                                     <th>Judul</th>
                                     <th>Dana</th>
                                     <th>Batas</th>
+                                    <th>Status</th> 
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -183,7 +208,26 @@ $kategori_options = [
                                         </td>
                                         <td><?php echo formatRupiah($campaign['dana_terkumpul']); ?></td>
                                         <td><?php echo e($campaign['batas_waktu']); ?></td>
+                                        <td>
+                                            <span class="status-badge status-<?php echo strtolower($campaign['status'] ?? 'pending'); ?>">
+                                                <?php echo strtoupper($campaign['status'] ?? 'pending'); ?>
+                                            </span>
+                                        </td>
                                         <td class="admin-actions">
+                                            <?php if (($campaign['status'] ?? 'pending') === 'pending'): ?>
+                                                <form method="POST" action="<?php echo url_for('admin/kampanye.php'); ?>" style="display:inline;">
+                                                    <input type="hidden" name="action" value="approve">
+                                                    <input type="hidden" name="id_kampanye" value="<?php echo (int) $campaign['id_kampanye']; ?>">
+                                                    <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;" onclick="return confirm('Setujui kampanye ini untuk dipublikasikan?');">Setuju</button>
+                                                </form>
+
+                                                <form method="POST" action="<?php echo url_for('admin/kampanye.php'); ?>" style="display:inline;">
+                                                    <input type="hidden" name="action" value="reject">
+                                                    <input type="hidden" name="id_kampanye" value="<?php echo (int) $campaign['id_kampanye']; ?>">
+                                                    <button type="submit" style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;" onclick="return confirm('Tolak pengajuan kampanye ini?');">Tolak</button>
+                                                </form>
+                                            <?php endif; ?>
+
                                             <a href="<?php echo url_for('admin/kampanye.php?edit=' . (int) $campaign['id_kampanye']); ?>">Edit</a>
                                             <form method="POST" action="<?php echo url_for('admin/kampanye.php'); ?>" onsubmit="return confirm('Hapus kampanye ini?');">
                                                 <input type="hidden" name="action" value="delete">

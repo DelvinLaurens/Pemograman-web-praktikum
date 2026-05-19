@@ -18,7 +18,7 @@ $base_sql = "FROM kampanye k
         INNER JOIN penyelenggara p
             ON p.id_penyelenggara = k.id_penyelenggara";
 
-$where = ["k.batas_waktu >= CURDATE()"];
+$where = ["(k.status = 'approved' OR k.status = 'completed')"];
 $params = [];
 $types = "";
 

@@ -2,6 +2,39 @@
 session_start();
 include_once("./components/db_conn.php");
 require_once("./components/path_helper.php");
+
+$keyword = filter_input(INPUT_GET, 'keyword', FILTER_DEFAULT) ?: '';
+$kategori = filter_input(INPUT_GET, 'kategori', FILTER_DEFAULT) ?: '';
+$lokasi = filter_input(INPUT_GET, 'lokasi', FILTER_DEFAULT) ?: '';
+$range = filter_input(INPUT_GET, 'range', FILTER_DEFAULT) ?: '';
+
+$query = "SELECT * FROM kampanye WHERE (status = 'approved' OR status = 'completed')";
+
+if (!empty($keyword)) {
+    $query .= " AND judul_kampanye LIKE '%" . $conn->real_escape_string($keyword) . "%'";
+}
+if (!empty($kategori)) {
+    $query .= " AND kategori = '" . $conn->real_escape_string($kategori) . "'";
+}
+if (!empty($lokasi)) {
+    $query .= " AND lokasi LIKE '%" . $conn->real_escape_string($lokasi) . "%'";
+}
+if (!empty($range)) {
+    if ($range === '0-1000000') $query .= " AND target_dana < 1000000";
+    elseif ($range === '1000000-5000000') $query .= " AND target_dana BETWEEN 1000000 AND 5000000";
+    elseif ($range === '5000000-10000000') $query .= " AND target_dana BETWEEN 5000000 AND 10000000";
+    elseif ($range === '10000000+') $query .= " AND target_dana > 10000000";
+}
+
+$query .= " ORDER BY id_kampanye DESC";
+$result_campaigns = $conn->query($query);
+
+$campaigns = [];
+if ($result_campaigns) {
+    while ($row = $result_campaigns->fetch_assoc()) {
+        $campaigns[] = $row;
+    }
+}
 ?>
 
 <!DOCTYPE html>
