@@ -70,7 +70,7 @@ if ($stmt) {
     <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/form.css?v=3'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/admin.css?v=1'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/admin.css?v=4'); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -126,7 +126,19 @@ if ($stmt) {
                                     <td><span class="status-badge status-<?php echo strtolower(e($donasi['status'])); ?>"><?php echo e($donasi['status']); ?></span></td>
                                     <td>
                                         <?php if (!empty($donasi['bukti_transfer'])): ?>
-                                            <a href="<?php echo e(asset_url($donasi['bukti_transfer'])); ?>" target="_blank" rel="noopener">Lihat Bukti</a>
+                                            <?php 
+                                                $nama_file = $donasi['bukti_transfer'];
+                                                if (strpos($nama_file, 'assets/') === false) {
+                                                    $full_path = 'assets/uploads/bukti-transfer/' . $nama_file;
+                                                } else {
+                                                    $full_path = $nama_file;
+                                                }
+                                            ?>
+                                            <a href="javascript:void(0);" 
+                                               data-img-src="<?php echo asset_url($full_path); ?>" 
+                                               onclick="openPreviewModal(this)">
+                                                Lihat Bukti
+                                            </a>
                                         <?php elseif ($donasi['status'] === 'PENDING'): ?>
                                             <a href="<?php echo url_for('pages/verif.php?id=' . (int) $donasi['id_donasi']); ?>">Upload Bukti</a>
                                         <?php else: ?>
@@ -143,5 +155,37 @@ if ($stmt) {
     </main>
 
     <?php include_once("../components/footer.php") ?>
+
+    <div id="transferPreviewModal" class="proof-modal-overlay">
+        <span class="proof-modal-close" onclick="closePreviewModal()">&times;</span>
+        <div class="proof-modal-content">
+            <img id="imgTargetPreview" src="" alt="Struk Bukti Transfer">
+        </div>
+    </div>
+
+    <script>
+    function openPreviewModal(element) {
+        var imgSrc = element.getAttribute('data-img-src');
+        var modal = document.getElementById('transferPreviewModal');
+        var modalImg = document.getElementById('imgTargetPreview');
+
+        modal.style.display = "block";
+        modalImg.src = imgSrc;
+        document.body.style.overflow = "hidden";
+    }
+
+    function closePreviewModal() {
+        var modal = document.getElementById('transferPreviewModal');
+        modal.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+
+    window.onclick = function(event) {
+        var modal = document.getElementById('transferPreviewModal');
+        if (event.target == modal) {
+            closePreviewModal();
+        }
+    }
+    </script>
 </body>
 </html>
