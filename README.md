@@ -84,8 +84,8 @@ Catatan ini dibuat agar anggota tim atau AI assistant dapat memahami konteks pro
 
 | Fitur | Tujuan | Role | File/Folders Terkait | Progress |
 |---|---|---|---|---|
-| Galang dana masuk database | Form galang dana user tersimpan sebagai pengajuan campaign | Donatur/User, Pengelola | `pages/galang-dana.php`, `admin/kampanye.php`, `database/demi_sesama.sql` | planned |
-| Approval campaign | Admin menerima/menolak pengajuan campaign sebelum tampil di homepage | Pengelola | `admin/`, `components/admin_service.php`, `database/demi_sesama.sql` | planned |
+| Galang dana masuk database | Form galang dana user tersimpan sebagai pengajuan campaign | Donatur/User, Pengelola | `pages/galang-dana.php`, `admin/kampanye.php`, `database/demi_sesama.sql` | done |
+| Approval campaign | Admin menerima/menolak pengajuan campaign sebelum tampil di homepage | Pengelola | `admin/`, `components/admin_service.php`, `database/demi_sesama.sql` | done |
 | Alasan penolakan donasi | Admin dapat mencatat alasan ketika menolak bukti pembayaran | Pengelola | `admin/donasi.php`, `components/admin_service.php`, `database/demi_sesama.sql` | optional |
 | Preview bukti transfer | Admin melihat bukti transfer langsung tanpa membuka tab baru | Pengelola | `admin/donasi.php`, `css/admin.css`, `assets/uploads/bukti-transfer/` | planned |
 | Pagination admin | Tabel donasi/kampanye tetap rapi saat data banyak | Pengelola | `admin/donasi.php`, `admin/kampanye.php`, `components/admin_service.php` | planned |
@@ -106,12 +106,12 @@ Catatan ini dibuat agar anggota tim atau AI assistant dapat memahami konteks pro
 
 ### Catatan Bug / Revisi Berikutnya
 
-- `pages/galang-dana.php` masih berupa form tampilan dan belum menyimpan data ke database.
-- Belum ada approval campaign untuk pengajuan dari user.
+- `pages/galang-dana.php` masih berupa form tampilan dan belum menyimpan data ke database. (done)
+- Belum ada approval campaign untuk pengajuan dari user. (done)
 - Tombol `Tolak` donasi belum menyimpan alasan penolakan.
 - Bukti transfer admin masih dibuka lewat link, belum preview modal.
 - Tabel admin belum memakai pagination.
-- Tabel `kampanye` belum memiliki kolom status campaign seperti `pending`, `approved`, `rejected`, dan `completed`.
+- Tabel `kampanye` belum memiliki kolom status campaign seperti `pending`, `approved`, `rejected`, dan `completed`. (done)
 - Progress campaign sudah dinamis dari `dana_terkumpul` dan `target_dana`, tetapi belum realtime tanpa reload.
 - Deadline campaign sudah memakai `batas_waktu` dan sisa hari, tetapi belum memiliki auto close formal ke status `completed`.
 - Dashboard admin belum memiliki grafik Chart.js.
