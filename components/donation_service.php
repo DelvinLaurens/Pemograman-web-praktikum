@@ -97,6 +97,15 @@ if (!function_exists('createPendingDonation')) {
         $method = $data['method'];
         $message = $data['message'];
         $expiry_minutes = max(1, (int) $expiry_minutes);
+        $campaign = getCampaignForDonation($conn, $id_kampanye);
+
+        if (!$campaign) {
+            return ['success' => false, 'errors' => ['Kampanye tidak ditemukan.'], 'id_donasi' => null];
+        }
+
+        if (isCampaignClosed($campaign)) {
+            return ['success' => false, 'errors' => ['Donasi untuk kampanye ini sudah ditutup.'], 'id_donasi' => null];
+        }
 
         if (donasiHasColumn($conn, 'waktu_kadaluarsa')) {
             $stmt = mysqli_prepare(

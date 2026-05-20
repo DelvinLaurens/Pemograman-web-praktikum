@@ -153,6 +153,13 @@
     transform: translateY(-1px);
 }
 
+.btn-donasi-disabled,
+.btn-donasi-disabled:hover {
+    background-color: #6C757D;
+    cursor: not-allowed;
+    transform: none;
+}
+
 .info-rekening h4 {
     font-size: 1rem;
     color: var(--primary);

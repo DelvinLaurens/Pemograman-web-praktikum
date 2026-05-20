@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/path_helper.php";
+require_once __DIR__ . "/donation_helper.php";
 
 if (!function_exists('e')) {
     function e($value) {
@@ -32,8 +32,9 @@ function cardKampanye($data) {
     $is_db_completed = (isset($data['status']) && $data['status'] === 'completed');
     $is_target_reached = ((float)$data['dana_terkumpul'] >= (float)$data['target_dana']);
     $is_expired = ($batas_waktu < $tanggal_sekarang);
+    $is_closed = isCampaignClosed($data);
 
-    if ($is_db_completed || $is_target_reached || $is_expired) {
+    if ($is_db_completed || $is_target_reached || $is_expired || $is_closed) {
         $waktu_html = '<span style="color: #dc3545; font-weight: bold;">Selesai (Penggalangan Ditutup)</span>';
         $btn_class = 'btn-detail btn-completed';
         $btn_style = 'style="background-color: #6c757d; color: white;"';

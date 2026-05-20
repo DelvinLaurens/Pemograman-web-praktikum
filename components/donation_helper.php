@@ -158,6 +158,35 @@ if (!function_exists('campaignPaymentMethodLabels')) {
     }
 }
 
+if (!function_exists('isCampaignClosed')) {
+    function isCampaignClosed($campaign) {
+        if (!$campaign) {
+            return true;
+        }
+
+        $status = strtolower((string) ($campaign['status'] ?? ''));
+        if (in_array($status, ['completed', 'rejected'], true)) {
+            return true;
+        }
+
+        $target = (float) ($campaign['target_dana'] ?? 0);
+        $collected = (float) ($campaign['dana_terkumpul'] ?? 0);
+        if ($target > 0 && $collected >= $target) {
+            return true;
+        }
+
+        if (!empty($campaign['batas_waktu'])) {
+            $today = new DateTime('today');
+            $deadline = new DateTime($campaign['batas_waktu']);
+            if ($deadline < $today) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
 if (!function_exists('donasiHasColumn')) {
     function donasiHasColumn($conn, $column) {
         static $cache = [];

@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $kampanye) {
 $target = $kampanye ? (float) $kampanye['target_dana'] : 0;
 $terkumpul = $kampanye ? (float) $kampanye['dana_terkumpul'] : 0;
 $persentase = $target > 0 ? min(round(($terkumpul / $target) * 100), 100) : 0;
+$campaign_closed = $kampanye ? isCampaignClosed($kampanye) : false;
 ?>
 
 <!DOCTYPE html>
@@ -87,6 +88,12 @@ $persentase = $target > 0 ? min(round(($terkumpul / $target) * 100), 100) : 0;
                         <p>Silakan kembali ke daftar kampanye dan pilih donasi yang tersedia.</p>
                     </div>
                     <a href="<?php echo url_for('index.php#kampanye'); ?>" class="btn-kembali-home">Kembali ke Kampanye</a>
+                <?php elseif ($campaign_closed): ?>
+                    <div class="ringkasan-donasi">
+                        <h2>Donasi Ditutup</h2>
+                        <p>Kampanye ini sudah melewati tenggat waktu, mencapai target, atau sudah ditutup oleh pengelola.</p>
+                    </div>
+                    <a href="<?php echo url_for('pages/detail.php?id=' . (int) $kampanye['id_kampanye']); ?>" class="btn-kembali-home">Kembali ke Detail Kampanye</a>
                 <?php else: ?>
                     <div class="ringkasan-donasi">
                         <h2>Formulir Donasi</h2>

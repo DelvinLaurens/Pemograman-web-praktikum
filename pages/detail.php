@@ -34,6 +34,7 @@ if ($kampanye) {
     $hari_ini = new DateTime();
     $batas_waktu = new DateTime($kampanye['batas_waktu']);
     $sisa_hari = $batas_waktu < $hari_ini ? 0 : $hari_ini->diff($batas_waktu)->days;
+    $campaign_closed = isCampaignClosed($kampanye);
     $kategori = ucwords(str_replace('_', ' ', $kampanye['kategori']));
     $metode_kampanye = campaignPaymentMethodLabels($kampanye);
 }
@@ -88,8 +89,12 @@ if ($kampanye) {
                                 <div class="progress-detail" style="width: <?php echo $persentase; ?>%;"></div>
                             </div>
                             <p class="teks-persen">Terkumpul <?php echo $persentase; ?>% dari target</p>
-                            <p class="teks-waktu">Waktu tersisa: <strong><?php echo $sisa_hari; ?> Hari Lagi</strong></p>
-                            <a href="<?php echo url_for('pages/donasi.php?id=' . (int) $kampanye['id_kampanye']); ?>" class="btn-donasi-sekarang">Donasi Sekarang</a>
+                            <p class="teks-waktu">Waktu tersisa: <strong><?php echo $campaign_closed ? 'Penggalangan Ditutup' : $sisa_hari . ' Hari Lagi'; ?></strong></p>
+                            <?php if ($campaign_closed): ?>
+                                <span class="btn-donasi-sekarang btn-donasi-disabled">Donasi Ditutup</span>
+                            <?php else: ?>
+                                <a href="<?php echo url_for('pages/donasi.php?id=' . (int) $kampanye['id_kampanye']); ?>" class="btn-donasi-sekarang">Donasi Sekarang</a>
+                            <?php endif; ?>
                             <div class="info-rekening">
                                 <h4>Metode Pembayaran:</h4>
                                 <ul>
