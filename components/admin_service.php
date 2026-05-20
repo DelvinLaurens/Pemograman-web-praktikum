@@ -75,30 +75,58 @@ if (!function_exists('getAdminSummary')) {
 }
 
 if (!function_exists('getManagedCampaigns')) {
-    function getManagedCampaigns($conn, $id_penyelenggara) {
+    function getManagedCampaigns($conn, $id_penyelenggara, $limit = 0, $offset = 0) {
         $id_penyelenggara = (int) $id_penyelenggara;
-        $stmt = mysqli_prepare(
-            $conn,
-            "SELECT
+        $sql = "SELECT
                 k.*,
                 COALESCE(COUNT(d.id_donasi), 0) AS total_donasi
              FROM kampanye k
              LEFT JOIN donasi d ON d.id_kampanye = k.id_kampanye
              WHERE k.id_penyelenggara = ?
              GROUP BY k.id_kampanye
-             ORDER BY k.batas_waktu ASC, k.dana_terkumpul ASC"
-        );
+             ORDER BY k.batas_waktu ASC, k.dana_terkumpul ASC";
+
+        $limit = (int) $limit;
+        $offset = max(0, (int) $offset);
+        if ($limit > 0) {
+            $sql .= " LIMIT ? OFFSET ?";
+        }
+
+        $stmt = mysqli_prepare($conn, $sql);
 
         if (!$stmt) {
             return [];
         }
 
-        mysqli_stmt_bind_param($stmt, "i", $id_penyelenggara);
+        if ($limit > 0) {
+            mysqli_stmt_bind_param($stmt, "iii", $id_penyelenggara, $limit, $offset);
+        } else {
+            mysqli_stmt_bind_param($stmt, "i", $id_penyelenggara);
+        }
         mysqli_stmt_execute($stmt);
         $rows = fetchAllAssoc(mysqli_stmt_get_result($stmt));
         mysqli_stmt_close($stmt);
 
         return $rows;
+    }
+}
+
+if (!function_exists('countManagedCampaigns')) {
+    function countManagedCampaigns($conn, $id_penyelenggara) {
+        $id_penyelenggara = (int) $id_penyelenggara;
+        $stmt = mysqli_prepare($conn, "SELECT COUNT(*) AS total FROM kampanye WHERE id_penyelenggara = ?");
+
+        if (!$stmt) {
+            return 0;
+        }
+
+        mysqli_stmt_bind_param($stmt, "i", $id_penyelenggara);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $row = $result ? mysqli_fetch_assoc($result) : null;
+        mysqli_stmt_close($stmt);
+
+        return $row ? (int) $row['total'] : 0;
     }
 }
 
@@ -329,7 +357,7 @@ if (!function_exists('deleteManagedCampaign')) {
 }
 
 if (!function_exists('getManagedDonations')) {
-    function getManagedDonations($conn, $id_penyelenggara, $status = '', $search = '', $campaign_id = 0) {
+    function getManagedDonations($conn, $id_penyelenggara, $status = '', $search = '', $campaign_id = 0, $limit = 0, $offset = 0) {
         $id_penyelenggara = (int) $id_penyelenggara;
         $status = trim($status);
         $search = trim($search);
@@ -371,6 +399,15 @@ if (!function_exists('getManagedDonations')) {
         $sql .= " ORDER BY
                     CASE WHEN d.status = 'PENDING' THEN 0 ELSE 1 END,
                     d.waktu_donasi DESC";
+        $limit = (int) $limit;
+        $offset = max(0, (int) $offset);
+        if ($limit > 0) {
+            $sql .= " LIMIT ? OFFSET ?";
+            $types .= "ii";
+            $params[] = $limit;
+            $params[] = $offset;
+        }
+
         $stmt = mysqli_prepare($conn, $sql);
         if (!$stmt) {
             return [];
@@ -382,6 +419,55 @@ if (!function_exists('getManagedDonations')) {
         mysqli_stmt_close($stmt);
 
         return $rows;
+    }
+}
+
+if (!function_exists('countManagedDonations')) {
+    function countManagedDonations($conn, $id_penyelenggara, $status = '', $search = '', $campaign_id = 0) {
+        $id_penyelenggara = (int) $id_penyelenggara;
+        $status = trim($status);
+        $search = trim($search);
+        $campaign_id = (int) $campaign_id;
+        $sql = "SELECT COUNT(*) AS total
+                FROM donasi d
+                INNER JOIN kampanye k ON k.id_kampanye = d.id_kampanye
+                INNER JOIN donatur dn ON dn.id_donatur = d.id_donatur
+                WHERE k.id_penyelenggara = ?";
+        $types = "i";
+        $params = [$id_penyelenggara];
+
+        if ($status !== '') {
+            $sql .= " AND d.status = ?";
+            $types .= "s";
+            $params[] = $status;
+        }
+
+        if ($campaign_id > 0) {
+            $sql .= " AND k.id_kampanye = ?";
+            $types .= "i";
+            $params[] = $campaign_id;
+        }
+
+        if ($search !== '') {
+            $sql .= " AND (dn.nama_lengkap LIKE ? OR dn.email LIKE ?)";
+            $types .= "ss";
+            $search_term = "%" . $search . "%";
+            $params[] = $search_term;
+            $params[] = $search_term;
+        }
+
+        $stmt = mysqli_prepare($conn, $sql);
+        if (!$stmt) {
+            return 0;
+        }
+
+        mysqli_stmt_bind_param($stmt, $types, ...$params);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $row = $result ? mysqli_fetch_assoc($result) : null;
+        mysqli_stmt_close($stmt);
+
+        return $row ? (int) $row['total'] : 0;
     }
 }
 

@@ -33,8 +33,13 @@ if ($campaign_filter > 0) {
     $filter_params['campaign'] = $campaign_filter;
 }
 
+$items_per_page = 10;
+$current_page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT) ?: 1;
+$current_page = max(1, $current_page);
 $filter_query = http_build_query($filter_params);
-$form_action = url_for('admin/donasi.php' . ($filter_query !== '' ? '?' . $filter_query : ''));
+$form_params = $filter_params;
+$form_params['page'] = $current_page;
+$form_action = url_for('admin/donasi.php?' . http_build_query($form_params));
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_donasi = filter_input(INPUT_POST, 'id_donasi', FILTER_VALIDATE_INT);
@@ -44,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($result['success']) {
         $redirect_params = $filter_params;
+        $redirect_params['page'] = $current_page;
         $redirect_params['updated'] = '1';
         header("Location: " . url_for('admin/donasi.php?' . http_build_query($redirect_params)));
         exit;
@@ -58,7 +64,14 @@ if (isset($_GET['updated'])) {
 
 $summary = getAdminSummary($conn, $admin_id);
 $campaign_options = getManagedCampaigns($conn, $admin_id);
-$donations = getManagedDonations($conn, $admin_id, $status_filter, $search_query, $campaign_filter);
+$total_donations = countManagedDonations($conn, $admin_id, $status_filter, $search_query, $campaign_filter);
+$total_pages = max(1, (int) ceil($total_donations / $items_per_page));
+if ($current_page > $total_pages) {
+    $current_page = $total_pages;
+}
+$offset = ($current_page - 1) * $items_per_page;
+$donations = getManagedDonations($conn, $admin_id, $status_filter, $search_query, $campaign_filter, $items_per_page, $offset);
+$pagination_params = $filter_params;
 $active_filter_count = ($search_query !== '' ? 1 : 0) + ($status_filter !== '' ? 1 : 0) + ($campaign_filter > 0 ? 1 : 0);
 ?>
 
@@ -162,7 +175,7 @@ $active_filter_count = ($search_query !== '' ? 1 : 0) + ($status_filter !== '' ?
                 <div class="verification-filter-head">
                     <div>
                         <h2>Filter Donasi</h2>
-                        <span><?php echo count($donations); ?> data ditemukan<?php echo $active_filter_count > 0 ? " dari " . (int) $active_filter_count . " filter aktif" : ""; ?></span>
+                        <span><?php echo (int) $total_donations; ?> data ditemukan<?php echo $active_filter_count > 0 ? " dari " . (int) $active_filter_count . " filter aktif" : ""; ?></span>
                     </div>
                     <?php if ($summary['pending'] > 0): ?>
                         <strong><?php echo (int) $summary['pending']; ?> pending</strong>
@@ -216,7 +229,7 @@ $active_filter_count = ($search_query !== '' ? 1 : 0) + ($status_filter !== '' ?
                 <div class="verification-table-head daftar-donasi-head">
                     <div>
                         <h2>Daftar Donasi</h2>
-                        <span>Antrian verifikasi pembayaran masuk.</span>
+                        <span>Halaman <?php echo (int) $current_page; ?> dari <?php echo (int) $total_pages; ?>.</span>
                     </div>
                 </div>
 
@@ -303,6 +316,30 @@ $active_filter_count = ($search_query !== '' ? 1 : 0) + ($status_filter !== '' ?
                         </tbody>
                     </table>
                 </div>
+
+                <?php if ($total_pages > 1): ?>
+                    <nav class="admin-pagination" aria-label="Pagination donasi">
+                        <?php
+                            $prev_params = $pagination_params;
+                            $prev_params['page'] = max(1, $current_page - 1);
+                            $next_params = $pagination_params;
+                            $next_params['page'] = min($total_pages, $current_page + 1);
+                        ?>
+                        <a class="<?php echo $current_page <= 1 ? 'is-disabled' : ''; ?>" href="<?php echo url_for('admin/donasi.php?' . http_build_query($prev_params)); ?>">Sebelumnya</a>
+
+                        <?php for ($page_number = 1; $page_number <= $total_pages; $page_number++): ?>
+                            <?php
+                                $page_params = $pagination_params;
+                                $page_params['page'] = $page_number;
+                            ?>
+                            <a class="<?php echo $page_number === $current_page ? 'is-active' : ''; ?>" href="<?php echo url_for('admin/donasi.php?' . http_build_query($page_params)); ?>">
+                                <?php echo (int) $page_number; ?>
+                            </a>
+                        <?php endfor; ?>
+
+                        <a class="<?php echo $current_page >= $total_pages ? 'is-disabled' : ''; ?>" href="<?php echo url_for('admin/donasi.php?' . http_build_query($next_params)); ?>">Selanjutnya</a>
+                    </nav>
+                <?php endif; ?>
             </section>
         </div>
     </main>
