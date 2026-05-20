@@ -123,6 +123,67 @@
     font-weight: 500;
 }
 
+.dashboard-chart-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+    margin-bottom: 24px;
+}
+
+.dashboard-chart-panel .admin-panel-head {
+    margin-bottom: 8px;
+}
+
+.dashboard-chart-panel .admin-panel-head h2,
+.dashboard-top-panel .admin-panel-head h2 {
+    margin-bottom: 4px;
+}
+
+.dashboard-chart-panel .admin-panel-head span,
+.dashboard-top-panel .admin-panel-head span {
+    color: var(--text-desc);
+    display: block;
+    font-size: 0.84rem;
+}
+
+.dashboard-chart-box {
+    height: 320px;
+    position: relative;
+}
+
+.dashboard-chart-box-small {
+    height: 300px;
+}
+
+.dashboard-top-panel {
+    margin-bottom: 24px;
+}
+
+.dashboard-top-table {
+    min-width: 760px;
+}
+
+.dashboard-progress {
+    background-color: #E5E7EB;
+    border-radius: 999px;
+    height: 9px;
+    overflow: hidden;
+    width: 140px;
+}
+
+.dashboard-progress span {
+    background-color: #10B981;
+    display: block;
+    height: 100%;
+}
+
+.dashboard-top-table small {
+    color: var(--text-desc);
+    display: block;
+    font-size: 0.78rem;
+    margin-top: 5px;
+}
+
 .admin-layout {
     display: grid;
     grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.15fr);
@@ -758,6 +819,7 @@
     .admin-stats,
     .admin-menu-grid,
     .admin-summary-grid,
+    .dashboard-chart-grid,
     .admin-layout,
     .verification-stats {
         grid-template-columns: 1fr 1fr;
@@ -788,6 +850,7 @@
     .admin-stats,
     .admin-menu-grid,
     .admin-summary-grid,
+    .dashboard-chart-grid,
     .admin-layout,
     .form-grid-2,
     .admin-method-grid,
@@ -798,6 +861,11 @@
 
     .admin-panel {
         padding: 18px;
+    }
+
+    .dashboard-chart-box,
+    .dashboard-chart-box-small {
+        height: 260px;
     }
 
     .verification-filter-panel,

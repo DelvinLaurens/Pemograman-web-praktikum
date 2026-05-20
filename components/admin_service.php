@@ -111,6 +111,128 @@ if (!function_exists('getManagedCampaigns')) {
     }
 }
 
+if (!function_exists('getDashboardMonthlyDonations')) {
+    function getDashboardMonthlyDonations($conn, $id_penyelenggara, $months = 6) {
+        $id_penyelenggara = (int) $id_penyelenggara;
+        $months = max(1, (int) $months);
+        $start = new DateTime('first day of this month');
+        $start->modify('-' . ($months - 1) . ' months');
+        $month_map = [];
+
+        for ($i = 0; $i < $months; $i++) {
+            $key = $start->format('Y-m');
+            $month_map[$key] = [
+                'label' => $start->format('M Y'),
+                'total' => 0,
+            ];
+            $start->modify('+1 month');
+        }
+
+        $start_date = array_key_first($month_map) . '-01 00:00:00';
+        $stmt = mysqli_prepare(
+            $conn,
+            "SELECT
+                DATE_FORMAT(d.waktu_donasi, '%Y-%m') AS bulan,
+                COALESCE(SUM(d.nominal_donasi), 0) AS total
+             FROM donasi d
+             INNER JOIN kampanye k ON k.id_kampanye = d.id_kampanye
+             WHERE k.id_penyelenggara = ?
+                AND d.status = 'VERIFIED'
+                AND d.waktu_donasi >= ?
+             GROUP BY bulan
+             ORDER BY bulan ASC"
+        );
+
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, "is", $id_penyelenggara, $start_date);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            while ($row = $result ? mysqli_fetch_assoc($result) : null) {
+                if (isset($month_map[$row['bulan']])) {
+                    $month_map[$row['bulan']]['total'] = (float) $row['total'];
+                }
+            }
+            mysqli_stmt_close($stmt);
+        }
+
+        return [
+            'labels' => array_column($month_map, 'label'),
+            'totals' => array_column($month_map, 'total'),
+        ];
+    }
+}
+
+if (!function_exists('getDashboardDonationStatusTotals')) {
+    function getDashboardDonationStatusTotals($conn, $id_penyelenggara) {
+        $id_penyelenggara = (int) $id_penyelenggara;
+        $totals = [
+            'PENDING' => 0,
+            'VERIFIED' => 0,
+            'REJECTED' => 0,
+            'EXPIRED' => 0,
+        ];
+
+        $stmt = mysqli_prepare(
+            $conn,
+            "SELECT d.status, COUNT(*) AS total
+             FROM donasi d
+             INNER JOIN kampanye k ON k.id_kampanye = d.id_kampanye
+             WHERE k.id_penyelenggara = ?
+             GROUP BY d.status"
+        );
+
+        if (!$stmt) {
+            return $totals;
+        }
+
+        mysqli_stmt_bind_param($stmt, "i", $id_penyelenggara);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        while ($row = $result ? mysqli_fetch_assoc($result) : null) {
+            $status = (string) $row['status'];
+            if (array_key_exists($status, $totals)) {
+                $totals[$status] = (int) $row['total'];
+            }
+        }
+        mysqli_stmt_close($stmt);
+
+        return $totals;
+    }
+}
+
+if (!function_exists('getDashboardTopCampaigns')) {
+    function getDashboardTopCampaigns($conn, $id_penyelenggara, $limit = 5) {
+        $id_penyelenggara = (int) $id_penyelenggara;
+        $limit = max(1, (int) $limit);
+        $stmt = mysqli_prepare(
+            $conn,
+            "SELECT
+                k.id_kampanye,
+                k.judul_kampanye,
+                k.target_dana,
+                k.dana_terkumpul,
+                COALESCE(COUNT(d.id_donasi), 0) AS total_donasi
+             FROM kampanye k
+             LEFT JOIN donasi d ON d.id_kampanye = k.id_kampanye AND d.status = 'VERIFIED'
+             WHERE k.id_penyelenggara = ?
+             GROUP BY k.id_kampanye
+             ORDER BY k.dana_terkumpul DESC, total_donasi DESC
+             LIMIT ?"
+        );
+
+        if (!$stmt) {
+            return [];
+        }
+
+        mysqli_stmt_bind_param($stmt, "ii", $id_penyelenggara, $limit);
+        mysqli_stmt_execute($stmt);
+        $rows = fetchAllAssoc(mysqli_stmt_get_result($stmt));
+        mysqli_stmt_close($stmt);
+
+        return $rows;
+    }
+}
+
 if (!function_exists('countManagedCampaigns')) {
     function countManagedCampaigns($conn, $id_penyelenggara) {
         $id_penyelenggara = (int) $id_penyelenggara;
