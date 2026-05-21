@@ -160,6 +160,18 @@
     transform: none;
 }
 
+.detail-admin-note {
+    background-color: #F1F5F9;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-desc);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+    padding: 13px 14px;
+    text-align: center;
+}
+
 .info-rekening h4 {
     font-size: 1rem;
     color: var(--primary);

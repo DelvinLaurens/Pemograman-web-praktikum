@@ -6,49 +6,121 @@ if (!isset($conn)) {
 require_once __DIR__ . "/path_helper.php";
 require_once __DIR__ . "/campaign_card.php";
 
-if (!function_exists('getTrendingCampaign')) {
-    function getTrendingCampaign($conn, $type) {
-        $order_sql = "k.id_kampanye DESC";
+if (!function_exists('getTrendingCampaignOrderSql')) {
+    function getTrendingCampaignOrderSql($type) {
+        $type = (string) $type;
 
         if ($type === 'most_funded') {
-            $order_sql = "k.dana_terkumpul DESC, k.id_kampanye DESC";
-        } elseif ($type === 'urgent') {
-            $order_sql = "k.batas_waktu ASC, k.id_kampanye DESC";
+            return "k.dana_terkumpul DESC, k.id_kampanye DESC";
         }
+
+        if ($type === 'urgent') {
+            return "k.batas_waktu ASC, k.id_kampanye DESC";
+        }
+
+        return "k.id_kampanye DESC";
+    }
+}
+
+if (!function_exists('getTrendingCampaignWhereSql')) {
+    function getTrendingCampaignWhereSql() {
+        return "k.status = 'approved'
+                AND k.batas_waktu >= CURDATE()
+                AND k.dana_terkumpul < k.target_dana";
+    }
+}
+
+if (!function_exists('getTrendingCampaign')) {
+    function getTrendingCampaign($conn, $type, $limit = 3) {
+        $order_sql = getTrendingCampaignOrderSql($type);
+        $where_sql = getTrendingCampaignWhereSql();
+        $limit = max(1, (int) $limit);
+        $sql = "SELECT
+                    k.*,
+                    p.nama_penyelenggara
+                FROM kampanye k
+                INNER JOIN penyelenggara p
+                    ON p.id_penyelenggara = k.id_penyelenggara
+                WHERE {$where_sql}
+                ORDER BY {$order_sql}
+                LIMIT ?";
 
         $stmt = mysqli_prepare(
             $conn,
-            "SELECT
-                k.*,
-                p.nama_penyelenggara
-             FROM kampanye k
-             INNER JOIN penyelenggara p ON p.id_penyelenggara = k.id_penyelenggara
-             WHERE k.status = 'approved'
-                AND k.batas_waktu >= CURDATE()
-                AND k.dana_terkumpul < k.target_dana
-             ORDER BY {$order_sql}
-             LIMIT 1"
+            $sql
         );
 
         if (!$stmt) {
-            return null;
+            return [];
         }
 
+        mysqli_stmt_bind_param($stmt, "i", $limit);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-        $campaign = $result ? mysqli_fetch_assoc($result) : null;
+        $campaigns = [];
+
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $campaigns[] = $row;
+            }
+        }
+
         mysqli_stmt_close($stmt);
 
-        return $campaign;
+        return $campaigns;
     }
 }
 
 if (!function_exists('getTrendingCampaigns')) {
-    function getTrendingCampaigns($conn) {
+    function getTrendingCampaigns($conn, $limit = 3) {
+        $most_funded_campaigns = getTrendingCampaign(
+            $conn,
+            'most_funded',
+            $limit
+        );
+
+        $urgent_campaigns = getTrendingCampaign(
+            $conn,
+            'urgent',
+            $limit
+        );
+
+        $latest_campaigns = getTrendingCampaign(
+            $conn,
+            'latest',
+            $limit
+        );
+
         return [
-            'most_funded' => getTrendingCampaign($conn, 'most_funded'),
-            'urgent' => getTrendingCampaign($conn, 'urgent'),
-            'latest' => getTrendingCampaign($conn, 'latest'),
+            'most_funded' => $most_funded_campaigns,
+            'urgent' => $urgent_campaigns,
+            'latest' => $latest_campaigns,
+        ];
+    }
+}
+
+if (!function_exists('getCampaignTrendMeta')) {
+    function getCampaignTrendMeta($campaign) {
+        $target = (float) ($campaign['target_dana'] ?? 0);
+        $collected = (float) ($campaign['dana_terkumpul'] ?? 0);
+        $raw_progress = $target > 0
+            ? ($collected / $target) * 100
+            : 0;
+        $progress = min(
+            100,
+            round($raw_progress)
+        );
+        $today = new DateTime('today');
+        $deadline = new DateTime($campaign['batas_waktu']);
+        $days_left = $deadline < $today
+            ? 0
+            : $today->diff($deadline)->days;
+
+        return [
+            'progress' => $progress,
+            'days_left' => $days_left,
+            'collected' => $collected,
+            'target' => $target,
         ];
     }
 }

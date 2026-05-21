@@ -35,6 +35,7 @@ if ($kampanye) {
     $batas_waktu = new DateTime($kampanye['batas_waktu']);
     $sisa_hari = $batas_waktu < $hari_ini ? 0 : $hari_ini->diff($batas_waktu)->days;
     $campaign_closed = isCampaignClosed($kampanye);
+    $is_admin_view = !empty($_SESSION['id_penyelenggara']) && ($_SESSION['role'] ?? '') === 'pengelola';
     $kategori = ucwords(str_replace('_', ' ', $kampanye['kategori']));
     $metode_kampanye = campaignPaymentMethodLabels($kampanye);
 }
@@ -48,7 +49,7 @@ if ($kampanye) {
     <title>Detail Kampanye - DemiSesama</title>
     <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/detail.css?v=3'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/detail.css?v=4'); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -90,7 +91,9 @@ if ($kampanye) {
                             </div>
                             <p class="teks-persen">Terkumpul <?php echo $persentase; ?>% dari target</p>
                             <p class="teks-waktu">Waktu tersisa: <strong><?php echo $campaign_closed ? 'Penggalangan Ditutup' : $sisa_hari . ' Hari Lagi'; ?></strong></p>
-                            <?php if ($campaign_closed): ?>
+                            <?php if ($is_admin_view): ?>
+                                <p class="detail-admin-note">Anda sedang login sebagai pengelola.</p>
+                            <?php elseif ($campaign_closed): ?>
                                 <span class="btn-donasi-sekarang btn-donasi-disabled">Donasi Ditutup</span>
                             <?php else: ?>
                                 <a href="<?php echo url_for('pages/donasi.php?id=' . (int) $kampanye['id_kampanye']); ?>" class="btn-donasi-sekarang">Donasi Sekarang</a>

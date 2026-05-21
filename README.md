@@ -90,11 +90,11 @@ Catatan ini dibuat agar anggota tim atau AI assistant dapat memahami konteks pro
 | Preview bukti transfer | Admin melihat bukti transfer langsung tanpa membuka tab baru | Pengelola | `admin/donasi.php`, `css/admin.css`, `assets/uploads/bukti-transfer/` | done |
 | Pagination admin | Tabel donasi/kampanye tetap rapi saat data banyak | Pengelola | `admin/donasi.php`, `admin/kampanye.php`, `components/admin_service.php` | done |
 | Dashboard chart | Dashboard menampilkan grafik ringkas donasi/campaign | Pengelola | `admin/dashboard.php`, `css/admin.css`, `js/script.js` | done |
-| Campaign status system | Campaign memiliki status `pending`, `approved`, `rejected`, dan `completed` | Pengelola | `admin/kampanye.php`, `pages/galang-dana.php`, `database/demi_sesama.sql` | planned |
+| Campaign status system | Campaign memiliki status `pending`, `approved`, `rejected`, dan `completed` | Pengelola | `admin/kampanye.php`, `pages/galang-dana.php`, `database/demi_sesama.sql` | done |
 | Dynamic progress system | Progress campaign dihitung dari target dan dana terkumpul | Donatur, Pengelola | `components/campaign_card.php`, `pages/detail.php`, `components/admin_service.php` | partially done |
 | Campaign deadline system | Campaign memiliki batas waktu, sisa hari, dan penutupan otomatis | Donatur, Pengelola | `components/campaign_list.php`, `components/campaign_card.php`, `pages/detail.php` | partially done |
 | Campaign update timeline | Pengelola memberi update perkembangan, foto, dan penggunaan dana | Pengelola, Donatur | `admin/`, `pages/detail.php`, `database/demi_sesama.sql` | planned |
-| Trending campaign section | Homepage menampilkan Most Funded, Urgent Campaign, dan Latest Campaign | Donatur/User | `index.php`, `components/campaign_list.php`, `css/home.css` | planned |
+| Trending campaign section | Homepage menampilkan Most Funded, Urgent Campaign, dan Latest Campaign | Donatur/User | `index.php`, `components/campaign_list.php`, `css/home.css` | done |
 
 ### Catatan Teknis
 
