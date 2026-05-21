@@ -88,12 +88,154 @@
     padding: 44px 0 24px;
 }
 
+.trending-campaigns {
+    background-color: #F8FAFC;
+    padding: 44px 0 18px;
+}
+
+.section-heading-row {
+    align-items: flex-end;
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
 .section-title {
     font-size: 2rem;
     color: var(--primary); 
     margin-bottom: 30px;
     text-align: left;
     line-height: 1.25;
+}
+
+.section-heading-row .section-title {
+    margin-bottom: 4px;
+}
+
+.section-subtitle {
+    color: var(--text-desc);
+    font-size: 0.95rem;
+}
+
+.section-link {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--primary);
+    font-weight: 700;
+    padding: 10px 14px;
+    white-space: nowrap;
+}
+
+.trending-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.trending-card {
+    background-color: var(--white);
+    border: 1px solid rgba(229, 231, 235, 0.9);
+    border-radius: 8px;
+    box-shadow: var(--shadow-soft);
+    min-height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.trending-label {
+    background-color: var(--primary);
+    border-radius: 0 0 8px 0;
+    color: var(--white);
+    font-size: 0.78rem;
+    font-weight: 700;
+    left: 0;
+    padding: 8px 11px;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+}
+
+.trending-media {
+    display: block;
+}
+
+.trending-media img {
+    display: block;
+    height: 180px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.trending-content,
+.trending-empty {
+    padding: 18px;
+}
+
+.trending-content p,
+.trending-empty p {
+    color: var(--text-desc);
+    font-size: 0.84rem;
+    margin-bottom: 7px;
+}
+
+.trending-content h3 {
+    color: var(--primary);
+    font-size: 1.05rem;
+    line-height: 1.35;
+    margin-bottom: 7px;
+}
+
+.trending-content > span {
+    color: var(--text-desc);
+    display: block;
+    font-size: 0.82rem;
+    margin-bottom: 14px;
+}
+
+.trending-progress {
+    background-color: var(--border);
+    border-radius: 999px;
+    height: 9px;
+    overflow: hidden;
+}
+
+.trending-progress div {
+    background-color: var(--button);
+    height: 100%;
+}
+
+.trending-meta {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+
+.trending-meta strong {
+    color: var(--primary);
+    font-size: 0.94rem;
+}
+
+.trending-meta span {
+    color: var(--danger);
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+.trending-empty {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 260px;
+}
+
+.trending-empty strong {
+    color: var(--primary);
+    font-size: 1.05rem;
+    margin-bottom: 6px;
 }
 
 .kampanye-grid {
@@ -231,7 +373,8 @@
 }
 
 @media (max-width: 1024px) {
-    .kampanye-grid {
+    .kampanye-grid,
+    .trending-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
@@ -283,10 +426,25 @@
         font-size: 1.55rem;
         margin-bottom: 20px;
     }
+
+    .section-heading-row {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .section-heading-row .section-title {
+        margin-bottom: 4px;
+    }
+
+    .section-link {
+        text-align: center;
+    }
 }
 
 @media (max-width: 640px) {
-    .kampanye-grid {
+    .kampanye-grid,
+    .trending-grid {
         grid-template-columns: 1fr;
     }
 

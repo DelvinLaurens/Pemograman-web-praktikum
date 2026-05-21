@@ -6,6 +6,57 @@ if (!isset($conn)) {
 require_once __DIR__ . "/path_helper.php";
 require_once __DIR__ . "/campaign_card.php";
 
+if (!function_exists('getTrendingCampaign')) {
+    function getTrendingCampaign($conn, $type) {
+        $order_sql = "k.id_kampanye DESC";
+
+        if ($type === 'most_funded') {
+            $order_sql = "k.dana_terkumpul DESC, k.id_kampanye DESC";
+        } elseif ($type === 'urgent') {
+            $order_sql = "k.batas_waktu ASC, k.id_kampanye DESC";
+        }
+
+        $stmt = mysqli_prepare(
+            $conn,
+            "SELECT
+                k.*,
+                p.nama_penyelenggara
+             FROM kampanye k
+             INNER JOIN penyelenggara p ON p.id_penyelenggara = k.id_penyelenggara
+             WHERE k.status = 'approved'
+                AND k.batas_waktu >= CURDATE()
+                AND k.dana_terkumpul < k.target_dana
+             ORDER BY {$order_sql}
+             LIMIT 1"
+        );
+
+        if (!$stmt) {
+            return null;
+        }
+
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $campaign = $result ? mysqli_fetch_assoc($result) : null;
+        mysqli_stmt_close($stmt);
+
+        return $campaign;
+    }
+}
+
+if (!function_exists('getTrendingCampaigns')) {
+    function getTrendingCampaigns($conn) {
+        return [
+            'most_funded' => getTrendingCampaign($conn, 'most_funded'),
+            'urgent' => getTrendingCampaign($conn, 'urgent'),
+            'latest' => getTrendingCampaign($conn, 'latest'),
+        ];
+    }
+}
+
+if (!empty($campaign_list_only)) {
+    return;
+}
+
 $keyword = trim($_GET['keyword'] ?? '');
 $kategori = trim($_GET['kategori'] ?? '');
 $lokasi = trim($_GET['lokasi'] ?? '');
