@@ -132,7 +132,6 @@ if (!empty($campaign_list_only)) {
 $keyword = trim($_GET['keyword'] ?? '');
 $kategori = trim($_GET['kategori'] ?? '');
 $lokasi = trim($_GET['lokasi'] ?? '');
-$range = trim($_GET['range'] ?? '');
 $page = max(1, (int) ($_GET['page'] ?? 1));
 $limit = 6;
 $offset = ($page - 1) * $limit;
@@ -141,7 +140,11 @@ $base_sql = "FROM kampanye k
         INNER JOIN penyelenggara p
             ON p.id_penyelenggara = k.id_penyelenggara";
 
-$where = ["(k.status = 'approved' OR k.status = 'completed')"];
+$where = [
+    "k.status = 'approved'",
+    "k.batas_waktu >= CURDATE()",
+    "k.dana_terkumpul < k.target_dana",
+];
 $params = [];
 $types = "";
 
@@ -165,23 +168,6 @@ if ($lokasi !== "") {
     $where[] = "k.lokasi LIKE ?";
     $params[] = "%{$lokasi_keyword}%";
     $types .= "s";
-}
-
-if ($range !== "") {
-    if ($range === "10000000+") {
-        $where[] = "k.target_dana >= ?";
-        $params[] = 10000000;
-        $types .= "i";
-    } else {
-        $range_parts = explode("-", $range);
-
-        if (count($range_parts) === 2) {
-            $where[] = "k.target_dana BETWEEN ? AND ?";
-            $params[] = (int) $range_parts[0];
-            $params[] = (int) $range_parts[1];
-            $types .= "ii";
-        }
-    }
 }
 
 $where_sql = " WHERE " . implode(" AND ", $where);
@@ -245,6 +231,7 @@ mysqli_stmt_close($stmt);
 $total_pages = (int) ceil($total_data / $limit);
 if ($total_pages > 1) {
     $query = $_GET;
+    unset($query['range']);
     echo '<div class="pagination-kampanye">';
 
     for ($i = 1; $i <= $total_pages; $i++) {

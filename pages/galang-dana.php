@@ -1,7 +1,8 @@
 <?php
 session_start();
-require_once("../components/path_helper.php");
-require_once("./components/db_conn.php");
+require_once("../components/auth.php");
+requireDonorLogin('pages/galang-dana.php');
+require_once("../components/db_conn.php");
 
 $error = "";
 

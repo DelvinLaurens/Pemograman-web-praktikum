@@ -2,16 +2,15 @@
 session_start();
 include_once("./components/db_conn.php");
 require_once("./components/path_helper.php");
-$campaign_list_only = true;
-require("./components/campaign_list.php");
-unset($campaign_list_only);
 
 $keyword = filter_input(INPUT_GET, 'keyword', FILTER_DEFAULT) ?: '';
 $kategori = filter_input(INPUT_GET, 'kategori', FILTER_DEFAULT) ?: '';
 $lokasi = filter_input(INPUT_GET, 'lokasi', FILTER_DEFAULT) ?: '';
-$range = filter_input(INPUT_GET, 'range', FILTER_DEFAULT) ?: '';
 
-$query = "SELECT * FROM kampanye WHERE (status = 'approved' OR status = 'completed')";
+$query = "SELECT * FROM kampanye
+          WHERE status = 'approved'
+            AND batas_waktu >= CURDATE()
+            AND dana_terkumpul < target_dana";
 
 if (!empty($keyword)) {
     $query .= " AND judul_kampanye LIKE '%" . $conn->real_escape_string($keyword) . "%'";
@@ -21,12 +20,6 @@ if (!empty($kategori)) {
 }
 if (!empty($lokasi)) {
     $query .= " AND lokasi LIKE '%" . $conn->real_escape_string($lokasi) . "%'";
-}
-if (!empty($range)) {
-    if ($range === '0-1000000') $query .= " AND target_dana < 1000000";
-    elseif ($range === '1000000-5000000') $query .= " AND target_dana BETWEEN 1000000 AND 5000000";
-    elseif ($range === '5000000-10000000') $query .= " AND target_dana BETWEEN 5000000 AND 10000000";
-    elseif ($range === '10000000+') $query .= " AND target_dana > 10000000";
 }
 
 $query .= " ORDER BY id_kampanye DESC";
@@ -38,28 +31,6 @@ if ($result_campaigns) {
         $campaigns[] = $row;
     }
 }
-
-$trending_campaigns = getTrendingCampaigns($conn, 3);
-$trending_labels = [
-    'most_funded' => [
-        'title' => 'Most Funded',
-        'subtitle' => 'Dana terkumpul terbesar',
-        'description' => 'Campaign dengan nominal terkumpul paling tinggi.',
-        'empty' => 'Belum ada campaign dengan dana terkumpul.',
-    ],
-    'urgent' => [
-        'title' => 'Urgent Campaign',
-        'subtitle' => 'Tenggat paling dekat',
-        'description' => 'Campaign aktif yang perlu segera dibantu sebelum berakhir.',
-        'empty' => 'Belum ada campaign aktif dengan tenggat dekat.',
-    ],
-    'latest' => [
-        'title' => 'Latest Campaign',
-        'subtitle' => 'Kampanye terbaru',
-        'description' => 'Campaign terbaru yang baru tersedia untuk didukung.',
-        'empty' => 'Belum ada campaign terbaru yang aktif.',
-    ],
-];
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +43,7 @@ $trending_labels = [
     <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
     <script>document.documentElement.classList.add("animasi-scroll-siap");</script>
     <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/home.css?v=5'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/home.css?v=10'); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -115,79 +86,8 @@ $trending_labels = [
                             <option value="ntt" <?php echo ($_GET['lokasi'] ?? '') === 'ntt' ? 'selected' : ''; ?>>NTT</option>
                         </select>
 
-                        <select name="range" id="range">
-                            <option value="">Semua Target</option>
-                            <option value="0-1000000" <?php echo ($_GET['range'] ?? '') === '0-1000000' ? 'selected' : ''; ?>>&lt; 1 Juta</option>
-                            <option value="1000000-5000000" <?php echo ($_GET['range'] ?? '') === '1000000-5000000' ? 'selected' : ''; ?>>1 - 5 Juta</option>
-                            <option value="5000000-10000000" <?php echo ($_GET['range'] ?? '') === '5000000-10000000' ? 'selected' : ''; ?>>5 - 10 Juta</option>
-                            <option value="10000000+" <?php echo ($_GET['range'] ?? '') === '10000000+' ? 'selected' : ''; ?>>&gt; 10 Juta</option>
-                        </select>
-
                         <button type="submit" class="btn-search">Cari</button>
                     </form>
-                </div>
-            </div>
-        </section>
-
-        <section class="trending-campaigns" aria-labelledby="trending-title">
-            <div class="container">
-                <div class="section-heading-row">
-                    <div>
-                        <h2 class="section-title" id="trending-title">Trending Campaign</h2>
-                        <p class="section-subtitle">Campaign pilihan yang sedang menonjol saat ini.</p>
-                    </div>
-                    <a href="<?php echo url_for('index.php#kampanye'); ?>" class="section-link">Lihat Semua</a>
-                </div>
-
-                <div class="trending-section-grid">
-                    <?php foreach ($trending_labels as $key => $label): ?>
-                        <?php $campaign_group = $trending_campaigns[$key] ?? []; ?>
-                        <article class="trending-group muncul-saat-scroll">
-                            <div class="trending-group-head">
-                                <span><?php echo e($label['subtitle']); ?></span>
-                                <h3><?php echo e($label['title']); ?></h3>
-                                <p><?php echo e($label['description']); ?></p>
-                            </div>
-
-                            <div class="trending-list">
-                                <?php if (empty($campaign_group)): ?>
-                                    <div class="trending-empty">
-                                        <strong>Belum ada data</strong>
-                                        <p><?php echo e($label['empty']); ?></p>
-                                    </div>
-                                <?php endif; ?>
-
-                                <?php foreach ($campaign_group as $campaign): ?>
-                                    <?php
-                                        $trend_meta = getCampaignTrendMeta($campaign);
-                                        $campaign_id = (int) $campaign['id_kampanye'];
-                                        $campaign_title = (string) $campaign['judul_kampanye'];
-                                        $campaign_owner = (string) $campaign['nama_penyelenggara'];
-                                        $campaign_image = (string) $campaign['gambar_poster'];
-                                        $campaign_url = url_for('pages/detail.php?id=' . $campaign_id);
-                                        $campaign_image_url = asset_url($campaign_image);
-                                        $campaign_progress = (int) $trend_meta['progress'];
-                                        $campaign_collected = (float) $trend_meta['collected'];
-                                        $campaign_days_left = (int) $trend_meta['days_left'];
-                                    ?>
-                                    <a href="<?php echo $campaign_url; ?>" class="trending-mini-card">
-                                        <img src="<?php echo e($campaign_image_url); ?>" alt="<?php echo e($campaign_title); ?>">
-                                        <div class="trending-mini-content">
-                                            <h4><?php echo e($campaign_title); ?></h4>
-                                            <p><?php echo e($campaign_owner); ?></p>
-                                            <div class="trending-progress">
-                                                <div style="width: <?php echo $campaign_progress; ?>%;"></div>
-                                            </div>
-                                            <div class="trending-meta">
-                                                <strong><?php echo formatRupiah($campaign_collected); ?></strong>
-                                                <span><?php echo $campaign_days_left; ?> hari</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                <?php endforeach; ?>
-                            </div>
-                        </article>
-                    <?php endforeach; ?>
                 </div>
             </div>
         </section>

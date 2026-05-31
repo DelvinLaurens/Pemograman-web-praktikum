@@ -10,6 +10,10 @@ $nama_lengkap_nav = trim($_SESSION['nama_lengkap'] ?? 'Donatur');
 $nama_pertama_nav = preg_split('/\s+/', $nama_lengkap_nav)[0] ?? 'Donatur';
 $nama_pengelola_nav = trim($_SESSION['nama_penyelenggara'] ?? 'Pengelola');
 $nama_pertama_pengelola_nav = preg_split('/\s+/', $nama_pengelola_nav)[0] ?? 'Pengelola';
+$donor_logged_in_nav = !empty($_SESSION['id_donatur']) && ($_SESSION['role'] ?? '') === 'donatur';
+$galang_dana_url = $donor_logged_in_nav
+    ? url_for('pages/galang-dana.php')
+    : url_for('auth/login.php?redirect=' . urlencode('pages/galang-dana.php'));
 ?>
 
 <header>
@@ -29,8 +33,8 @@ $nama_pertama_pengelola_nav = preg_split('/\s+/', $nama_pengelola_nav)[0] ?? 'Pe
                 <?php else: ?>
                     <li><a href="<?php echo url_for('index.php'); ?>" class="<?php echo $halaman_aktif === 'index.php' ? 'active' : ''; ?>">Beranda</a></li>
                     <li><a href="<?php echo url_for('index.php#kampanye'); ?>">Donasi</a></li>
-                    <li><a href="<?php echo url_for('pages/galang-dana.php'); ?>" class="<?php echo $halaman_aktif === 'pages/galang-dana.php' ? 'active' : ''; ?>">Galang Dana</a></li>
-                    <?php if (!empty($_SESSION['id_donatur'])): ?>
+                    <li><a href="<?php echo $galang_dana_url; ?>" class="<?php echo $halaman_aktif === 'pages/galang-dana.php' ? 'active' : ''; ?>">Galang Dana</a></li>
+                    <?php if ($donor_logged_in_nav): ?>
                     <li><a href="<?php echo url_for('pages/riwayat-donasi.php'); ?>" class="<?php echo $halaman_aktif === 'pages/riwayat-donasi.php' ? 'active' : ''; ?>">Riwayat</a></li>
                     <li><span class="nav-user">Halo, <?php echo htmlspecialchars($nama_pertama_nav, ENT_QUOTES, 'UTF-8'); ?></span></li>
                     <li><a href="<?php echo url_for('auth/logout.php'); ?>" class="btn-login btn-logout">Logout</a></li>
