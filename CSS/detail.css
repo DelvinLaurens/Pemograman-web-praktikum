@@ -51,6 +51,18 @@
     font-weight: 600;
 }
 
+.badge-lokasi {
+    align-items: center;
+    display: inline-flex;
+    gap: 6px;
+}
+
+.badge-lokasi svg {
+    flex: 0 0 auto;
+    height: 15px;
+    width: 15px;
+}
+
 .judul-detail {
     font-size: 2rem;
     color: var(--primary);
@@ -94,13 +106,14 @@
 }
 
 .teks-terkumpul {
-    font-size: 1.3rem;
+    font-size: 1rem;
     color: var(--primary);
-    margin-bottom: 20px;
+    line-height: 1.35;
+    margin-bottom: 18px;
 }
 
 .teks-terkumpul strong {
-    font-size: 1.6rem;
+    font-size: 1.25rem;
 }
 
 .progress-bar-detail {
@@ -126,9 +139,10 @@
 
 .teks-waktu {
     font-size: 1rem;
-    color: var(--danger);
+    color: var(--primary);
     margin-bottom: 25px;
-    background-color: #FEE2E2;
+    background-color: #EFF6FF;
+    border: 1px solid #BFDBFE;
     padding: 10px;
     border-radius: 8px;
     text-align: center;
@@ -137,7 +151,7 @@
 .btn-donasi-sekarang {
     display: block;
     width: 100%;
-    background-color: var(--button);
+    background-color: #16A34A;
     color: var(--white);
     text-align: center;
     padding: 15px 0;
@@ -149,7 +163,7 @@
 }
 
 .btn-donasi-sekarang:hover {
-    background-color: var(--button-hover);
+    background-color: #15803D;
     transform: translateY(-1px);
 }
 
@@ -222,6 +236,6 @@
     }
 
     .teks-terkumpul strong {
-        font-size: 1.35rem;
+        font-size: 1.18rem;
     }
 }

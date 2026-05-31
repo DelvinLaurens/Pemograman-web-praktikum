@@ -2,6 +2,7 @@
 session_start();
 require_once("../components/db_conn.php");
 require_once("../components/donation_service.php");
+require_once("../components/auth.php");
 
 $id_kampanye = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$id_kampanye) {
@@ -13,10 +14,7 @@ if (!$id_kampanye) {
 }
 
 $current_url = "pages/donasi.php?id=" . urlencode((string) $id_kampanye);
-if (empty($_SESSION['id_donatur'])) {
-    header("Location: " . url_for('auth/login.php') . "?redirect=" . urlencode($current_url));
-    exit;
-}
+requireDonorLogin($current_url);
 
 $kampanye = getCampaignForDonation($conn, $id_kampanye);
 $donatur = getDonorById($conn, $_SESSION['id_donatur']);

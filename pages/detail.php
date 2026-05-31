@@ -49,7 +49,7 @@ if ($kampanye) {
     <title>Detail Kampanye - DemiSesama</title>
     <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/detail.css?v=4'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/detail.css?v=5'); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -72,10 +72,16 @@ if ($kampanye) {
 
                         <div class="detail-kategori-lokasi">
                             <span class="badge-kategori"><?php echo e($kategori); ?></span>
-                            <span class="badge-lokasi">Lokasi: <?php echo e($kampanye['lokasi']); ?></span>
+                            <span class="badge-lokasi">
+                                <svg aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657 13.414 20.9a1.998 1.998 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0Z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                                </svg>
+                                <?php echo e($kampanye['lokasi']); ?>
+                            </span>
                         </div>
                         <h2 class="judul-detail"><?php echo e($kampanye['judul_kampanye']); ?></h2>
-                        <p class="penyelenggara-detail">Diselenggarakan oleh: <strong><?php echo e($kampanye['nama_penyelenggara']); ?></strong></p>
+                        <p class="penyelenggara-detail">Penyelenggara: <strong><?php echo e($kampanye['nama_penyelenggara']); ?></strong></p>
 
                         <div class="deskripsi-kampanye">
                             <h3>Cerita Kampanye</h3>
@@ -90,7 +96,7 @@ if ($kampanye) {
                                 <div class="progress-detail" style="width: <?php echo $persentase; ?>%;"></div>
                             </div>
                             <p class="teks-persen">Terkumpul <?php echo $persentase; ?>% dari target</p>
-                            <p class="teks-waktu">Waktu tersisa: <strong><?php echo $campaign_closed ? 'Penggalangan Ditutup' : $sisa_hari . ' Hari Lagi'; ?></strong></p>
+                            <p class="teks-waktu"><strong><?php echo $campaign_closed ? 'Penggalangan Ditutup' : $sisa_hari . ' hari lagi'; ?></strong></p>
                             <?php if ($is_admin_view): ?>
                                 <p class="detail-admin-note">Anda sedang login sebagai pengelola.</p>
                             <?php elseif ($campaign_closed): ?>

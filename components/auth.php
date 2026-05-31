@@ -23,6 +23,11 @@ if (!function_exists('requireDonorLogin')) {
             return;
         }
 
+        if (isAdminLoggedIn()) {
+            header("Location: " . url_for('admin/dashboard.php'));
+            exit;
+        }
+
         $redirect = $redirect !== '' ? $redirect : basename($_SERVER['REQUEST_URI']);
         if (!redirectUrlIsSafe($redirect)) {
             $redirect = 'index.php';
@@ -37,6 +42,11 @@ if (!function_exists('requireAdminLogin')) {
     function requireAdminLogin($redirect = '') {
         if (isAdminLoggedIn()) {
             return;
+        }
+
+        if (isDonorLoggedIn()) {
+            header("Location: " . url_for('index.php'));
+            exit;
         }
 
         $redirect = $redirect !== '' ? $redirect : basename($_SERVER['REQUEST_URI']);

@@ -2,6 +2,7 @@
 session_start();
 require_once("../components/db_conn.php");
 require_once("../components/donation_service.php");
+require_once("../components/auth.php");
 
 $id_donasi = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$id_donasi) {
@@ -14,10 +15,7 @@ if (!$id_donasi) {
 }
 
 $current_url = "pages/verif.php?id=" . urlencode((string) $id_donasi);
-if (empty($_SESSION['id_donatur'])) {
-    header("Location: " . url_for('auth/login.php') . "?redirect=" . urlencode($current_url));
-    exit;
-}
+requireDonorLogin($current_url);
 
 $donasi = getDonationVerificationData($conn, $id_donasi, $_SESSION['id_donatur']);
 

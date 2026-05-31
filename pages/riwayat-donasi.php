@@ -1,5 +1,5 @@
 <?php
-require_once("./components/db_conn.php");
+require_once("../components/db_conn.php");
 require_once("../components/auth.php");
 require_once("../components/donation_helper.php");
 

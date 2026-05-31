@@ -15,7 +15,6 @@
             <ul>
                 <li><a href="<?php echo url_for('index.php'); ?>">Beranda</a></li>
                 <li><a href="<?php echo url_for('index.php#kampanye'); ?>">Donasi</a></li>
-                <li><a href="<?php echo url_for('pages/galang-dana.php'); ?>">Galang Dana</a></li>
             </ul>
         </div>
 
@@ -23,7 +22,6 @@
             <h3>Bantuan</h3>
             <ul>
                 <li><a href="<?php echo url_for('index.php#kampanye'); ?>">Cari Kampanye</a></li>
-                <li><a href="<?php echo url_for('pages/galang-dana.php'); ?>">Ajukan Kampanye</a></li>
                 <li><a href="mailto:bantuan@demisesama.test">bantuan@demisesama.test</a></li>
             </ul>
         </div>

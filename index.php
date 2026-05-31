@@ -43,7 +43,7 @@ if ($result_campaigns) {
     <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
     <script>document.documentElement.classList.add("animasi-scroll-siap");</script>
     <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/home.css?v=10'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/home.css?v=11'); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
