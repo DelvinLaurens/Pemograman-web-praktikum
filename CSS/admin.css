@@ -389,6 +389,208 @@
     width: 44%;
 }
 
+.campaign-detail-grid {
+    align-items: start;
+    display: grid;
+    gap: 22px;
+    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.55fr);
+    margin-bottom: 22px;
+}
+
+.campaign-detail-card {
+    display: grid;
+    gap: 22px;
+    grid-template-columns: minmax(230px, 0.42fr) minmax(0, 0.58fr);
+}
+
+.campaign-detail-poster {
+    align-self: stretch;
+    min-height: 260px;
+    position: relative;
+}
+
+.campaign-detail-poster img {
+    border-radius: 8px;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.campaign-detail-poster .status-badge {
+    bottom: 12px;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.14);
+    left: 12px;
+    position: absolute;
+}
+
+.campaign-detail-content {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.campaign-detail-meta {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.campaign-detail-meta > span {
+    background-color: #F8FAFC;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-desc);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 8px 10px;
+}
+
+.campaign-detail-content h2 {
+    color: var(--primary);
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.campaign-detail-description {
+    color: var(--text-desc);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin-bottom: 18px;
+}
+
+.campaign-info-list {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: auto;
+}
+
+.campaign-info-list div,
+.campaign-side-facts div {
+    background-color: #F8FAFC;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.campaign-info-list span,
+.campaign-side-facts span,
+.campaign-fund-main span {
+    color: var(--text-desc);
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.campaign-info-list strong,
+.campaign-side-facts strong {
+    color: var(--main-text);
+    display: block;
+    font-size: 0.9rem;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.campaign-detail-side {
+    position: sticky;
+    top: 88px;
+}
+
+.campaign-fund-main {
+    background-color: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 16px;
+}
+
+.campaign-fund-main strong {
+    color: var(--primary);
+    display: block;
+    font-size: 1.45rem;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.campaign-progress-row {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.campaign-progress-row span {
+    color: var(--main-text);
+    font-weight: 800;
+}
+
+.campaign-progress-row strong {
+    color: var(--primary);
+}
+
+.campaign-detail-progress {
+    height: 11px;
+    margin-bottom: 14px;
+    width: 100%;
+}
+
+.campaign-side-facts {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+}
+
+.campaign-detail-actions {
+    display: grid;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.campaign-detail-actions a {
+    min-height: 44px;
+}
+
+.campaign-donation-summary {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-bottom: 22px;
+}
+
+.campaign-donation-summary .admin-summary-card {
+    overflow: hidden;
+    padding: 18px;
+    position: relative;
+}
+
+.campaign-donation-summary .admin-summary-card::before {
+    content: "";
+    height: 4px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.campaign-donation-summary .status-card-verified::before {
+    background-color: #22C55E;
+}
+
+.campaign-donation-summary .status-card-pending::before {
+    background-color: #F59E0B;
+}
+
+.campaign-donation-summary .status-card-rejected::before,
+.campaign-donation-summary .status-card-expired::before {
+    background-color: #EF4444;
+}
+
+.campaign-donor-table {
+    min-width: 860px;
+}
+
 .verification-heading {
     align-items: center;
 }
@@ -836,6 +1038,18 @@
     .verification-filter-actions {
         align-self: end;
     }
+
+    .campaign-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .campaign-detail-side {
+        position: static;
+    }
+
+    .campaign-donation-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 @media (max-width: 640px) {
@@ -884,6 +1098,23 @@
 
     .verification-table-wrap {
         max-height: 70vh;
+    }
+
+    .campaign-detail-card,
+    .campaign-donation-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .campaign-detail-poster {
+        min-height: 220px;
+    }
+
+    .campaign-detail-poster img {
+        height: 220px;
+    }
+
+    .campaign-info-list {
+        grid-template-columns: 1fr;
     }
 }
 

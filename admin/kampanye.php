@@ -175,7 +175,7 @@ $current_page_query = $current_page > 1 ? '?page=' . $current_page : '';
                                             </form>
                                         <?php endif; ?>
 
-                                        <a href="<?php echo url_for('admin/form-kampanye.php?edit=' . (int) $campaign['id_kampanye'] . ($current_page > 1 ? '&page=' . $current_page : '')); ?>">Edit</a>
+                                        <a href="<?php echo url_for('admin/detail-kampanye.php?id=' . (int) $campaign['id_kampanye'] . ($current_page > 1 ? '&page=' . $current_page : '')); ?>">Detail</a>
                                         <form method="POST" action="<?php echo url_for('admin/kampanye.php' . $current_page_query); ?>" onsubmit="return confirm('Hapus kampanye ini?');">
                                             <input type="hidden" name="action" value="delete">
                                             <input type="hidden" name="id_kampanye" value="<?php echo (int) $campaign['id_kampanye']; ?>">
