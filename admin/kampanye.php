@@ -1,7 +1,14 @@
 <?php
-require_once("../components/db_conn.php");
-require_once("../components/auth.php");
-require_once("../components/admin_service.php");
+require_once __DIR__ . "/../components/db_conn.php";
+require_once __DIR__ . "/../components/auth.php";
+require_once __DIR__ . "/../components/admin_service.php";
+
+$conn = $GLOBALS['conn'] ?? null;
+
+/** @var mysqli|null $conn */
+if (!isset($conn) || !($conn instanceof mysqli)) {
+    die("Koneksi database belum tersedia.");
+}
 
 requireAdminLogin('admin/kampanye.php');
 
@@ -44,26 +51,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'approve') {
         $id_kampanye = filter_input(INPUT_POST, 'id_kampanye', FILTER_VALIDATE_INT);
-        $stmt = $conn->prepare("UPDATE kampanye SET status = 'approved' WHERE id_kampanye = ?");
-        if ($stmt) {
-            $stmt->bind_param("i", $id_kampanye);
-            if ($stmt->execute()) {
-                header("Location: " . url_for('admin/kampanye.php?saved=1' . $page_query));
-                exit;
-            }
+        $result = updateManagedCampaignStatus($conn, $admin_id, $id_kampanye, 'approved');
+
+        if ($result['success']) {
+            header("Location: " . url_for('admin/kampanye.php?saved=1' . $page_query));
+            exit;
         }
+
+        $errors = $result['errors'];
     }
 
     if ($action === 'reject') {
         $id_kampanye = filter_input(INPUT_POST, 'id_kampanye', FILTER_VALIDATE_INT);
-        $stmt = $conn->prepare("UPDATE kampanye SET status = 'rejected' WHERE id_kampanye = ?");
-        if ($stmt) {
-            $stmt->bind_param("i", $id_kampanye);
-            if ($stmt->execute()) {
-                header("Location: " . url_for('admin/kampanye.php?saved=1' . $page_query));
-                exit;
-            }
+        $result = updateManagedCampaignStatus($conn, $admin_id, $id_kampanye, 'rejected');
+
+        if ($result['success']) {
+            header("Location: " . url_for('admin/kampanye.php?saved=1' . $page_query));
+            exit;
         }
+
+        $errors = $result['errors'];
     }
 }
 
@@ -109,7 +116,7 @@ $current_page_query = $current_page > 1 ? '?page=' . $current_page : '';
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <?php include_once("../components/nav.php") ?>
+    <?php include_once __DIR__ . "/../components/nav.php" ?>
 
     <main class="admin-page">
         <div class="container">
@@ -273,6 +280,6 @@ $current_page_query = $current_page > 1 ? '?page=' . $current_page : '';
         </div>
     </main>
 
-    <?php include_once("../components/footer.php") ?>
+    <?php include_once __DIR__ . "/../components/footer.php" ?>
 </body>
 </html>

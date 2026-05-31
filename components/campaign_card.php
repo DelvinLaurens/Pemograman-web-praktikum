@@ -48,6 +48,7 @@ function cardKampanye($data) {
 
     $id_kampanye = e($data['id_kampanye']);
     $judul_kampanye = e($data['judul_kampanye']);
+    $lokasi = e($data['lokasi']);
     $deskripsi = e($data['deskripsi']);
     $nama_penyelenggara = e($data['nama_penyelenggara']);
     $gambar_poster = e(asset_url($data['gambar_poster']));
@@ -58,6 +59,10 @@ function cardKampanye($data) {
         <img src="{$gambar_poster}" alt="{$judul_kampanye}" class="card-img">
         <div class="card-content">
             <h3>{$judul_kampanye}</h3>
+            <p class="lokasi" style="color: #64748b; font-size: 0.85rem; margin-top: 4px; margin-bottom: 8px;">
+                <svg style="width:12px; height:12px; display:inline-block; vertical-align:middle; margin-right:2px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                {$lokasi}
+            </p>
             <p class="deskripsi">{$deskripsi}</p>
             <p class="penyelenggara">Oleh: {$nama_penyelenggara}</p>
             <div class="info-dana">

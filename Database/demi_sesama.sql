@@ -110,14 +110,33 @@ VALUES
   (2, 'Delvin Laurens', 'delvin@gmail.com', '080987654321', 'Gondokusuman, Klitren', 'delpin321');
 
 INSERT INTO `kampanye`
-  (`id_kampanye`, `id_penyelenggara`, `judul_kampanye`, `kategori`, `lokasi`, `deskripsi`, `target_dana`, `dana_terkumpul`, `batas_waktu`, `gambar_poster`)
+  (`id_kampanye`, `id_penyelenggara`, `judul_kampanye`, `kategori`, `lokasi`, `deskripsi`, `target_dana`, `dana_terkumpul`, `batas_waktu`, `gambar_poster`, `status`)
 VALUES
-  (1, 1, 'Banjir Melawi', 'bencana_alam', 'Melawi, Kalimantan Barat', 'Telah terjadi banjir di Melawi tahun 2024. Bantuan akan digunakan untuk kebutuhan makan, obat, dan perlengkapan darurat warga terdampak.', 100000000, 12674000, '2026-05-18', 'assets/images/campaigns/banjir-melawi.jpg'),
-  (2, 2, 'Gempa Manado', 'bencana_alam', 'Manado, Sulawesi Utara', 'Gempa di Manado mengakibatkan banyak rumah rusak. Donasi akan disalurkan untuk bantuan logistik dan perbaikan tempat tinggal.', 180000000, 24534000, '2026-06-24', 'assets/images/campaigns/gempa-manado.jpg'),
-  (3, 1, 'Puting Beliung Kupang', 'bencana_alam', 'Kupang, NTT', 'Bencana puting beliung di Kupang pada Januari 2024 merusak rumah warga. Bantuan digunakan untuk kebutuhan darurat dan pemulihan.', 45000000, 690000, '2026-06-03', 'assets/images/campaigns/puting-beliung-kupang.jpeg'),
-  (4, 2, 'Banjir Bali', 'bencana_alam', 'Bali', 'Banjir di Bali pada 10 September 2025 membuat warga membutuhkan bantuan makanan, pakaian, dan perlengkapan kebersihan.', 20000000, 700000, '2026-06-19', 'assets/images/campaigns/banjir-bali.jpg'),
-  (5, 1, 'Bantuan Pendidikan Anak Desa', 'pendidikan', 'Jawa', 'Bantu anak desa mendapatkan pendidikan layak melalui pengadaan buku, seragam, alat tulis, dan dukungan biaya sekolah.', 150000000, 122050000, '2026-06-03', 'assets/images/campaigns/bantuan-pendidikan-desa.jpg'),
-  (6, 2, 'Reboisasi Hutan Gundul', 'lingkungan', 'Kalimantan', 'Tanam 10.000 pohon untuk membantu memulihkan hutan gundul dan menjaga lingkungan sekitar.', 50000000, 35000000, '2026-05-15', 'assets/images/campaigns/reboisasi-hutan.jpg');
+  (1, 1, 'Banjir Melawi', 'bencana_alam', 'Melawi, Kalimantan Barat', 'Telah terjadi banjir di Melawi tahun 2024. Bantuan akan digunakan untuk kebutuhan makan, obat, dan perlengkapan darurat warga terdampak.', 100000000, 12674000, '2026-05-18', 'assets/images/campaigns/banjir-melawi.jpg', 'completed'),
+  (2, 2, 'Gempa Manado', 'bencana_alam', 'Manado, Sulawesi Utara', 'Gempa di Manado mengakibatkan banyak rumah rusak. Donasi akan disalurkan untuk bantuan logistik dan perbaikan tempat tinggal.', 180000000, 24534000, '2026-06-24', 'assets/images/campaigns/gempa-manado.jpg', 'approved'),
+  (3, 1, 'Puting Beliung Kupang', 'bencana_alam', 'Kupang, NTT', 'Bencana puting beliung di Kupang pada Januari 2024 merusak rumah warga. Bantuan digunakan untuk kebutuhan darurat dan pemulihan.', 45000000, 690000, '2026-06-03', 'assets/images/campaigns/puting-beliung-kupang.jpeg', 'approved'),
+  (4, 2, 'Banjir Bali', 'bencana_alam', 'Bali', 'Banjir di Bali pada 10 September 2025 membuat warga membutuhkan bantuan makanan, pakaian, dan perlengkapan kebersihan.', 20000000, 700000, '2026-06-19', 'assets/images/campaigns/banjir-bali.jpg', 'approved'),
+  (5, 1, 'Bantuan Pendidikan Anak Desa', 'pendidikan', 'Jawa', 'Bantu anak desa mendapatkan pendidikan layak melalui pengadaan buku, seragam, alat tulis, dan dukungan biaya sekolah.', 150000000, 122050000, '2026-06-03', 'assets/images/campaigns/bantuan-pendidikan-desa.jpg', 'approved'),
+  (6, 2, 'Reboisasi Hutan Gundul', 'lingkungan', 'Kalimantan', 'Tanam 10.000 pohon untuk membantu memulihkan hutan gundul dan menjaga lingkungan sekitar.', 50000000, 35000000, '2026-05-15', 'assets/images/campaigns/reboisasi-hutan.jpg', 'completed'),
+  (7, 1, 'Operasi Katarak Lansia', 'kesehatan', 'Yogyakarta', 'Bantu lansia prasejahtera menjalani operasi katarak agar dapat kembali beraktivitas dengan lebih mandiri.', 75000000, 18500000, '2026-07-14', 'assets/images/campaigns/bantuan-pendidikan-desa.jpg', 'approved'),
+  (8, 2, 'Dapur Umum Korban Longsor', 'bencana_alam', 'Bogor, Jawa Barat', 'Dapur umum ini menyediakan makanan siap santap, air bersih, dan kebutuhan dasar untuk warga terdampak longsor.', 30000000, 8400000, '2026-06-08', 'assets/images/campaigns/banjir-melawi.jpg', 'approved'),
+  (9, 1, 'Ambulans Desa Terpencil', 'kesehatan', 'Sumba Timur, NTT', 'Pengadaan ambulans desa akan membantu warga menjangkau fasilitas kesehatan saat kondisi darurat.', 220000000, 44500000, '2026-08-20', 'assets/images/campaigns/puting-beliung-kupang.jpeg', 'approved'),
+  (10, 2, 'Beasiswa Anak Nelayan', 'pendidikan', 'Makassar, Sulawesi Selatan', 'Donasi digunakan untuk biaya sekolah, seragam, buku, dan transportasi anak keluarga nelayan.', 90000000, 27500000, '2026-07-30', 'assets/images/campaigns/bantuan-pendidikan-desa.jpg', 'approved'),
+  (11, 1, 'Sumur Bersih Desa Kering', 'sosial', 'Gunungkidul, Yogyakarta', 'Bantu pembangunan sumur bor dan tandon air agar warga memiliki akses air bersih sepanjang musim kemarau.', 65000000, 12900000, '2026-07-05', 'assets/images/campaigns/reboisasi-hutan.jpg', 'approved'),
+  (12, 2, 'Renovasi Posyandu Desa', 'kesehatan', 'Flores Timur, NTT', 'Renovasi posyandu membantu layanan imunisasi, pemeriksaan ibu hamil, dan pemantauan gizi balita.', 40000000, 6500000, '2026-06-28', 'assets/images/campaigns/kampanye-1779013316-8905.png', 'approved'),
+  (13, 1, 'Paket Sembako Lansia', 'sosial', 'Surabaya, Jawa Timur', 'Paket sembako bulanan akan disalurkan untuk lansia yang tinggal sendiri dan tidak memiliki penghasilan tetap.', 25000000, 11750000, '2026-06-15', 'assets/images/campaigns/banjir-bali.jpg', 'approved'),
+  (14, 2, 'Sekolah Darurat Pasca Banjir', 'pendidikan', 'Sintang, Kalimantan Barat', 'Bangun ruang belajar sementara dan lengkapi alat tulis untuk anak-anak yang sekolahnya terdampak banjir.', 85000000, 16100000, '2026-07-18', 'assets/images/campaigns/banjir-melawi.jpg', 'approved'),
+  (15, 1, 'Pemulihan Rumah Warga Manado', 'pembangunan', 'Manado, Sulawesi Utara', 'Bantuan material bangunan dan tenaga kerja untuk memperbaiki rumah warga yang rusak akibat gempa.', 120000000, 30250000, '2026-08-02', 'assets/images/campaigns/gempa-manado.jpg', 'approved'),
+  (16, 2, 'Tanam Mangrove Pesisir', 'lingkungan', 'Semarang, Jawa Tengah', 'Gerakan tanam mangrove untuk menahan abrasi, menjaga ekosistem pesisir, dan melibatkan relawan warga.', 55000000, 22900000, '2026-07-22', 'assets/images/campaigns/reboisasi-hutan.jpg', 'approved'),
+  (17, 1, 'Alat Bantu Difabel', 'kesehatan', 'Bandung, Jawa Barat', 'Pengadaan kursi roda, tongkat, dan alat bantu mobilitas untuk penyandang disabilitas dari keluarga prasejahtera.', 45000000, 9100000, '2026-06-30', 'assets/images/campaigns/bantuan-pendidikan-desa.jpg', 'approved'),
+  (18, 2, 'Bantuan Modal UMKM Ibu', 'sosial', 'Kupang, NTT', 'Modal usaha kecil membantu para ibu membangun kembali penghasilan keluarga melalui usaha rumahan.', 35000000, 12500000, '2026-07-11', 'assets/images/campaigns/puting-beliung-kupang.jpeg', 'approved'),
+  (19, 1, 'Perpustakaan Kampung', 'pendidikan', 'Lombok, NTB', 'Bantu penyediaan rak buku, koleksi bacaan anak, dan ruang belajar kecil untuk warga kampung.', 60000000, 20800000, '2026-08-12', 'assets/images/campaigns/bantuan-pendidikan-desa.jpg', 'approved'),
+  (20, 2, 'Perbaikan Jembatan Desa', 'pembangunan', 'Banyumas, Jawa Tengah', 'Jembatan desa yang rusak akan diperbaiki agar akses sekolah, pasar, dan layanan kesehatan kembali lancar.', 95000000, 15300000, '2026-07-27', 'assets/images/campaigns/reboisasi-hutan.jpg', 'approved'),
+  (21, 1, 'Bantuan Oksigen Klinik', 'kesehatan', 'Jayapura, Papua', 'Tabung oksigen dan regulator tambahan dibutuhkan untuk meningkatkan layanan klinik komunitas.', 70000000, 9700000, '2026-06-21', 'assets/images/campaigns/kampanye-1779013316-8905.png', 'approved'),
+  (22, 2, 'Hunian Sementara Korban Banjir', 'bencana_alam', 'Bali', 'Bangun hunian sementara dan sediakan perlengkapan tidur bagi keluarga yang rumahnya terdampak banjir.', 110000000, 33750000, '2026-08-08', 'assets/images/campaigns/banjir-bali.jpg', 'approved'),
+  (23, 1, 'Paket Sekolah Anak Pesisir', 'pendidikan', 'Belitung, Bangka Belitung', 'Paket sekolah berisi tas, buku, sepatu, dan alat tulis untuk anak-anak di wilayah pesisir.', 42000000, 18200000, '2026-07-03', 'assets/images/campaigns/bantuan-pendidikan-desa.jpg', 'approved'),
+  (24, 2, 'Bank Sampah Warga', 'lingkungan', 'Depok, Jawa Barat', 'Dukung pengadaan timbangan, gerobak, dan pelatihan warga untuk menjalankan bank sampah komunitas.', 28000000, 7600000, '2026-06-26', 'assets/images/campaigns/reboisasi-hutan.jpg', 'approved'),
+  (25, 1, 'Bantuan Gizi Balita', 'kesehatan', 'Ende, NTT', 'Paket makanan bergizi dan pendampingan kader akan membantu balita berisiko stunting.', 50000000, 14300000, '2026-07-16', 'assets/images/campaigns/kampanye-1779013316-8905.png', 'approved');
 
 INSERT INTO `metode_pembayaran`
   (`id_metode`, `kode`, `label`, `tipe`, `nomor_tujuan`, `nama_pemilik`, `instruksi`, `gambar`, `aktif`)
@@ -141,6 +160,6 @@ VALUES
 
 ALTER TABLE `donatur` AUTO_INCREMENT = 3;
 ALTER TABLE `penyelenggara` AUTO_INCREMENT = 3;
-ALTER TABLE `kampanye` AUTO_INCREMENT = 7;
+ALTER TABLE `kampanye` AUTO_INCREMENT = 26;
 ALTER TABLE `metode_pembayaran` AUTO_INCREMENT = 8;
 ALTER TABLE `donasi` AUTO_INCREMENT = 6;

@@ -3,7 +3,7 @@ session_start();
 include_once("./components/db_conn.php");
 require_once("./components/path_helper.php");
 $campaign_list_only = true;
-require_once("./components/campaign_list.php");
+require("./components/campaign_list.php");
 unset($campaign_list_only);
 
 $keyword = filter_input(INPUT_GET, 'keyword', FILTER_DEFAULT) ?: '';

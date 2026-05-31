@@ -478,6 +478,54 @@ if (!function_exists('deleteManagedCampaign')) {
     }
 }
 
+if (!function_exists('updateManagedCampaignStatus')) {
+    function updateManagedCampaignStatus($conn, $id_penyelenggara, $id_kampanye, $status) {
+        $allowed = ['pending', 'approved', 'rejected', 'completed'];
+        $id_penyelenggara = (int) $id_penyelenggara;
+        $id_kampanye = (int) $id_kampanye;
+        $status = strtolower(trim((string) $status));
+
+        if ($id_kampanye <= 0) {
+            return ['success' => false, 'errors' => ['Kampanye tidak valid.']];
+        }
+
+        if (!in_array($status, $allowed, true)) {
+            return ['success' => false, 'errors' => ['Status kampanye tidak valid.']];
+        }
+
+        try {
+            $stmt = mysqli_prepare(
+                $conn,
+                "UPDATE kampanye
+                 SET status = ?
+                 WHERE id_kampanye = ?
+                   AND id_penyelenggara = ?"
+            );
+
+            if (!$stmt) {
+                return ['success' => false, 'errors' => ['Status kampanye belum bisa diperbarui. Pastikan struktur database sudah terbaru.']];
+            }
+
+            mysqli_stmt_bind_param($stmt, "sii", $status, $id_kampanye, $id_penyelenggara);
+            $ok = mysqli_stmt_execute($stmt);
+            $affected = mysqli_stmt_affected_rows($stmt);
+            mysqli_stmt_close($stmt);
+        } catch (mysqli_sql_exception $exception) {
+            return ['success' => false, 'errors' => ['Status kampanye belum bisa diperbarui. Pastikan struktur database sudah terbaru.']];
+        }
+
+        if (!$ok) {
+            return ['success' => false, 'errors' => ['Status kampanye belum bisa disimpan.']];
+        }
+
+        if ($affected === 0 && !getManagedCampaignById($conn, $id_penyelenggara, $id_kampanye)) {
+            return ['success' => false, 'errors' => ['Kampanye tidak ditemukan atau bukan milik akun ini.']];
+        }
+
+        return ['success' => true, 'errors' => []];
+    }
+}
+
 if (!function_exists('getManagedDonations')) {
     function getManagedDonations($conn, $id_penyelenggara, $status = '', $search = '', $campaign_id = 0, $limit = 0, $offset = 0) {
         $id_penyelenggara = (int) $id_penyelenggara;
@@ -535,7 +583,12 @@ if (!function_exists('getManagedDonations')) {
             return [];
         }
 
-        mysqli_stmt_bind_param($stmt, $types, ...$params);
+        $bind_params = [];
+        $bind_params[] = $types;
+        for ($i = 0; $i < count($params); $i++) {
+            $bind_params[] = &$params[$i];
+        }
+        call_user_func_array([$stmt, 'bind_param'], $bind_params);
         mysqli_stmt_execute($stmt);
         $rows = fetchAllAssoc(mysqli_stmt_get_result($stmt));
         mysqli_stmt_close($stmt);
@@ -583,7 +636,12 @@ if (!function_exists('countManagedDonations')) {
             return 0;
         }
 
-        mysqli_stmt_bind_param($stmt, $types, ...$params);
+        $bind_params = [];
+        $bind_params[] = $types;
+        for ($i = 0; $i < count($params); $i++) {
+            $bind_params[] = &$params[$i];
+        }
+        call_user_func_array([$stmt, 'bind_param'], $bind_params);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $row = $result ? mysqli_fetch_assoc($result) : null;

@@ -191,7 +191,12 @@ $total_data = 0;
 
 if ($count_stmt) {
     if (!empty($params)) {
-        mysqli_stmt_bind_param($count_stmt, $types, ...$params);
+        $bind_params = [];
+        $bind_params[] = $types;
+        for ($i = 0; $i < count($params); $i++) {
+            $bind_params[] = &$params[$i];
+        }
+        call_user_func_array([$count_stmt, 'bind_param'], $bind_params);
     }
 
     mysqli_stmt_execute($count_stmt);
@@ -217,7 +222,12 @@ if ($stmt === false) {
 
 $query_types = $types . "ii";
 $query_params = array_merge($params, [$limit, $offset]);
-mysqli_stmt_bind_param($stmt, $query_types, ...$query_params);
+$bind_params2 = [];
+$bind_params2[] = $query_types;
+for ($i = 0; $i < count($query_params); $i++) {
+    $bind_params2[] = &$query_params[$i];
+}
+call_user_func_array([$stmt, 'bind_param'], $bind_params2);
 
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);

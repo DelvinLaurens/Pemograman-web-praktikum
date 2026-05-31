@@ -27,17 +27,17 @@ demisesama/
 |   |-- galang-dana.php
 |   |-- riwayat-donasi.php
 |-- components/
-|-- css/
-|-- js/
+|-- CSS/
+|-- JS/
 |-- assets/
-|-- database/
+|-- Database/
 ```
 
 ## Cara Menjalankan
 
 1. Letakkan folder project di `xampp\htdocs\`.
 2. Jalankan Apache dan MySQL dari XAMPP.
-3. Import database dari `database/demi_sesama.sql`.
+3. Import database dari `Database/demi_sesama.sql`.
 4. Buka `http://localhost/demisesama/index.php`.
 
 ## Akun Contoh
@@ -65,8 +65,8 @@ Catatan ini dibuat agar anggota tim atau AI assistant dapat memahami konteks pro
 | Login role donatur/pengelola | Memisahkan akses user biasa dan admin/pengelola | Donatur, Pengelola | `auth/login.php`, `auth/logout.php`, `components/auth.php` | done |
 | Donasi campaign | User memilih campaign, nominal, dan metode pembayaran | Donatur | `pages/donasi.php`, `components/donation_service.php`, `components/donation_helper.php` | done |
 | Upload bukti pembayaran | Donatur mengirim bukti transfer setelah membuat donasi | Donatur | `pages/verif.php`, `assets/uploads/bukti-transfer/` | done |
-| Verifikasi donasi | Admin menerima atau menolak pembayaran donasi | Pengelola | `admin/donasi.php`, `components/admin_service.php`, `css/admin.css` | done |
-| Metode pembayaran | Admin mengatur QRIS, bank/VA, dan e-wallet | Pengelola | `admin/metode-pembayaran.php`, `components/admin_service.php`, `database/demi_sesama.sql` | done |
+| Verifikasi donasi | Admin menerima atau menolak pembayaran donasi | Pengelola | `admin/donasi.php`, `components/admin_service.php`, `CSS/admin.css` | done |
+| Metode pembayaran | Admin mengatur QRIS, bank/VA, dan e-wallet | Pengelola | `admin/metode-pembayaran.php`, `components/admin_service.php`, `Database/demi_sesama.sql` | done |
 | Kelola kampanye | Admin membuat, mengubah, dan menghapus campaign miliknya | Pengelola | `admin/kampanye.php`, `components/admin_service.php` | done |
 | Riwayat donasi | Donatur melihat status donasi yang pernah dibuat | Donatur | `pages/riwayat-donasi.php` | done |
 
@@ -84,89 +84,42 @@ Catatan ini dibuat agar anggota tim atau AI assistant dapat memahami konteks pro
 
 | Fitur | Tujuan | Role | File/Folders Terkait | Progress |
 |---|---|---|---|---|
-| Galang dana masuk database | Form galang dana user tersimpan sebagai pengajuan campaign | Donatur/User, Pengelola | `pages/galang-dana.php`, `admin/kampanye.php`, `database/demi_sesama.sql` | done |
-| Approval campaign | Admin menerima/menolak pengajuan campaign sebelum tampil di homepage | Pengelola | `admin/`, `components/admin_service.php`, `database/demi_sesama.sql` | done |
-| Alasan penolakan donasi | Admin dapat mencatat alasan ketika menolak bukti pembayaran | Pengelola | `admin/donasi.php`, `components/admin_service.php`, `database/demi_sesama.sql` | optional |
-| Preview bukti transfer | Admin melihat bukti transfer langsung tanpa membuka tab baru | Pengelola | `admin/donasi.php`, `css/admin.css`, `assets/uploads/bukti-transfer/` | done |
+| Galang dana masuk database | Form galang dana user tersimpan sebagai pengajuan campaign | Donatur/User, Pengelola | `pages/galang-dana.php`, `admin/kampanye.php`, `Database/demi_sesama.sql` | done |
+| Approval campaign | Admin menerima/menolak pengajuan campaign sebelum tampil di homepage | Pengelola | `admin/`, `components/admin_service.php`, `Database/demi_sesama.sql` | done |
+| Alasan penolakan donasi | Admin dapat mencatat alasan ketika menolak bukti pembayaran | Pengelola | `admin/donasi.php`, `components/admin_service.php`, `Database/demi_sesama.sql` | optional |
+| Preview bukti transfer | Admin melihat bukti transfer langsung tanpa membuka tab baru | Pengelola | `admin/donasi.php`, `CSS/admin.css`, `assets/uploads/bukti-transfer/` | done |
 | Pagination admin | Tabel donasi/kampanye tetap rapi saat data banyak | Pengelola | `admin/donasi.php`, `admin/kampanye.php`, `components/admin_service.php` | done |
-| Dashboard chart | Dashboard menampilkan grafik ringkas donasi/campaign | Pengelola | `admin/dashboard.php`, `css/admin.css`, `js/script.js` | done |
-| Campaign status system | Campaign memiliki status `pending`, `approved`, `rejected`, dan `completed` | Pengelola | `admin/kampanye.php`, `pages/galang-dana.php`, `database/demi_sesama.sql` | done |
+| Dashboard chart | Dashboard menampilkan grafik ringkas donasi/campaign | Pengelola | `admin/dashboard.php`, `CSS/admin.css`, `JS/script.js` | done |
+| Campaign status system | Campaign memiliki status `pending`, `approved`, `rejected`, dan `completed` | Pengelola | `admin/kampanye.php`, `pages/galang-dana.php`, `Database/demi_sesama.sql` | done |
 | Dynamic progress system | Progress campaign dihitung dari target dan dana terkumpul | Donatur, Pengelola | `components/campaign_card.php`, `pages/detail.php`, `components/admin_service.php` | partially done |
 | Campaign deadline system | Campaign memiliki batas waktu, sisa hari, dan penutupan otomatis | Donatur, Pengelola | `components/campaign_list.php`, `components/campaign_card.php`, `pages/detail.php` | partially done |
-| Campaign update timeline | Pengelola memberi update perkembangan, foto, dan penggunaan dana | Pengelola, Donatur | `admin/`, `pages/detail.php`, `database/demi_sesama.sql` | planned |
-| Trending campaign section | Homepage menampilkan Most Funded, Urgent Campaign, dan Latest Campaign | Donatur/User | `index.php`, `components/campaign_list.php`, `css/home.css` | done |
+| Campaign update timeline | Pengelola memberi update perkembangan, foto, dan penggunaan dana | Pengelola, Donatur | `admin/`, `pages/detail.php`, `Database/demi_sesama.sql` | planned |
+| Trending campaign section | Homepage menampilkan Most Funded, Urgent Campaign, dan Latest Campaign | Donatur/User | `index.php`, `components/campaign_list.php`, `CSS/home.css` | done |
+| Seed database kampanye | Database contoh cukup untuk demo dan fresh import langsung menampilkan campaign | Developer | `Database/demi_sesama.sql` | done |
+| Perbaikan tampilan login | Membuat halaman login lebih rapi dan siap presentasi | Donatur, Pengelola | `auth/login.php`, `CSS/login.css` | planned |
 
 ### Catatan Teknis
 
-- File utama database adalah `database/demi_sesama.sql`; teman satu tim cukup import file ini sekali.
+- File utama database adalah `Database/demi_sesama.sql`; teman satu tim cukup import file ini sekali.
 - Helper path ada di `components/path_helper.php`; gunakan `url_for()` untuk link halaman dan `asset_url()` untuk CSS/gambar/upload.
 - Halaman public ada di root dan folder `pages/`, halaman admin ada di `admin/`, login/logout ada di `auth/`.
 - Jangan pindahkan file tanpa memperbarui link, form action, redirect, dan include.
-- Folder `js/` tetap dipakai untuk animasi homepage melalui `js/script.js`.
+- Folder `JS/` tetap dipakai untuk animasi homepage melalui `JS/script.js`.
 
 ### Catatan Bug / Revisi Berikutnya
 
-- `pages/galang-dana.php` masih berupa form tampilan dan belum menyimpan data ke database. (done)
-- Belum ada approval campaign untuk pengajuan dari user. (done)
 - Tombol `Tolak` donasi belum menyimpan alasan penolakan.
-- Bukti transfer admin masih dibuka lewat link, belum preview modal.
-- Tabel admin belum memakai pagination.
-- Tabel `kampanye` belum memiliki kolom status campaign seperti `pending`, `approved`, `rejected`, dan `completed`. (done)
+- Tolak campaign juga belum menyimpan alasan penolakan untuk dibaca pengaju.
 - Progress campaign sudah dinamis dari `dana_terkumpul` dan `target_dana`, tetapi belum realtime tanpa reload.
-- Deadline campaign sudah memakai `batas_waktu` dan sisa hari, tetapi belum memiliki auto close formal ke status `completed`.
-- Dashboard admin belum memiliki grafik Chart.js.
-- Homepage belum memiliki section trending campaign.
+- Deadline campaign sudah menutup tombol donasi secara tampilan, tetapi belum memiliki auto close formal yang mengubah status database ke `completed`.
 - Belum ada timeline update perkembangan campaign.
+- `pages/galang-dana.php` sudah menyimpan data, tetapi masih memakai `id_penyelenggara = 1` sebagai default pengelola.
+- Tampilan login masih perlu dirapikan untuk presentasi.
+- Validasi upload image di form galang dana belum seketat helper upload admin.
 
 ### Planned Features & Next Development
 
-1. **Campaign Status System**
-
-   Menambahkan sistem status campaign agar alur approval lebih jelas.
-
-   Status yang direncanakan:
-   - `pending`
-   - `approved`
-   - `rejected`
-   - `completed`
-
-   Catatan:
-   - Campaign baru otomatis berstatus `pending`.
-   - Admin dapat approve/reject campaign.
-   - Campaign `rejected` tidak tampil di homepage.
-   - Campaign `completed` saat target tercapai atau deadline habis.
-
-2. **Dynamic Progress System**
-
-   Progress campaign sudah berjalan sebagian menggunakan `dana_terkumpul` dan `target_dana`.
-
-   Pengembangan berikutnya:
-   - Progress bar otomatis lebih konsisten di semua halaman.
-   - Persentase progress otomatis.
-   - Total donasi auto update setelah donasi verified.
-   - Jika dibutuhkan, field dapat dirapikan menjadi konsep `current_amount` dan `target_amount`.
-
-3. **Campaign Deadline System**
-
-   Deadline sudah berjalan sebagian melalui `batas_waktu` dan sisa hari.
-
-   Pengembangan berikutnya:
-   - Countdown timer campaign.
-   - Auto close campaign ketika deadline selesai.
-   - Status berubah ke `completed` jika campaign selesai.
-
-4. **Dashboard Analytics**
-
-   Menambahkan analytics pada admin dashboard menggunakan Chart.js.
-
-   Rencana isi dashboard:
-   - Statistik donasi bulanan.
-   - Total dana terkumpul.
-   - Total campaign aktif.
-   - Top campaign.
-   - Grafik donasi.
-
-5. **Rejected Reason System**
+1. **Rejected Reason System**
 
    Menambahkan alasan penolakan campaign/donasi.
 
@@ -175,7 +128,16 @@ Catatan ini dibuat agar anggota tim atau AI assistant dapat memahami konteks pro
    - Alasan disimpan ke database.
    - User dapat melihat alasan penolakan.
 
-6. **Campaign Update Timeline**
+2. **Campaign Completion Sync**
+
+   Menambahkan proses formal untuk menutup campaign.
+
+   Rencana flow:
+   - Campaign menjadi `completed` saat target tercapai.
+   - Campaign menjadi `completed` saat deadline habis.
+   - Status database sinkron dengan tampilan detail dan card campaign.
+
+3. **Campaign Update Timeline**
 
    Menambahkan fitur update perkembangan campaign.
 
@@ -183,30 +145,29 @@ Catatan ini dibuat agar anggota tim atau AI assistant dapat memahami konteks pro
    - Upload foto update.
    - Progress kegiatan.
    - Catatan penggunaan dana.
-   - Timeline perkembangan campaign.
+   - Timeline perkembangan campaign di halaman detail.
 
-7. **Trending Campaign Section**
+4. **Galang Dana Ownership**
 
-   Menambahkan section trending campaign pada homepage.
+   Merapikan flow pengajuan campaign dari halaman publik.
 
-   Kategori:
-   - Most Funded.
-   - Urgent Campaign.
-   - Latest Campaign.
+   Rencana flow:
+   - Pengajuan tidak hardcode ke penyelenggara pertama.
+   - Admin/pengelola dapat melihat sumber pengajuan.
+   - Validasi upload menggunakan aturan yang konsisten.
 
-8. **Future Improvements**
+5. **Login UI Polish**
 
-   - Pagination pada seluruh tabel admin.
-   - Modal image preview untuk bukti transfer.
-   - Reusable component/function.
-   - Validasi upload image yang lebih ketat.
+   Merapikan tampilan login agar lebih siap demo.
+
+   Rencana fitur:
+   - Layout login lebih modern dan responsif.
+   - Info akun demo ditampilkan lebih rapi.
+   - State error dan role switch lebih jelas.
+
+6. **Future Improvements**
+
+   - Progress realtime tanpa reload jika dibutuhkan.
    - Optimasi query database.
-   - Responsive dashboard UI.
-
-8. **Tambahkan Konten di Database**
-
-   - butuh lebih banyak konten di database.
-   - terlalu sedikit acara penggalangan dananya
-   - tambahkan minimal 25
-
-9. **tampilan login harus di perbaiki sih**
+   - Reusable component/function untuk aksi admin.
+   - Responsive dashboard UI yang lebih matang.

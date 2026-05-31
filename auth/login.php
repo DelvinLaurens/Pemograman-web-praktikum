@@ -158,11 +158,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <button type="submit" class="btn-submit-login">Masuk Sekarang</button>
-                    <p class="text-center link-daftar">Donatur: kevin@gmail.com / kevin123<br>Pengelola: jere@gmail.com / jeremy123</p>
+                    
+                    <div class="demo-accounts">
+                        <h4 style="margin: 0 0 10px 0; color: var(--primary); font-size: 0.95rem; text-align: center;">Informasi Akun Demo</h4>
+                        <div style="display: flex; flex-direction: column; gap: 8px; background: #F8FAFC; border: 1px dashed #CBD5E1; padding: 15px; border-radius: 8px; font-size: 0.85rem; color: var(--text-desc);">
+                            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #E2E8F0; padding-bottom: 6px;">
+                                <strong>Donatur</strong>
+                                <span>kevin@gmail.com / kevin123</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding-top: 2px;">
+                                <strong>Pengelola</strong>
+                                <span>jere@gmail.com / jeremy123</span>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
     </main>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const roleRadios = document.querySelectorAll('input[name="role"]');
+        const roleLabels = document.querySelectorAll('.login-role-toggle label');
+
+        roleRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                roleLabels.forEach(label => label.classList.remove('active'));
+                if (this.checked) {
+                    this.parentElement.classList.add('active');
+                }
+            });
+        });
+    });
+    </script>
 
     <?php include_once("../components/footer.php") ?>
 

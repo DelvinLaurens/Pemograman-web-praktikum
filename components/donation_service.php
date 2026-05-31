@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/donation_helper.php";
+// require_once "db_conn.php";
 
 if (!function_exists('getCampaignForDonation')) {
     function getCampaignForDonation($conn, $id_kampanye) {

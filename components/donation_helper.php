@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/path_helper.php";
+// require_once("./components/db_conn.php");
 
 if (!function_exists('e')) {
     function e($value) {
