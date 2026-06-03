@@ -24,8 +24,8 @@ $donor_logged_in_nav = !empty($_SESSION['id_donatur']) && ($_SESSION['role'] ?? 
                 <?php if (!empty($_SESSION['id_penyelenggara']) && ($_SESSION['role'] ?? '') === 'pengelola'): ?>
                     <li><a href="<?php echo url_for('admin/dashboard.php'); ?>" class="<?php echo $halaman_aktif === 'admin/dashboard.php' ? 'active' : ''; ?>">Dashboard</a></li>
                     <li><a href="<?php echo url_for('admin/kampanye.php'); ?>" class="<?php echo $halaman_aktif === 'admin/kampanye.php' ? 'active' : ''; ?>">Kampanye</a></li>
-                    <li><a href="<?php echo url_for('admin/donasi.php'); ?>" class="<?php echo $halaman_aktif === 'admin/donasi.php' ? 'active' : ''; ?>">Donasi</a></li>
-                    <li><span class="nav-user">Halo, <?php echo htmlspecialchars($nama_pertama_pengelola_nav, ENT_QUOTES, 'UTF-8'); ?></span></li>
+                    <li><a href="<?php echo url_for('admin/donasi.php'); ?>" class="<?php echo $halaman_aktif === 'admin/donasi.php' ? 'active' : ''; ?>">Verifikasi Donasi</a></li>
+                    <li><a href="<?php echo url_for('admin/metode-pembayaran.php'); ?>" class="<?php echo $halaman_aktif === 'admin/metode-pembayaran.php' ? 'active' : ''; ?>">Metode Pembayaran</a></li>
                     <li><a href="<?php echo url_for('auth/logout.php'); ?>" class="btn-login btn-logout">Logout</a></li>
                 <?php else: ?>
                     <li><a href="<?php echo url_for('index.php'); ?>" class="<?php echo $halaman_aktif === 'index.php' ? 'active' : ''; ?>">Beranda</a></li>

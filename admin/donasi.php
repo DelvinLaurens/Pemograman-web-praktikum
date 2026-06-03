@@ -84,7 +84,7 @@ $active_filter_count = ($search_query !== '' ? 1 : 0) + ($status_filter !== '' ?
     <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/form.css?v=3'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/admin.css?v=4'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/admin.css?v=6'); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -92,15 +92,6 @@ $active_filter_count = ($search_query !== '' ? 1 : 0) + ($status_filter !== '' ?
 
     <main class="admin-page verification-page">
         <div class="container">
-            <div class="admin-heading verification-heading">
-                <div>
-                    <span>Admin Crowdfunding</span>
-                    <h1>Verifikasi Donasi</h1>
-                    <p>Antrian pembayaran dan bukti transfer donasi campaign.</p>
-                </div>
-                <a href="<?php echo url_for('admin/dashboard.php'); ?>" class="admin-secondary-link">Dashboard</a>
-            </div>
-
             <?php if (!empty($errors)): ?>
                 <div class="pesan-error">
                     <?php foreach ($errors as $error): ?>
@@ -235,10 +226,17 @@ $active_filter_count = ($search_query !== '' ? 1 : 0) + ($status_filter !== '' ?
 
                 <div class="verification-table-wrap daftar-donasi-wrap">
                     <table class="verification-table daftar-donasi-table">
+                        <colgroup>
+                            <col class="donation-donor-col">
+                            <col class="donation-campaign-col">
+                            <col class="donation-amount-col">
+                            <col class="donation-status-col">
+                            <col class="donation-proof-col">
+                            <col class="donation-action-col">
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th>Donatur</th>
-                                <th>Email</th>
                                 <th>Campaign</th>
                                 <th>Nominal</th>
                                 <th>Status</th>
@@ -249,7 +247,7 @@ $active_filter_count = ($search_query !== '' ? 1 : 0) + ($status_filter !== '' ?
                         <tbody>
                             <?php if (empty($donations)): ?>
                                 <tr class="verification-empty-row daftar-donasi-empty-row">
-                                    <td colspan="7">Belum ada donasi sesuai filter.</td>
+                                    <td colspan="6">Belum ada donasi sesuai filter.</td>
                                 </tr>
                             <?php endif; ?>
 
@@ -265,8 +263,6 @@ $active_filter_count = ($search_query !== '' ? 1 : 0) + ($status_filter !== '' ?
                                 <tr class="<?php echo $is_pending ? 'verification-row-pending daftar-donasi-row-pending' : 'daftar-donasi-row'; ?>">
                                     <td class="verification-donor">
                                         <strong><?php echo e($donasi['nama_lengkap']); ?></strong>
-                                    </td>
-                                    <td>
                                         <span class="verification-email"><?php echo e($donasi['email']); ?></span>
                                     </td>
                                     <td>

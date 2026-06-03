@@ -36,7 +36,7 @@ foreach ($donations as $donation) {
 }
 
 $target = $campaign ? (float) $campaign['target_dana'] : 0;
-$collected = $campaign ? (float) $campaign['dana_terkumpul'] : 0;
+$collected = $campaign ? (float) $donation_totals['VERIFIED']['total'] : 0;
 $progress = $target > 0 ? min(100, round(($collected / $target) * 100)) : 0;
 $category_label = $campaign ? ucwords(str_replace('_', ' ', (string) $campaign['kategori'])) : '';
 $campaign_status = $campaign ? strtolower(trim((string) ($campaign['status'] ?? 'pending'))) : 'pending';
@@ -93,7 +93,9 @@ $summary_cards = [
                     <span>Detail Kampanye</span>
                     <h1><?php echo $campaign ? e($campaign['judul_kampanye']) : 'Kampanye Tidak Ditemukan'; ?></h1>
                 </div>
-                <a href="<?php echo url_for('admin/kampanye.php' . $return_query); ?>" class="admin-secondary-link">Kembali ke Daftar</a>
+                <?php if ($campaign): ?>
+                    <a href="<?php echo url_for('admin/form-kampanye.php?edit=' . (int) $campaign['id_kampanye'] . ($return_page > 1 ? '&page=' . $return_page : '')); ?>" class="admin-primary-link">Edit Kampanye</a>
+                <?php endif; ?>
             </div>
 
             <?php if (!$campaign): ?>
@@ -167,7 +169,6 @@ $summary_cards = [
                         </div>
 
                         <div class="campaign-detail-actions">
-                            <a href="<?php echo url_for('admin/form-kampanye.php?edit=' . (int) $campaign['id_kampanye'] . ($return_page > 1 ? '&page=' . $return_page : '')); ?>" class="admin-primary-link">Edit Kampanye</a>
                             <a href="<?php echo url_for('admin/donasi.php?campaign=' . (int) $campaign['id_kampanye']); ?>" class="admin-secondary-link">Verifikasi Donasi</a>
                         </div>
                     </aside>

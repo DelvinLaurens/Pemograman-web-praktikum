@@ -37,10 +37,8 @@ $nama_pengelola = $_SESSION['nama_penyelenggara'] ?? 'Pengelola';
         <div class="container">
             <div class="admin-heading">
                 <div>
-                    <span>Dashboard Pengelola</span>
                     <h1>Halo, <?php echo e($nama_pengelola); ?></h1>
                 </div>
-                <a href="<?php echo url_for('admin/kampanye.php'); ?>" class="admin-primary-link">Kelola Kampanye</a>
             </div>
 
             <section class="admin-stats">
@@ -138,20 +136,6 @@ $nama_pengelola = $_SESSION['nama_penyelenggara'] ?? 'Pengelola';
                 </div>
             </section>
 
-            <section class="admin-menu-grid">
-                <a href="<?php echo url_for('admin/kampanye.php'); ?>" class="admin-menu-card">
-                    <span>Kampanye</span>
-                    <strong>Tambah, ubah, dan hapus kampanye milik pengelola.</strong>
-                </a>
-                <a href="<?php echo url_for('admin/donasi.php'); ?>" class="admin-menu-card">
-                    <span>Verifikasi Donasi</span>
-                    <strong>Lihat bukti transfer dan ubah status donasi.</strong>
-                </a>
-                <a href="<?php echo url_for('admin/metode-pembayaran.php'); ?>" class="admin-menu-card">
-                    <span>Metode Pembayaran</span>
-                    <strong>Atur nomor VA, rekening, QRIS, dan instruksi pembayaran.</strong>
-                </a>
-            </section>
         </div>
     </main>
 

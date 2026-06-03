@@ -983,14 +983,39 @@
 .verification-table {
     border-collapse: separate;
     border-spacing: 0;
-    min-width: 980px;
+    min-width: 900px;
+    table-layout: fixed;
     width: 100%;
+}
+
+.daftar-donasi-table .donation-donor-col {
+    width: 22%;
+}
+
+.daftar-donasi-table .donation-campaign-col {
+    width: 24%;
+}
+
+.daftar-donasi-table .donation-amount-col {
+    width: 14%;
+}
+
+.daftar-donasi-table .donation-status-col {
+    width: 13%;
+}
+
+.daftar-donasi-table .donation-proof-col {
+    width: 13%;
+}
+
+.daftar-donasi-table .donation-action-col {
+    width: 14%;
 }
 
 .verification-table th,
 .verification-table td {
     border-bottom: 1px solid var(--border);
-    padding: 14px 12px;
+    padding: 9px 8px;
     text-align: left;
     vertical-align: middle;
 }
@@ -998,7 +1023,7 @@
 .verification-table th {
     background-color: #F8FAFC;
     color: var(--text-desc);
-    font-size: 0.76rem;
+    font-size: 0.66rem;
     font-weight: 700;
     position: sticky;
     text-transform: uppercase;
@@ -1009,7 +1034,7 @@
 .verification-table td {
     background-color: var(--white);
     color: var(--main-text);
-    font-size: 0.88rem;
+    font-size: 0.76rem;
     transition: background-color 0.2s ease;
 }
 
@@ -1048,11 +1073,30 @@
     line-height: 1.35;
 }
 
+.verification-donor strong {
+    font-size: 0.78rem;
+}
+
+.verification-campaign {
+    display: -webkit-box;
+    font-size: 0.76rem;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+.verification-amount {
+    font-size: 0.76rem;
+    white-space: nowrap;
+}
+
 .verification-email,
 .verification-muted {
     color: var(--text-desc);
     display: inline-block;
-    font-size: 0.84rem;
+    font-size: 0.68rem;
+    line-height: 1.35;
     overflow-wrap: anywhere;
 }
 
@@ -1060,12 +1104,12 @@
     align-items: center;
     border-radius: 8px;
     display: inline-flex;
-    font-size: 0.8rem;
+    font-size: 0.68rem;
     font-weight: 700;
     justify-content: center;
-    min-height: 34px;
-    min-width: 88px;
-    padding: 7px 10px;
+    min-height: 27px;
+    min-width: 70px;
+    padding: 5px 7px;
 }
 
 .verification-status-badge.status-pending {
@@ -1093,9 +1137,9 @@
     border-radius: 8px;
     color: #1D4ED8;
     display: inline-flex;
-    font-size: 0.82rem;
+    font-size: 0.68rem;
     font-weight: 700;
-    padding: 8px 10px;
+    padding: 6px 8px;
     transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
     white-space: nowrap;
 }
@@ -1108,8 +1152,8 @@
 
 .verification-actions {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    flex-wrap: nowrap;
+    gap: 5px;
 }
 
 .verification-btn {
@@ -1117,10 +1161,10 @@
     border-radius: 8px;
     color: var(--white);
     cursor: pointer;
-    font-size: 0.82rem;
+    font-size: 0.68rem;
     font-weight: 700;
-    min-height: 36px;
-    padding: 8px 11px;
+    min-height: 29px;
+    padding: 6px 8px;
     transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 

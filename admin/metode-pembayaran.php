@@ -39,7 +39,7 @@ $form_source = !empty($errors) ? $_POST : ($editing ?: ['aktif' => 1]);
     <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/form.css?v=3'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/admin.css?v=1'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/admin.css?v=9'); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -49,10 +49,8 @@ $form_source = !empty($errors) ? $_POST : ($editing ?: ['aktif' => 1]);
         <div class="container">
             <div class="admin-heading">
                 <div>
-                    <span>Pengaturan Pembayaran</span>
                     <h1><?php echo $editing ? 'Edit Metode' : 'Tambah Metode'; ?></h1>
                 </div>
-                <a href="<?php echo url_for('admin/dashboard.php'); ?>" class="admin-secondary-link">Dashboard</a>
             </div>
 
             <?php if (!empty($errors)): ?>
