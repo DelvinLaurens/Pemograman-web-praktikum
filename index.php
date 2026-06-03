@@ -8,9 +8,9 @@ $kategori = filter_input(INPUT_GET, 'kategori', FILTER_DEFAULT) ?: '';
 $lokasi = filter_input(INPUT_GET, 'lokasi', FILTER_DEFAULT) ?: '';
 
 $query = "SELECT * FROM kampanye
-          WHERE status = 'approved'
-            AND batas_waktu >= CURDATE()
-            AND dana_terkumpul < target_dana";
+        WHERE status = 'approved'
+        AND batas_waktu >= CURDATE()
+        AND dana_terkumpul < target_dana";
 
 if (!empty($keyword)) {
     $query .= " AND judul_kampanye LIKE '%" . $conn->real_escape_string($keyword) . "%'";
@@ -31,6 +31,11 @@ if ($result_campaigns) {
         $campaigns[] = $row;
     }
 }
+
+$campaign_list_only = true;
+require_once("./components/campaign_list.php");
+unset($campaign_list_only);
+$latest_campaigns = getTrendingCampaign($conn, 'latest', 3);
 ?>
 
 <!DOCTYPE html>
@@ -88,6 +93,21 @@ if ($result_campaigns) {
 
                         <button type="submit" class="btn-search">Cari</button>
                     </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="kampanye kampanye-terbaru" id="kampanye-terbaru">
+            <div class="container">
+                <h2 class="section-title">Kampanye Terbaru</h2>
+                <div class="kampanye-grid">
+                    <?php if (!empty($latest_campaigns)): ?>
+                        <?php foreach ($latest_campaigns as $kampanye_terbaru): ?>
+                            <?php cardKampanye($kampanye_terbaru); ?>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="deskripsi">Belum ada kampanye terbaru yang tersedia.</p>
+                    <?php endif; ?>
                 </div>
             </div>
         </section>

@@ -31,7 +31,7 @@ if ($kampanye) {
     $terkumpul = (float) $kampanye['dana_terkumpul'];
     $persentase = $target > 0 ? min(round(($terkumpul / $target) * 100), 100) : 0;
 
-    $hari_ini = new DateTime();
+    $hari_ini = new DateTime('today');
     $batas_waktu = new DateTime($kampanye['batas_waktu']);
     $sisa_hari = $batas_waktu < $hari_ini ? 0 : $hari_ini->diff($batas_waktu)->days;
     $campaign_closed = isCampaignClosed($kampanye);

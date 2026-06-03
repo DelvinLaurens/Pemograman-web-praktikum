@@ -93,7 +93,7 @@ $current_page_query = $current_page > 1 ? '?page=' . $current_page : '';
     <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/form.css?v=3'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/admin.css?v=1'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/admin.css?v=3'); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -132,14 +132,21 @@ $current_page_query = $current_page > 1 ? '?page=' . $current_page : '';
                 </div>
 
                 <div class="admin-table-wrap">
-                    <table class="admin-table">
+                    <table class="admin-table campaign-admin-table">
+                        <colgroup>
+                            <col class="campaign-title-col">
+                            <col class="campaign-fund-col">
+                            <col class="campaign-date-col">
+                            <col class="campaign-status-col">
+                            <col class="campaign-action-col">
+                        </colgroup>
                         <thead>
                             <tr>
-                                <th>Judul</th>
-                                <th>Dana</th>
-                                <th>Batas</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
+                                <th class="campaign-title-column">Judul</th>
+                                <th class="campaign-fund-column">Dana</th>
+                                <th class="campaign-date-column">Batas</th>
+                                <th class="campaign-status-column">Status</th>
+                                <th class="campaign-action-column">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -148,16 +155,48 @@ $current_page_query = $current_page > 1 ? '?page=' . $current_page : '';
                             <?php endif; ?>
 
                             <?php foreach ($campaigns as $campaign): ?>
+                                <?php
+                                    $target = (float) $campaign['target_dana'];
+                                    $collected = (float) $campaign['dana_terkumpul'];
+                                    $progress = $target > 0 ? min(100, ($collected / $target) * 100) : 0;
+                                    $raw_status = strtolower($campaign['status'] ?? 'pending');
+                                    $campaign_closed = isCampaignClosed($campaign);
+
+                                    if ($raw_status === 'pending') {
+                                        $display_status = 'Pending';
+                                        $display_status_class = 'pending';
+                                    } elseif ($raw_status === 'rejected') {
+                                        $display_status = 'Ditolak';
+                                        $display_status_class = 'rejected';
+                                    } elseif ($campaign_closed) {
+                                        $display_status = 'Complete';
+                                        $display_status_class = 'completed';
+                                    } else {
+                                        $display_status = 'Masih Dibuka';
+                                        $display_status_class = 'open';
+                                    }
+                                ?>
                                 <tr>
-                                    <td>
+                                    <td class="campaign-title-cell">
                                         <strong><?php echo e($campaign['judul_kampanye']); ?></strong>
                                         <span><?php echo e($campaign['kategori']); ?></span>
                                     </td>
-                                    <td><?php echo formatRupiah($campaign['dana_terkumpul']); ?></td>
+                                    <td>
+                                        <div class="campaign-fund-cell">
+                                            <div class="campaign-fund-row">
+                                                <strong><?php echo formatRupiah($collected); ?></strong>
+                                                <span><?php echo (int) round($progress); ?>%</span>
+                                            </div>
+                                            <div class="campaign-fund-progress" aria-label="Progress <?php echo (int) round($progress); ?> persen">
+                                                <span style="width: <?php echo e((string) $progress); ?>%;"></span>
+                                            </div>
+                                            <small>Target <?php echo formatRupiah($target); ?></small>
+                                        </div>
+                                    </td>
                                     <td><?php echo e($campaign['batas_waktu']); ?></td>
                                     <td>
-                                        <span class="status-badge status-<?php echo strtolower($campaign['status'] ?? 'pending'); ?>">
-                                            <?php echo strtoupper($campaign['status'] ?? 'pending'); ?>
+                                        <span class="status-badge status-<?php echo e($display_status_class); ?>">
+                                            <?php echo e($display_status); ?>
                                         </span>
                                     </td>
                                     <td class="admin-actions">

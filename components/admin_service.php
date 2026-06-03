@@ -14,6 +14,16 @@ if (!function_exists('fetchAllAssoc')) {
     }
 }
 
+if (!function_exists('managedActiveCampaignWhereSql')) {
+    function managedActiveCampaignWhereSql($alias = 'k') {
+        $alias = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $alias);
+        $alias = $alias !== '' ? $alias : 'k';
+
+        return "{$alias}.batas_waktu >= CURDATE()
+                AND {$alias}.status <> 'completed'";
+    }
+}
+
 if (!function_exists('getAdminSummary')) {
     function getAdminSummary($conn, $id_penyelenggara) {
         $id_penyelenggara = (int) $id_penyelenggara;
@@ -204,6 +214,7 @@ if (!function_exists('getDashboardTopCampaigns')) {
     function getDashboardTopCampaigns($conn, $id_penyelenggara, $limit = 5) {
         $id_penyelenggara = (int) $id_penyelenggara;
         $limit = max(1, (int) $limit);
+        $active_where = managedActiveCampaignWhereSql('k');
         $stmt = mysqli_prepare(
             $conn,
             "SELECT
@@ -215,6 +226,7 @@ if (!function_exists('getDashboardTopCampaigns')) {
              FROM kampanye k
              LEFT JOIN donasi d ON d.id_kampanye = k.id_kampanye AND d.status = 'VERIFIED'
              WHERE k.id_penyelenggara = ?
+                AND {$active_where}
              GROUP BY k.id_kampanye
              ORDER BY k.dana_terkumpul DESC, total_donasi DESC
              LIMIT ?"

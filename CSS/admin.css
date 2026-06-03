@@ -293,9 +293,144 @@
     margin-top: 3px;
 }
 
+.campaign-admin-table {
+    min-width: 800px;
+    table-layout: fixed;
+}
+
+.campaign-admin-table th,
+.campaign-admin-table td {
+    font-size: 0.82rem;
+    padding: 10px 8px;
+}
+
+.campaign-admin-table th {
+    font-size: 0.72rem;
+}
+
+.campaign-admin-table .campaign-title-col {
+    width: 28%;
+}
+
+.campaign-admin-table .campaign-fund-col {
+    width: 25%;
+}
+
+.campaign-admin-table .campaign-date-col {
+    width: 12%;
+}
+
+.campaign-admin-table .campaign-status-col {
+    width: 14%;
+}
+
+.campaign-admin-table .campaign-action-col {
+    width: 21%;
+}
+
+.campaign-title-cell strong {
+    color: var(--main-text);
+    display: -webkit-box;
+    font-size: 0.84rem;
+    line-height: 1.35;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+.campaign-title-cell span {
+    font-size: 0.74rem;
+}
+
+.campaign-admin-table td:nth-child(3) {
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.admin-table .status-badge {
+    align-items: center;
+    display: inline-flex;
+    font-size: 0.72rem;
+    margin-top: 0;
+    min-height: 30px;
+    padding: 6px 9px;
+    white-space: nowrap;
+}
+
+.admin-table .status-open {
+    background-color: #DBEAFE;
+    color: #1D4ED8;
+}
+
+.admin-table .status-pending {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.admin-table .status-completed {
+    background-color: #DCFCE7;
+    color: #166534;
+}
+
+.admin-table .status-rejected {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}
+
+.campaign-fund-cell {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+}
+
+.campaign-fund-row {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.campaign-fund-row strong {
+    color: var(--main-text);
+    font-size: 0.82rem;
+    overflow-wrap: anywhere;
+    white-space: nowrap;
+}
+
+.admin-table td .campaign-fund-row span {
+    color: var(--primary);
+    display: inline;
+    font-size: 0.74rem;
+    font-weight: 700;
+    margin-top: 0;
+}
+
+.campaign-fund-progress {
+    background-color: #E5E7EB;
+    border-radius: 999px;
+    height: 7px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.admin-table td .campaign-fund-progress span {
+    background-color: #10B981;
+    display: block;
+    height: 100%;
+    margin-top: 0;
+}
+
+.campaign-fund-cell small {
+    color: var(--text-desc);
+    font-size: 0.72rem;
+    white-space: nowrap;
+}
+
 .admin-actions {
     display: flex;
-    gap: 8px;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
 .admin-actions form {
@@ -311,9 +446,9 @@
     border-radius: 8px;
     color: var(--white);
     cursor: pointer;
-    font-size: 0.82rem;
+    font-size: 0.74rem;
     font-weight: 700;
-    padding: 8px 10px;
+    padding: 7px 9px;
 }
 
 .admin-actions button[value="reject"] {

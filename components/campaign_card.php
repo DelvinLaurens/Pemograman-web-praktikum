@@ -20,7 +20,7 @@ function cardKampanye($data) {
 
     $persentase_bulat = min(round($persentase), 100); 
 
-    $tanggal_sekarang = new DateTime();
+    $tanggal_sekarang = new DateTime('today');
     $batas_waktu = new DateTime($data['batas_waktu']);
     $sisa_waktu = $tanggal_sekarang->diff($batas_waktu);
     $sisa_hari = $sisa_waktu->days;
@@ -33,6 +33,10 @@ function cardKampanye($data) {
     $is_target_reached = ((float)$data['dana_terkumpul'] >= (float)$data['target_dana']);
     $is_expired = ($batas_waktu < $tanggal_sekarang);
     $is_closed = isCampaignClosed($data);
+
+    if ($is_closed) {
+        return;
+    }
 
     if ($is_db_completed || $is_target_reached || $is_expired || $is_closed) {
         $waktu_html = '<span style="color: #dc3545; font-weight: bold;">Selesai (Penggalangan Ditutup)</span>';
