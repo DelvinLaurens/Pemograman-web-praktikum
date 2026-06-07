@@ -27,7 +27,7 @@ $nama_pengelola = $_SESSION['nama_penyelenggara'] ?? 'Pengelola';
     <title>Dashboard Pengelola - DemiSesama</title>
     <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/admin.css?v=5'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/admin.css?v=6'); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -201,7 +201,7 @@ $nama_pengelola = $_SESSION['nama_penyelenggara'] ?? 'Pengelola';
                     labels: dashboardChartData.statusLabels,
                     datasets: [{
                         data: dashboardChartData.statusTotals,
-                        backgroundColor: ['#F59E0B', '#10B981', '#EF4444', '#64748B'],
+                        backgroundColor: ['#F59E0B', '#243D90', '#EF4444', '#64748B'],
                         borderColor: '#FFFFFF',
                         borderWidth: 3
                     }]

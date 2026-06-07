@@ -6,23 +6,36 @@ require_once("./components/path_helper.php");
 $keyword = filter_input(INPUT_GET, 'keyword', FILTER_DEFAULT) ?: '';
 $kategori = filter_input(INPUT_GET, 'kategori', FILTER_DEFAULT) ?: '';
 $lokasi = filter_input(INPUT_GET, 'lokasi', FILTER_DEFAULT) ?: '';
+$deadline = filter_input(INPUT_GET, 'deadline', FILTER_DEFAULT) ?: '';
+$deadline_is_valid = preg_match('/^\d{4}-\d{2}-\d{2}$/', $deadline);
 
-$query = "SELECT * FROM kampanye
-        WHERE status = 'approved'
-        AND batas_waktu >= CURDATE()
-        AND dana_terkumpul < target_dana";
+$query = "SELECT k.*
+        FROM kampanye k
+        INNER JOIN penyelenggara p ON p.id_penyelenggara = k.id_penyelenggara
+        WHERE k.status = 'approved'
+        AND k.batas_waktu >= CURDATE()
+        AND k.dana_terkumpul < k.target_dana";
 
 if (!empty($keyword)) {
-    $query .= " AND judul_kampanye LIKE '%" . $conn->real_escape_string($keyword) . "%'";
+    $keyword_safe = $conn->real_escape_string($keyword);
+    $query .= " AND (
+        k.judul_kampanye LIKE '%{$keyword_safe}%'
+        OR k.kategori LIKE '%{$keyword_safe}%'
+        OR k.lokasi LIKE '%{$keyword_safe}%'
+        OR p.nama_penyelenggara LIKE '%{$keyword_safe}%'
+    )";
 }
 if (!empty($kategori)) {
-    $query .= " AND kategori = '" . $conn->real_escape_string($kategori) . "'";
+    $query .= " AND k.kategori = '" . $conn->real_escape_string($kategori) . "'";
 }
 if (!empty($lokasi)) {
-    $query .= " AND lokasi LIKE '%" . $conn->real_escape_string($lokasi) . "%'";
+    $query .= " AND k.lokasi LIKE '%" . $conn->real_escape_string($lokasi) . "%'";
+}
+if (!empty($deadline) && $deadline_is_valid) {
+    $query .= " AND k.batas_waktu = '" . $conn->real_escape_string($deadline) . "'";
 }
 
-$query .= " ORDER BY id_kampanye DESC";
+$query .= " ORDER BY k.id_kampanye DESC";
 $result_campaigns = $conn->query($query);
 
 $campaigns = [];
@@ -48,7 +61,7 @@ $latest_campaigns = getTrendingCampaign($conn, 'latest', 3);
     <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
     <script>document.documentElement.classList.add("animasi-scroll-siap");</script>
     <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/home.css?v=11'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/home.css?v=14'); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -67,7 +80,7 @@ $latest_campaigns = getTrendingCampaign($conn, 'latest', 3);
                 <div class="search-bar">
                     <form method="GET" action="<?php echo url_for('index.php#kampanye'); ?>">
                         <i class="fas fa-search"></i>
-                        <input type="text" name="keyword" placeholder="Cari judul kampanye..." value="<?php echo htmlspecialchars($_GET['keyword'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                        <input type="text" name="keyword" placeholder="Cari judul atau penyelenggara..." value="<?php echo htmlspecialchars($_GET['keyword'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                         <select name="kategori" id="kategori">
                             <option value="">Semua Kategori</option>
@@ -90,6 +103,8 @@ $latest_campaigns = getTrendingCampaign($conn, 'latest', 3);
                             <option value="papua" <?php echo ($_GET['lokasi'] ?? '') === 'papua' ? 'selected' : ''; ?>>Papua</option>
                             <option value="ntt" <?php echo ($_GET['lokasi'] ?? '') === 'ntt' ? 'selected' : ''; ?>>NTT</option>
                         </select>
+
+                        <input type="date" name="deadline" class="search-date" aria-label="Tanggal deadline kampanye" title="Tanggal deadline kampanye" value="<?php echo htmlspecialchars($_GET['deadline'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                         <button type="submit" class="btn-search">Cari</button>
                     </form>

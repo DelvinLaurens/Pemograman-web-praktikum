@@ -132,6 +132,8 @@ if (!empty($campaign_list_only)) {
 $keyword = trim($_GET['keyword'] ?? '');
 $kategori = trim($_GET['kategori'] ?? '');
 $lokasi = trim($_GET['lokasi'] ?? '');
+$deadline = trim($_GET['deadline'] ?? '');
+$deadline_is_valid = preg_match('/^\d{4}-\d{2}-\d{2}$/', $deadline);
 $page = max(1, (int) ($_GET['page'] ?? 1));
 $limit = 6;
 $offset = ($page - 1) * $limit;
@@ -149,12 +151,13 @@ $params = [];
 $types = "";
 
 if ($keyword !== "") {
-    $where[] = "(k.judul_kampanye LIKE ? OR k.kategori LIKE ? OR k.lokasi LIKE ?)";
+    $where[] = "(k.judul_kampanye LIKE ? OR k.kategori LIKE ? OR k.lokasi LIKE ? OR p.nama_penyelenggara LIKE ?)";
     $keyword_like = "%{$keyword}%";
     $params[] = $keyword_like;
     $params[] = $keyword_like;
     $params[] = $keyword_like;
-    $types .= "sss";
+    $params[] = $keyword_like;
+    $types .= "ssss";
 }
 
 if ($kategori !== "") {
@@ -167,6 +170,12 @@ if ($lokasi !== "") {
     $lokasi_keyword = $lokasi === "ntt" ? "NTT" : $lokasi;
     $where[] = "k.lokasi LIKE ?";
     $params[] = "%{$lokasi_keyword}%";
+    $types .= "s";
+}
+
+if ($deadline !== "" && $deadline_is_valid) {
+    $where[] = "k.batas_waktu = ?";
+    $params[] = $deadline;
     $types .= "s";
 }
 
@@ -232,7 +241,12 @@ $total_pages = (int) ceil($total_data / $limit);
 if ($total_pages > 1) {
     $query = $_GET;
     unset($query['range']);
-    echo '<div class="pagination-kampanye">';
+    echo '<nav class="pagination-kampanye" aria-label="Pagination kampanye">';
+
+    $query['page'] = max(1, $page - 1);
+    $prev_url = url_for('index.php?' . http_build_query($query) . '#kampanye');
+    $prev_class = $page <= 1 ? ' page-link-disabled' : '';
+    echo '<a class="page-link page-link-nav' . $prev_class . '" href="' . e($prev_url) . '" aria-label="Halaman sebelumnya">Sebelumnya</a>';
 
     for ($i = 1; $i <= $total_pages; $i++) {
         $query['page'] = $i;
@@ -241,6 +255,11 @@ if ($total_pages > 1) {
         echo '<a class="page-link' . $active . '" href="' . e($url) . '">' . $i . '</a>';
     }
 
-    echo '</div>';
+    $query['page'] = min($total_pages, $page + 1);
+    $next_url = url_for('index.php?' . http_build_query($query) . '#kampanye');
+    $next_class = $page >= $total_pages ? ' page-link-disabled' : '';
+    echo '<a class="page-link page-link-nav' . $next_class . '" href="' . e($next_url) . '" aria-label="Halaman selanjutnya">Selanjutnya</a>';
+
+    echo '</nav>';
 }
 ?>

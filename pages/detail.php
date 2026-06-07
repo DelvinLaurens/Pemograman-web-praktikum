@@ -49,7 +49,7 @@ if ($kampanye) {
     <title>Detail Kampanye - DemiSesama</title>
     <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/detail.css?v=5'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/detail.css?v=6'); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>

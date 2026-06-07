@@ -43,16 +43,23 @@
     font-size: 0.9rem;
 }
 
-.badge-kategori, .badge-lokasi {
-    background-color: var(--border);
-    color: #1F2937;
+.badge-kategori,
+.badge-lokasi {
     padding: 5px 15px;
     border-radius: 8px;
     font-weight: 600;
 }
 
+.badge-kategori {
+    background-color: #FFFBEB;
+    border: 1px solid #FCD34D;
+    color: #92400E;
+}
+
 .badge-lokasi {
     align-items: center;
+    background-color: var(--border);
+    color: #1F2937;
     display: inline-flex;
     gap: 6px;
 }
@@ -151,7 +158,7 @@
 .btn-donasi-sekarang {
     display: block;
     width: 100%;
-    background-color: #16A34A;
+    background-color: var(--button);
     color: var(--white);
     text-align: center;
     padding: 15px 0;
@@ -163,7 +170,7 @@
 }
 
 .btn-donasi-sekarang:hover {
-    background-color: #15803D;
+    background-color: var(--button-hover);
     transform: translateY(-1px);
 }
 

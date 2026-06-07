@@ -18,6 +18,20 @@ if ($role === 'pengelola' && $redirect === 'index.php') {
     $redirect = 'admin/dashboard.php';
 }
 
+$switch_role = $role === 'pengelola' ? 'donatur' : 'pengelola';
+$switch_redirect = $redirect;
+
+if ($switch_role === 'donatur' && strpos($switch_redirect, 'admin/') === 0) {
+    $switch_redirect = 'index.php';
+}
+
+if ($switch_role === 'pengelola' && $switch_redirect === 'index.php') {
+    $switch_redirect = 'admin/dashboard.php';
+}
+
+$switch_label = $role === 'pengelola' ? 'Masuk sebagai donatur' : 'Masuk sebagai penyelenggara';
+$switch_url = 'auth/login.php?role=' . urlencode($switch_role) . '&redirect=' . urlencode($switch_redirect);
+
 if (isDonorLoggedIn() || isAdminLoggedIn()) {
     header("Location: " . url_for($redirect));
     exit;
@@ -98,34 +112,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Login - DemiSesama</title>
     <link rel="icon" type="image/png" href="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/global.css?v=3'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/login.css?v=3'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/login.css?v=6'); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header>
-        <div class="container nav-wrapper">
-            <div class="logo">
-                <a href="<?php echo url_for('index.php'); ?>" class="logo-link">
-                    <img src="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>" alt="logo website" class="logo-website">
-                    <span>DemiSesama.</span>
-                </a>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="<?php echo url_for('index.php'); ?>" class="link-kembali-login">Kembali ke Beranda</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
     <main class="login-bg">
         <div class="container login-wrapper">
-            <div class="login-card">
-                <h2 class="text-center">Selamat Datang</h2>
-                <p class="text-center desc-login">Masuk sebagai donatur atau pengelola kampanye.</p>
+            <section class="login-card" aria-label="Login DemiSesama">
+                <div class="login-header">
+                    <img src="<?php echo asset_url('assets/images/logo-demisesama.png'); ?>" alt="Logo DemiSesama" class="login-logo">
+                    <h1>DemiSesama</h1>
+                    <p>Kelola kegiatan sosial dengan lebih mudah dan terstruktur.</p>
+                </div>
 
                 <?php if ($error !== ""): ?>
                     <div class="pesan-error login-error">
@@ -135,65 +136,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <form method="POST" action="<?php echo url_for('auth/login.php'); ?>" class="login-form">
                     <input type="hidden" name="redirect" value="<?php echo e($redirect); ?>">
-
-                    <div class="login-role-toggle" aria-label="Pilih role login">
-                        <label class="<?php echo $role === 'donatur' ? 'active' : ''; ?>">
-                            <input type="radio" name="role" value="donatur" <?php echo $role === 'donatur' ? 'checked' : ''; ?>>
-                            Donatur
-                        </label>
-                        <label class="<?php echo $role === 'pengelola' ? 'active' : ''; ?>">
-                            <input type="radio" name="role" value="pengelola" <?php echo $role === 'pengelola' ? 'checked' : ''; ?>>
-                            Pengelola
-                        </label>
-                    </div>
+                    <input type="hidden" name="role" value="<?php echo e($role); ?>">
 
                     <div class="input-group">
                         <label for="email">Email<span class="required">*</span></label>
-                        <input type="email" id="email" name="email" placeholder="Masukkan email" value="<?php echo e($email); ?>" required>
+                        <input type="email" id="email" name="email" value="<?php echo e($email); ?>" autocomplete="email" required>
                     </div>
 
                     <div class="input-group">
                         <label for="password">Password<span class="required">*</span></label>
-                        <input type="password" id="password" name="password" placeholder="Masukkan password" required>
-                    </div>
-
-                    <button type="submit" class="btn-submit-login">Masuk Sekarang</button>
-                    
-                    <div class="demo-accounts">
-                        <h4 style="margin: 0 0 10px 0; color: var(--primary); font-size: 0.95rem; text-align: center;">Informasi Akun Demo</h4>
-                        <div style="display: flex; flex-direction: column; gap: 8px; background: #F8FAFC; border: 1px dashed #CBD5E1; padding: 15px; border-radius: 8px; font-size: 0.85rem; color: var(--text-desc);">
-                            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #E2E8F0; padding-bottom: 6px;">
-                                <strong>Donatur</strong>
-                                <span>kevin@gmail.com / kevin123</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; padding-top: 2px;">
-                                <strong>Pengelola</strong>
-                                <span>jere@gmail.com / jeremy123</span>
-                            </div>
+                        <div class="password-field">
+                            <input type="password" id="password" name="password" autocomplete="current-password" required>
+                            <button type="button" class="password-toggle" aria-label="Tampilkan password" aria-pressed="false" title="Tampilkan password">
+                                <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M3 3l18 18"></path>
+                                    <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                                    <path d="M9.5 5.3A10.8 10.8 0 0 1 12 5c6 0 9.5 7 9.5 7a15 15 0 0 1-2.2 3.1"></path>
+                                    <path d="M6.6 6.7C3.9 8.5 2.5 12 2.5 12s3.5 7 9.5 7a9.7 9.7 0 0 0 4-.8"></path>
+                                </svg>
+                            </button>
                         </div>
                     </div>
+
+                    <button type="submit" class="btn-submit-login">Masuk</button>
+
+                    <div class="login-switch">
+                        <a href="<?php echo url_for($switch_url); ?>"><?php echo e($switch_label); ?></a>
+                    </div>
                 </form>
-            </div>
+            </section>
         </div>
     </main>
 
     <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const roleRadios = document.querySelectorAll('input[name="role"]');
-        const roleLabels = document.querySelectorAll('.login-role-toggle label');
+        const passwordInput = document.getElementById("password");
+        const passwordToggle = document.querySelector(".password-toggle");
 
-        roleRadios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                roleLabels.forEach(label => label.classList.remove('active'));
-                if (this.checked) {
-                    this.parentElement.classList.add('active');
-                }
-            });
+        if (!passwordInput || !passwordToggle) {
+            return;
+        }
+
+        passwordToggle.addEventListener("click", function() {
+            const isPasswordVisible = passwordInput.type === "text";
+            passwordInput.type = isPasswordVisible ? "password" : "text";
+            passwordToggle.classList.toggle("is-visible", !isPasswordVisible);
+            passwordToggle.setAttribute("aria-pressed", String(!isPasswordVisible));
+            passwordToggle.setAttribute("aria-label", isPasswordVisible ? "Tampilkan password" : "Sembunyikan password");
+            passwordToggle.setAttribute("title", isPasswordVisible ? "Tampilkan password" : "Sembunyikan password");
         });
     });
     </script>
-
-    <?php include_once("../components/footer.php") ?>
 
 </body>
 </html>

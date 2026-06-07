@@ -59,6 +59,12 @@
     min-width: 140px;
 }
 
+.search-bar .search-date {
+    color: var(--main-text);
+    flex: 1;
+    min-width: 155px;
+}
+
 .btn-search {
     background-color: var(--button);
     color: var(--white);
@@ -414,10 +420,10 @@
 }
 
 .card-category {
-    background-color: #ECFDF5;
-    border: 1px solid #BBF7D0;
+    background-color: #FFFBEB;
+    border: 1px solid #FCD34D;
     border-radius: 999px;
-    color: #166534;
+    color: #92400E;
     flex: 0 0 auto;
     font-size: 0.72rem;
     font-weight: 700;
@@ -652,6 +658,7 @@
 
 .pagination-kampanye {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     grid-column: 1 / -1;
     justify-content: center;
@@ -671,7 +678,18 @@
     width: 38px;
 }
 
+.page-link-nav {
+    padding: 0 14px;
+    width: auto;
+}
+
 .page-link.active {
     background-color: var(--primary);
     color: var(--white);
+}
+
+.page-link-disabled {
+    background-color: #F1F5F9;
+    color: #94A3B8;
+    pointer-events: none;
 }

@@ -172,7 +172,7 @@
 }
 
 .dashboard-progress span {
-    background-color: #10B981;
+    background-color: var(--button);
     display: block;
     height: 100%;
 }
@@ -415,7 +415,7 @@
 }
 
 .admin-table td .campaign-fund-progress span {
-    background-color: #10B981;
+    background-color: var(--button);
     display: block;
     height: 100%;
     margin-top: 0;
