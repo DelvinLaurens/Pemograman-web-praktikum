@@ -10,7 +10,7 @@ $success = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_metode = filter_input(INPUT_POST, 'id_metode', FILTER_VALIDATE_INT) ?: null;
-    $result = savePaymentMethodRow($conn, $_POST, $_FILES['gambar_file'] ?? null, $id_metode);
+    $result = savePaymentMethodRow($conn, currentAdminId(), $_POST, $_FILES['gambar_file'] ?? null, $id_metode);
 
     if ($result['success']) {
         header("Location: " . url_for('admin/metode-pembayaran.php?saved=1'));
@@ -25,8 +25,8 @@ if (isset($_GET['saved'])) {
 }
 
 $edit_id = filter_input(INPUT_GET, 'edit', FILTER_VALIDATE_INT);
-$editing = $edit_id ? getPaymentMethodRowById($conn, $edit_id) : null;
-$rows = getPaymentMethodRows($conn);
+$editing = $edit_id ? getPaymentMethodRowById($conn, $edit_id, currentAdminId()) : null;
+$rows = getPaymentMethodRows($conn, currentAdminId());
 $form_source = !empty($errors) ? $_POST : ($editing ?: ['aktif' => 1]);
 ?>
 

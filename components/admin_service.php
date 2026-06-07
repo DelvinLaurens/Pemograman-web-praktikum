@@ -492,7 +492,7 @@ if (!function_exists('deleteManagedCampaign')) {
 
 if (!function_exists('updateManagedCampaignStatus')) {
     function updateManagedCampaignStatus($conn, $id_penyelenggara, $id_kampanye, $status) {
-        $allowed = ['pending', 'approved', 'rejected', 'completed'];
+        $allowed = ['active', 'completed'];
         $id_penyelenggara = (int) $id_penyelenggara;
         $id_kampanye = (int) $id_kampanye;
         $status = strtolower(trim((string) $status));
@@ -797,29 +797,36 @@ if (!function_exists('paymentMethodTableExists')) {
 }
 
 if (!function_exists('getPaymentMethodRows')) {
-    function getPaymentMethodRows($conn) {
+    function getPaymentMethodRows($conn, $id_penyelenggara) {
         if (!paymentMethodTableExists($conn)) {
             return [];
         }
 
-        $result = mysqli_query($conn, "SELECT * FROM metode_pembayaran ORDER BY aktif DESC, label ASC");
-        return fetchAllAssoc($result);
+        $id_penyelenggara = (int) $id_penyelenggara;
+        $stmt = mysqli_prepare($conn, "SELECT * FROM metode_pembayaran WHERE id_penyelenggara = ? ORDER BY aktif DESC, label ASC");
+        if (!$stmt) return [];
+        mysqli_stmt_bind_param($stmt, "i", $id_penyelenggara);
+        mysqli_stmt_execute($stmt);
+        $result = fetchAllAssoc(mysqli_stmt_get_result($stmt));
+        mysqli_stmt_close($stmt);
+        return $result;
     }
 }
 
 if (!function_exists('getPaymentMethodRowById')) {
-    function getPaymentMethodRowById($conn, $id_metode) {
+    function getPaymentMethodRowById($conn, $id_metode, $id_penyelenggara) {
         if (!paymentMethodTableExists($conn)) {
             return null;
         }
 
         $id_metode = (int) $id_metode;
-        $stmt = mysqli_prepare($conn, "SELECT * FROM metode_pembayaran WHERE id_metode = ? LIMIT 1");
+        $id_penyelenggara = (int) $id_penyelenggara;
+        $stmt = mysqli_prepare($conn, "SELECT * FROM metode_pembayaran WHERE id_metode = ? AND id_penyelenggara = ? LIMIT 1");
         if (!$stmt) {
             return null;
         }
 
-        mysqli_stmt_bind_param($stmt, "i", $id_metode);
+        mysqli_stmt_bind_param($stmt, "ii", $id_metode, $id_penyelenggara);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $row = $result ? mysqli_fetch_assoc($result) : null;
@@ -876,11 +883,12 @@ if (!function_exists('uploadPaymentMethodImage')) {
 }
 
 if (!function_exists('savePaymentMethodRow')) {
-    function savePaymentMethodRow($conn, $payload, $file = null, $id_metode = null) {
+    function savePaymentMethodRow($conn, $id_penyelenggara, $payload, $file = null, $id_metode = null) {
         if (!paymentMethodTableExists($conn)) {
             return ['success' => false, 'errors' => ['Tabel metode_pembayaran belum ada. Jalankan migration Mini Project 2.']];
         }
 
+        $id_penyelenggara = (int) $id_penyelenggara;
         $kode = strtolower(trim($payload['kode'] ?? ''));
         $label = trim($payload['label'] ?? '');
         $tipe = trim($payload['tipe'] ?? 'bank');
@@ -926,23 +934,23 @@ if (!function_exists('savePaymentMethodRow')) {
                 $conn,
                 "UPDATE metode_pembayaran
                  SET kode = ?, label = ?, tipe = ?, nomor_tujuan = ?, nama_pemilik = ?, instruksi = ?, gambar = ?, aktif = ?
-                 WHERE id_metode = ?"
+                 WHERE id_metode = ? AND id_penyelenggara = ?"
             );
             if (!$stmt) {
                 return ['success' => false, 'errors' => ['Query update metode belum bisa disiapkan.']];
             }
-            mysqli_stmt_bind_param($stmt, "sssssssii", $kode, $label, $tipe, $nomor, $nama, $instruksi, $gambar, $aktif, $id_metode);
+            mysqli_stmt_bind_param($stmt, "sssssssiii", $kode, $label, $tipe, $nomor, $nama, $instruksi, $gambar, $aktif, $id_metode, $id_penyelenggara);
         } else {
             $stmt = mysqli_prepare(
                 $conn,
                 "INSERT INTO metode_pembayaran
-                    (kode, label, tipe, nomor_tujuan, nama_pemilik, instruksi, gambar, aktif)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+                    (id_penyelenggara, kode, label, tipe, nomor_tujuan, nama_pemilik, instruksi, gambar, aktif)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
             );
             if (!$stmt) {
                 return ['success' => false, 'errors' => ['Query tambah metode belum bisa disiapkan.']];
             }
-            mysqli_stmt_bind_param($stmt, "sssssssi", $kode, $label, $tipe, $nomor, $nama, $instruksi, $gambar, $aktif);
+            mysqli_stmt_bind_param($stmt, "isssssssi", $id_penyelenggara, $kode, $label, $tipe, $nomor, $nama, $instruksi, $gambar, $aktif);
         }
 
         $ok = mysqli_stmt_execute($stmt);

@@ -13,6 +13,21 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `donasi`;
 DROP TABLE IF EXISTS `metode_pembayaran`;
+-- DemiSesama Full Database Import
+-- Import file ini satu kali lewat phpMyAdmin atau MySQL CLI.
+
+CREATE DATABASE IF NOT EXISTS `demi_sesama`
+  DEFAULT CHARACTER SET utf8mb4
+  COLLATE utf8mb4_general_ci;
+
+USE `demi_sesama`;
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS `donasi`;
+DROP TABLE IF EXISTS `metode_pembayaran`;
 DROP TABLE IF EXISTS `kampanye`;
 DROP TABLE IF EXISTS `penyelenggara`;
 DROP TABLE IF EXISTS `donatur`;
@@ -22,6 +37,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 CREATE TABLE `donatur` (
   `id_donatur` int(11) NOT NULL AUTO_INCREMENT,
   `nama_lengkap` varchar(50) NOT NULL,
+  `username` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `nomor_telepon` varchar(15) NOT NULL,
   `password` varchar(50) NOT NULL,
@@ -31,6 +47,7 @@ CREATE TABLE `donatur` (
 CREATE TABLE `penyelenggara` (
   `id_penyelenggara` int(11) NOT NULL AUTO_INCREMENT,
   `nama_penyelenggara` varchar(50) NOT NULL,
+  `username` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `no_telepon` varchar(15) NOT NULL,
   `alamat` varchar(100) NOT NULL,
@@ -49,7 +66,7 @@ CREATE TABLE `kampanye` (
   `dana_terkumpul` int(15) NOT NULL DEFAULT 0,
   `batas_waktu` date NOT NULL,
   `gambar_poster` varchar(255) NOT NULL,
-  `status` ENUM('pending', 'approved', 'rejected', 'completed') NOT NULL DEFAULT 'pending',
+  `status` ENUM('active', 'completed') NOT NULL DEFAULT 'active',
   PRIMARY KEY (`id_kampanye`),
   KEY `id_penyelenggara` (`id_penyelenggara`),
   CONSTRAINT `kampanye_ibfk_1`
@@ -85,6 +102,7 @@ CREATE TABLE `donasi` (
 
 CREATE TABLE `metode_pembayaran` (
   `id_metode` int(11) NOT NULL AUTO_INCREMENT,
+  `id_penyelenggara` int(11) NOT NULL,
   `kode` varchar(50) NOT NULL,
   `label` varchar(100) NOT NULL,
   `tipe` enum('qris','ewallet','bank') NOT NULL DEFAULT 'bank',
@@ -94,20 +112,24 @@ CREATE TABLE `metode_pembayaran` (
   `gambar` varchar(255) DEFAULT NULL,
   `aktif` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id_metode`),
-  UNIQUE KEY `kode` (`kode`)
+  KEY `id_penyelenggara` (`id_penyelenggara`),
+  CONSTRAINT `metode_pembayaran_ibfk_1`
+    FOREIGN KEY (`id_penyelenggara`)
+    REFERENCES `penyelenggara` (`id_penyelenggara`)
+    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `donatur`
-  (`id_donatur`, `nama_lengkap`, `email`, `nomor_telepon`, `password`)
+  (`id_donatur`, `nama_lengkap`, `username`, `email`, `nomor_telepon`, `password`)
 VALUES
-  (1, 'Valentino Kevin Yulianto', 'kevin@gmail.com', '085432109876', 'kevin123'),
-  (2, 'Waraney Maikel Nathaniel Mambu', 'nathan@gmail.com', '089876543210', 'nathan123');
+  (1, 'Valentino Kevin Yulianto', 'kevin1', 'kevin@gmail.com', '085432109876', 'kevin123'),
+  (2, 'Waraney Maikel Nathaniel Mambu', 'nathan1', 'nathan@gmail.com', '089876543210', 'nathan123');
 
 INSERT INTO `penyelenggara`
-  (`id_penyelenggara`, `nama_penyelenggara`, `email`, `no_telepon`, `alamat`, `pass`)
+  (`id_penyelenggara`, `nama_penyelenggara`, `username`, `email`, `no_telepon`, `alamat`, `pass`)
 VALUES
-  (1, 'Jeremy Zadrimman Kause', 'jere@gmail.com', '081234567890', 'Oebobo, Kupang', 'jeremy123'),
-  (2, 'Delvin Laurens', 'delvin@gmail.com', '080987654321', 'Gondokusuman, Klitren', 'delpin321');
+  (1, 'Jeremy Zadrimman Kause', 'jeremy', 'jere@gmail.com', '081234567890', 'Oebobo, Kupang', 'jeremy123'),
+  (2, 'Delvin Laurens', 'delvin', 'delvin@gmail.com', '080987654321', 'Gondokusuman, Klitren', 'delpin321');
 
 INSERT INTO `kampanye`
   (`id_kampanye`, `id_penyelenggara`, `judul_kampanye`, `kategori`, `lokasi`, `deskripsi`, `target_dana`, `dana_terkumpul`, `batas_waktu`, `gambar_poster`, `status`)
@@ -132,22 +154,22 @@ VALUES
   (18, 2, 'Bantuan Modal UMKM Ibu', 'sosial', 'Kupang, NTT', 'Modal usaha kecil membantu para ibu membangun kembali penghasilan keluarga melalui usaha rumahan.', 35000000, 12500000, '2026-07-11', 'assets/images/campaigns/puting-beliung-kupang.jpeg', 'approved'),
   (19, 1, 'Perpustakaan Kampung', 'pendidikan', 'Lombok, NTB', 'Bantu penyediaan rak buku, koleksi bacaan anak, dan ruang belajar kecil untuk warga kampung.', 60000000, 20800000, '2026-08-12', 'assets/images/campaigns/bantuan-pendidikan-desa.jpg', 'approved'),
   (20, 2, 'Perbaikan Jembatan Desa', 'pembangunan', 'Banyumas, Jawa Tengah', 'Jembatan desa yang rusak akan diperbaiki agar akses sekolah, pasar, dan layanan kesehatan kembali lancar.', 95000000, 15300000, '2026-07-27', 'assets/images/campaigns/reboisasi-hutan.jpg', 'approved'),
-  (21, 1, 'Bantuan Oksigen Klinik', 'kesehatan', 'Jayapura, Papua', 'Tabung oksigen dan regulator tambahan dibutuhkan untuk meningkatkan layanan klinik komunitas.', 70000000, 9700000, '2026-06-21', 'assets/images/campaigns/kampanye-1779013316-8905.png', 'approved'),
-  (22, 2, 'Hunian Sementara Korban Banjir', 'bencana_alam', 'Bali', 'Bangun hunian sementara dan sediakan perlengkapan tidur bagi keluarga yang rumahnya terdampak banjir.', 110000000, 33750000, '2026-08-08', 'assets/images/campaigns/banjir-bali.jpg', 'approved'),
-  (23, 1, 'Paket Sekolah Anak Pesisir', 'pendidikan', 'Belitung, Bangka Belitung', 'Paket sekolah berisi tas, buku, sepatu, dan alat tulis untuk anak-anak di wilayah pesisir.', 42000000, 18200000, '2026-07-03', 'assets/images/campaigns/bantuan-pendidikan-desa.jpg', 'approved'),
-  (24, 2, 'Bank Sampah Warga', 'lingkungan', 'Depok, Jawa Barat', 'Dukung pengadaan timbangan, gerobak, dan pelatihan warga untuk menjalankan bank sampah komunitas.', 28000000, 7600000, '2026-06-26', 'assets/images/campaigns/reboisasi-hutan.jpg', 'approved'),
-  (25, 1, 'Bantuan Gizi Balita', 'kesehatan', 'Ende, NTT', 'Paket makanan bergizi dan pendampingan kader akan membantu balita berisiko stunting.', 50000000, 14300000, '2026-07-16', 'assets/images/campaigns/kampanye-1779013316-8905.png', 'approved');
+  (21, 1, 'Bantuan Oksigen Klinik', 'kesehatan', 'Jayapura, Papua', 'Tabung oksigen dan regulator tambahan dibutuhkan untuk meningkatkan layanan klinik komunitas.', 70000000, 9700000, '2026-06-21', 'assets/images/campaigns/kampanye-1779013316-8905.png', 'active'),
+  (22, 2, 'Hunian Sementara Korban Banjir', 'bencana_alam', 'Bali', 'Bangun hunian sementara dan sediakan perlengkapan tidur bagi keluarga yang rumahnya terdampak banjir.', 110000000, 33750000, '2026-08-08', 'assets/images/campaigns/banjir-bali.jpg', 'active'),
+  (23, 1, 'Paket Sekolah Anak Pesisir', 'pendidikan', 'Belitung, Bangka Belitung', 'Paket sekolah berisi tas, buku, sepatu, dan alat tulis untuk anak-anak di wilayah pesisir.', 42000000, 18200000, '2026-07-03', 'assets/images/campaigns/bantuan-pendidikan-desa.jpg', 'active'),
+  (24, 2, 'Bank Sampah Warga', 'lingkungan', 'Depok, Jawa Barat', 'Dukung pengadaan timbangan, gerobak, dan pelatihan warga untuk menjalankan bank sampah komunitas.', 28000000, 7600000, '2026-06-26', 'assets/images/campaigns/reboisasi-hutan.jpg', 'active'),
+  (25, 1, 'Bantuan Gizi Balita', 'kesehatan', 'Ende, NTT', 'Paket makanan bergizi dan pendampingan kader akan membantu balita berisiko stunting.', 50000000, 14300000, '2026-07-16', 'assets/images/campaigns/kampanye-1779013316-8905.png', 'active');
 
 INSERT INTO `metode_pembayaran`
-  (`id_metode`, `kode`, `label`, `tipe`, `nomor_tujuan`, `nama_pemilik`, `instruksi`, `gambar`, `aktif`)
+  (`id_metode`, `id_penyelenggara`, `kode`, `label`, `tipe`, `nomor_tujuan`, `nama_pemilik`, `instruksi`, `gambar`, `aktif`)
 VALUES
-  (1, 'qris', 'QRIS', 'qris', NULL, NULL, 'Scan kode QRIS menggunakan aplikasi mobile banking atau e-wallet Anda.', 'assets/images/payments/qris-demo.svg', 1),
-  (2, 'bcava', 'BCA Virtual Account', 'bank', '8808 1234 5678', 'DemiSesama BCA', 'Bayar melalui menu Virtual Account BCA sesuai nominal donasi.', NULL, 1),
-  (3, 'briva', 'BRI Virtual Account', 'bank', '77788 1234 5678', 'DemiSesama BRI', 'Bayar melalui menu BRIVA sesuai nominal donasi.', NULL, 1),
-  (4, 'mandiriva', 'Mandiri Virtual Account', 'bank', '70012 1234 5678', 'DemiSesama Mandiri', 'Bayar melalui menu Virtual Account Mandiri sesuai nominal donasi.', NULL, 1),
-  (5, 'dana', 'DANA', 'ewallet', '0812-3456-7890', 'Yayasan DemiSesama', 'Transfer ke nomor DANA berikut sesuai nominal donasi.', NULL, 1),
-  (6, 'ovo', 'OVO', 'ewallet', '0812-3456-7890', 'Yayasan DemiSesama', 'Transfer ke nomor OVO berikut sesuai nominal donasi.', NULL, 1),
-  (7, 'gopay', 'GoPay', 'ewallet', '0812-3456-7890', 'Yayasan DemiSesama', 'Transfer ke nomor GoPay berikut sesuai nominal donasi.', NULL, 1);
+  (1, 1, 'qris', 'QRIS', 'qris', NULL, NULL, 'Scan kode QRIS menggunakan aplikasi mobile banking atau e-wallet Anda.', 'assets/images/payments/qris-demo.svg', 1),
+  (2, 1, 'bcava', 'BCA Virtual Account', 'bank', '8808 1234 5678', 'Rekening Jeremy', 'Bayar melalui menu Virtual Account BCA sesuai nominal donasi.', NULL, 1),
+  (3, 1, 'briva', 'BRI Virtual Account', 'bank', '77788 1234 5678', 'Rekening Jeremy', 'Bayar melalui menu BRIVA sesuai nominal donasi.', NULL, 1),
+  (4, 2, 'mandiriva', 'Mandiri Virtual Account', 'bank', '70012 1234 5678', 'Rekening Delvin', 'Bayar melalui menu Virtual Account Mandiri sesuai nominal donasi.', NULL, 1),
+  (5, 2, 'dana', 'DANA', 'ewallet', '0812-3456-7890', 'Dana Delvin', 'Transfer ke nomor DANA berikut sesuai nominal donasi.', NULL, 1),
+  (6, 2, 'ovo', 'OVO', 'ewallet', '0812-3456-7890', 'OVO Delvin', 'Transfer ke nomor OVO berikut sesuai nominal donasi.', NULL, 1),
+  (7, 2, 'gopay', 'GoPay', 'ewallet', '0812-3456-7890', 'GoPay Delvin', 'Transfer ke nomor GoPay berikut sesuai nominal donasi.', NULL, 1);
 
 INSERT INTO `donasi`
   (`id_donasi`, `id_donatur`, `id_kampanye`, `nominal_donasi`, `metode_pembayaran`, `pesan_dukungan`, `bukti_transfer`, `status`, `waktu_donasi`, `waktu_kadaluarsa`)
@@ -161,5 +183,4 @@ VALUES
 ALTER TABLE `donatur` AUTO_INCREMENT = 3;
 ALTER TABLE `penyelenggara` AUTO_INCREMENT = 3;
 ALTER TABLE `kampanye` AUTO_INCREMENT = 26;
-ALTER TABLE `metode_pembayaran` AUTO_INCREMENT = 8;
 ALTER TABLE `donasi` AUTO_INCREMENT = 6;

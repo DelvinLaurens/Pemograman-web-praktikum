@@ -39,7 +39,7 @@ if ($stmt) {
 
 $stmt = mysqli_prepare(
     $conn,
-    "SELECT d.*, k.judul_kampanye, k.gambar_poster
+    "SELECT d.*, k.judul_kampanye, k.gambar_poster, k.id_penyelenggara
      FROM donasi d
      INNER JOIN kampanye k ON k.id_kampanye = d.id_kampanye
      WHERE d.id_donatur = ?
@@ -115,7 +115,7 @@ if ($stmt) {
                             <?php endif; ?>
 
                             <?php foreach ($donations as $donasi): ?>
-                                <?php $payment = getPaymentMethod($donasi['metode_pembayaran']); ?>
+                                <?php $payment = getPaymentMethod($donasi['metode_pembayaran'], $donasi['id_penyelenggara'] ?? null); ?>
                                 <tr>
                                     <td>
                                         <strong><?php echo e($donasi['judul_kampanye']); ?></strong>

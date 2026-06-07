@@ -23,7 +23,7 @@ if (!$donasi) {
     http_response_code(404);
 }
 
-$payment = $donasi ? getPaymentMethod($donasi['metode_pembayaran']) : null;
+$payment = $donasi ? getPaymentMethod($donasi['metode_pembayaran'], $donasi['id_penyelenggara'] ?? null) : null;
 $errors = [];
 $success = "";
 $expired = false;

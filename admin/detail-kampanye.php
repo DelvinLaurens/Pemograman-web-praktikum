@@ -39,13 +39,13 @@ $target = $campaign ? (float) $campaign['target_dana'] : 0;
 $collected = $campaign ? (float) $donation_totals['VERIFIED']['total'] : 0;
 $progress = $target > 0 ? min(100, round(($collected / $target) * 100)) : 0;
 $category_label = $campaign ? ucwords(str_replace('_', ' ', (string) $campaign['kategori'])) : '';
-$campaign_status = $campaign ? strtolower(trim((string) ($campaign['status'] ?? 'pending'))) : 'pending';
-$campaign_status = $campaign_status !== '' ? $campaign_status : 'pending';
+$campaign_status = $campaign ? strtolower(trim((string) ($campaign['status'] ?? 'active'))) : 'active';
+$campaign_status = $campaign_status !== '' ? $campaign_status : 'active';
 $is_campaign_finished = $campaign
-    && in_array($campaign_status, ['approved', 'completed'], true)
+    && in_array($campaign_status, ['completed'], true)
     && isCampaignClosed($campaign);
 $display_status = $is_campaign_finished ? 'completed' : $campaign_status;
-$display_status_label = $is_campaign_finished ? 'SELESAI' : strtoupper($campaign_status ?: 'pending');
+$display_status_label = $is_campaign_finished ? 'SELESAI' : strtoupper($campaign_status ?: 'active');
 $deadline_label = '-';
 $remaining_label = '-';
 
@@ -213,7 +213,7 @@ $summary_cards = [
                                     <?php
                                         $status = (string) $donation['status'];
                                         $status_class = preg_replace('/[^a-z0-9_-]/', '', strtolower($status));
-                                        $payment = getPaymentMethod($donation['metode_pembayaran']);
+                                        $payment = getPaymentMethod($donation['metode_pembayaran'], $campaign['id_penyelenggara']);
                                         $proof_path = trim((string) ($donation['bukti_transfer'] ?? ''));
                                         if ($proof_path !== '' && strpos($proof_path, 'assets/') === false) {
                                             $proof_path = 'assets/uploads/bukti-transfer/' . $proof_path;

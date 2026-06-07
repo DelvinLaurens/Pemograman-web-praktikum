@@ -24,7 +24,7 @@ if (!function_exists('getTrendingCampaignOrderSql')) {
 
 if (!function_exists('getTrendingCampaignWhereSql')) {
     function getTrendingCampaignWhereSql() {
-        return "k.status = 'approved'
+        return "k.status = 'active'
                 AND k.batas_waktu >= CURDATE()
                 AND k.dana_terkumpul < k.target_dana";
     }
@@ -143,7 +143,7 @@ $base_sql = "FROM kampanye k
             ON p.id_penyelenggara = k.id_penyelenggara";
 
 $where = [
-    "k.status = 'approved'",
+    "k.status = 'active'",
     "k.batas_waktu >= CURDATE()",
     "k.dana_terkumpul < k.target_dana",
 ];

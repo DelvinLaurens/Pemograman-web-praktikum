@@ -77,11 +77,14 @@ if (!function_exists('paymentMethodsTableAvailable')) {
 }
 
 if (!function_exists('paymentMethods')) {
-    function paymentMethods($active_only = true) {
+    function paymentMethods($active_only = true, $id_penyelenggara = null) {
         global $conn;
 
         if (isset($conn) && $conn && paymentMethodsTableAvailable($conn)) {
-            $where = $active_only ? "WHERE aktif = 1" : "";
+            $where = $active_only ? "WHERE aktif = 1" : "WHERE 1=1";
+            if ($id_penyelenggara !== null) {
+                $where .= " AND id_penyelenggara = " . (int)$id_penyelenggara;
+            }
             $result = mysqli_query(
                 $conn,
                 "SELECT kode, label, tipe, nomor_tujuan, nama_pemilik, instruksi, gambar
@@ -126,8 +129,8 @@ if (!function_exists('normalizePaymentMethod')) {
 }
 
 if (!function_exists('getPaymentMethod')) {
-    function getPaymentMethod($method) {
-        $methods = paymentMethods();
+    function getPaymentMethod($method, $id_penyelenggara = null) {
+        $methods = paymentMethods(true, $id_penyelenggara);
         $key = normalizePaymentMethod($method);
 
         return $methods[$key] ?? null;
@@ -136,19 +139,19 @@ if (!function_exists('getPaymentMethod')) {
 
 if (!function_exists('campaignPaymentMethodCodes')) {
     function campaignPaymentMethodCodes($campaign) {
-        return array_keys(paymentMethods());
+        return array_keys(paymentMethods(true, $campaign['id_penyelenggara'] ?? null));
     }
 }
 
 if (!function_exists('paymentMethodsForCampaign')) {
     function paymentMethodsForCampaign($campaign, $active_only = true) {
-        return paymentMethods($active_only);
+        return paymentMethods($active_only, $campaign['id_penyelenggara'] ?? null);
     }
 }
 
 if (!function_exists('campaignPaymentMethodLabels')) {
     function campaignPaymentMethodLabels($campaign, $active_only = true) {
-        $methods = paymentMethods($active_only);
+        $methods = paymentMethods($active_only, $campaign['id_penyelenggara'] ?? null);
         $labels = [];
 
         foreach ($methods as $code => $method) {

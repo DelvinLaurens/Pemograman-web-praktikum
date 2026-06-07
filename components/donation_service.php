@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/donation_helper.php";
-// require_once "db_conn.php";
+require_once "db_conn.php";
 
 if (!function_exists('getCampaignForDonation')) {
     function getCampaignForDonation($conn, $id_kampanye) {
@@ -168,6 +168,7 @@ if (!function_exists('getDonationVerificationData')) {
                 k.judul_kampanye,
                 k.target_dana,
                 k.dana_terkumpul,
+                k.id_penyelenggara,
                 p.nama_penyelenggara,
                 dn.nama_lengkap,
                 dn.email

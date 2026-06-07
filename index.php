@@ -12,7 +12,7 @@ $deadline_is_valid = preg_match('/^\d{4}-\d{2}-\d{2}$/', $deadline);
 $query = "SELECT k.*
         FROM kampanye k
         INNER JOIN penyelenggara p ON p.id_penyelenggara = k.id_penyelenggara
-        WHERE k.status = 'approved'
+        WHERE k.status = 'active'
         AND k.batas_waktu >= CURDATE()
         AND k.dana_terkumpul < k.target_dana";
 

@@ -36,30 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $errors = $result['errors'];
     }
-
-    if ($action === 'approve') {
-        $id_kampanye = filter_input(INPUT_POST, 'id_kampanye', FILTER_VALIDATE_INT);
-        $result = updateManagedCampaignStatus($conn, $admin_id, $id_kampanye, 'approved');
-
-        if ($result['success']) {
-            header("Location: " . url_for('admin/kampanye.php?status=1' . $page_query));
-            exit;
-        }
-
-        $errors = $result['errors'];
-    }
-
-    if ($action === 'reject') {
-        $id_kampanye = filter_input(INPUT_POST, 'id_kampanye', FILTER_VALIDATE_INT);
-        $result = updateManagedCampaignStatus($conn, $admin_id, $id_kampanye, 'rejected');
-
-        if ($result['success']) {
-            header("Location: " . url_for('admin/kampanye.php?status=1' . $page_query));
-            exit;
-        }
-
-        $errors = $result['errors'];
-    }
 }
 
 if (isset($_GET['saved'])) {
@@ -68,10 +44,6 @@ if (isset($_GET['saved'])) {
 
 if (isset($_GET['deleted'])) {
     $success = "Kampanye berhasil dihapus.";
-}
-
-if (isset($_GET['status'])) {
-    $success = "Status kampanye berhasil diperbarui.";
 }
 
 $total_campaigns = countManagedCampaigns($conn, $admin_id);
@@ -159,20 +131,14 @@ $current_page_query = $current_page > 1 ? '?page=' . $current_page : '';
                                     $target = (float) $campaign['target_dana'];
                                     $collected = (float) $campaign['dana_terkumpul'];
                                     $progress = $target > 0 ? min(100, ($collected / $target) * 100) : 0;
-                                    $raw_status = strtolower($campaign['status'] ?? 'pending');
+                                    $raw_status = strtolower($campaign['status'] ?? 'active');
                                     $campaign_closed = isCampaignClosed($campaign);
 
-                                    if ($raw_status === 'pending') {
-                                        $display_status = 'Pending';
-                                        $display_status_class = 'pending';
-                                    } elseif ($raw_status === 'rejected') {
-                                        $display_status = 'Ditolak';
-                                        $display_status_class = 'rejected';
-                                    } elseif ($campaign_closed) {
-                                        $display_status = 'Complete';
+                                    if ($campaign_closed || $raw_status === 'completed') {
+                                        $display_status = 'Selesai';
                                         $display_status_class = 'completed';
                                     } else {
-                                        $display_status = 'Masih Dibuka';
+                                        $display_status = 'Aktif';
                                         $display_status_class = 'open';
                                     }
                                 ?>
@@ -200,20 +166,6 @@ $current_page_query = $current_page > 1 ? '?page=' . $current_page : '';
                                         </span>
                                     </td>
                                     <td class="admin-actions">
-                                        <?php if (($campaign['status'] ?? 'pending') === 'pending'): ?>
-                                            <form method="POST" action="<?php echo url_for('admin/kampanye.php' . $current_page_query); ?>">
-                                                <input type="hidden" name="action" value="approve">
-                                                <input type="hidden" name="id_kampanye" value="<?php echo (int) $campaign['id_kampanye']; ?>">
-                                                <button type="submit" value="approve" onclick="return confirm('Setujui kampanye ini untuk dipublikasikan?');">Setuju</button>
-                                            </form>
-
-                                            <form method="POST" action="<?php echo url_for('admin/kampanye.php' . $current_page_query); ?>">
-                                                <input type="hidden" name="action" value="reject">
-                                                <input type="hidden" name="id_kampanye" value="<?php echo (int) $campaign['id_kampanye']; ?>">
-                                                <button type="submit" value="reject" onclick="return confirm('Tolak pengajuan kampanye ini?');">Tolak</button>
-                                            </form>
-                                        <?php endif; ?>
-
                                         <a href="<?php echo url_for('admin/detail-kampanye.php?id=' . (int) $campaign['id_kampanye'] . ($current_page > 1 ? '&page=' . $current_page : '')); ?>">Detail</a>
                                         <form method="POST" action="<?php echo url_for('admin/kampanye.php' . $current_page_query); ?>" onsubmit="return confirm('Hapus kampanye ini?');">
                                             <input type="hidden" name="action" value="delete">

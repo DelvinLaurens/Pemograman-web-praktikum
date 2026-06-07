@@ -38,26 +38,26 @@ if (isDonorLoggedIn() || isAdminLoggedIn()) {
 }
 
 $error = "";
-$email = $_POST['email'] ?? '';
+$username = $_POST['username'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
+    $username = trim($_POST['username'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
-    if ($email === '' || $password === '') {
-        $error = "Email dan password wajib diisi.";
+    if ($username === '' || $password === '') {
+        $error = "Username dan password wajib diisi.";
     } else {
         if ($role === 'pengelola') {
             $stmt = mysqli_prepare(
                 $conn,
-                "SELECT id_penyelenggara, nama_penyelenggara, email
+                "SELECT id_penyelenggara, nama_penyelenggara, username
                  FROM penyelenggara
-                 WHERE email = ? AND pass = ?
+                 WHERE username = ? AND pass = ?
                  LIMIT 1"
             );
 
             if ($stmt) {
-                mysqli_stmt_bind_param($stmt, "ss", $email, $password);
+                mysqli_stmt_bind_param($stmt, "ss", $username, $password);
                 mysqli_stmt_execute($stmt);
                 $result = mysqli_stmt_get_result($stmt);
                 $admin = $result ? mysqli_fetch_assoc($result) : null;
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     session_regenerate_id(true);
                     $_SESSION['id_penyelenggara'] = $admin['id_penyelenggara'];
                     $_SESSION['nama_penyelenggara'] = $admin['nama_penyelenggara'];
-                    $_SESSION['email_penyelenggara'] = $admin['email'];
+                    $_SESSION['username_penyelenggara'] = $admin['username'];
                     $_SESSION['role'] = 'pengelola';
 
                     header("Location: " . url_for($redirect));
@@ -75,12 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            $error = "Email atau password pengelola tidak sesuai.";
+            $error = "Username atau password pengelola tidak sesuai.";
         } else {
-            $stmt = mysqli_prepare($conn, "SELECT id_donatur, nama_lengkap, email FROM donatur WHERE email = ? AND password = ? LIMIT 1");
+            $stmt = mysqli_prepare($conn, "SELECT id_donatur, nama_lengkap, username FROM donatur WHERE username = ? AND password = ? LIMIT 1");
 
             if ($stmt) {
-                mysqli_stmt_bind_param($stmt, "ss", $email, $password);
+                mysqli_stmt_bind_param($stmt, "ss", $username, $password);
                 mysqli_stmt_execute($stmt);
                 $result = mysqli_stmt_get_result($stmt);
                 $donatur = $result ? mysqli_fetch_assoc($result) : null;
@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     session_regenerate_id(true);
                     $_SESSION['id_donatur'] = $donatur['id_donatur'];
                     $_SESSION['nama_lengkap'] = $donatur['nama_lengkap'];
-                    $_SESSION['email'] = $donatur['email'];
+                    $_SESSION['username'] = $donatur['username'];
                     $_SESSION['role'] = 'donatur';
 
                     header("Location: " . url_for($redirect));
@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            $error = "Email atau password donatur tidak sesuai.";
+            $error = "Username atau password donatur tidak sesuai.";
         }
     }
 }
@@ -139,8 +139,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="role" value="<?php echo e($role); ?>">
 
                     <div class="input-group">
-                        <label for="email">Email<span class="required">*</span></label>
-                        <input type="email" id="email" name="email" value="<?php echo e($email); ?>" autocomplete="email" required>
+                        <label for="username">Username<span class="required">*</span></label>
+                        <input type="text" id="username" name="username" value="<?php echo e($username); ?>" autocomplete="username" required>
                     </div>
 
                     <div class="input-group">
