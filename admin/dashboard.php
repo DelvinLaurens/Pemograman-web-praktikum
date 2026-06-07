@@ -13,8 +13,11 @@ $top_campaigns = getDashboardTopCampaigns($conn, $admin_id, 5);
 $chart_data = [
     'monthlyLabels' => $monthly_donations['labels'],
     'monthlyTotals' => $monthly_donations['totals'],
-    'statusLabels' => array_keys($donation_status_totals),
-    'statusTotals' => array_values($donation_status_totals),
+    'statusLabels' => ['Terkumpul', 'Sisa Target'],
+    'statusTotals' => [
+        (float) $summary['verified_total'],
+        max(0, (float) $summary['target_total'] - (float) $summary['verified_total'])
+    ],
 ];
 $nama_pengelola = $_SESSION['nama_penyelenggara'] ?? 'Pengelola';
 ?>
@@ -47,16 +50,16 @@ $nama_pengelola = $_SESSION['nama_penyelenggara'] ?? 'Pengelola';
                     <strong><?php echo (int) $summary['kampanye']; ?></strong>
                 </div>
                 <div class="admin-stat-card">
-                    <span>Donasi Pending</span>
+                    <span>Perlu Verifikasi</span>
                     <strong><?php echo (int) $summary['pending']; ?></strong>
                 </div>
                 <div class="admin-stat-card">
-                    <span>Dana Verified</span>
+                    <span>Dana Terkumpul</span>
                     <strong><?php echo formatRupiah($summary['verified_total']); ?></strong>
                 </div>
                 <div class="admin-stat-card">
-                    <span>Dana Pending</span>
-                    <strong><?php echo formatRupiah($summary['pending_total']); ?></strong>
+                    <span>Total Target Dana</span>
+                    <strong><?php echo formatRupiah($summary['target_total']); ?></strong>
                 </div>
             </section>
 
@@ -76,8 +79,8 @@ $nama_pengelola = $_SESSION['nama_penyelenggara'] ?? 'Pengelola';
                 <div class="admin-panel dashboard-chart-panel">
                     <div class="admin-panel-head">
                         <div>
-                            <h2>Status Donasi</h2>
-                            <span>Ringkasan status semua donasi.</span>
+                            <h2>Performa Kampanye</h2>
+                            <span>Dana Terkumpul vs Total Target.</span>
                         </div>
                     </div>
                     <div class="dashboard-chart-box dashboard-chart-box-small">
@@ -201,7 +204,7 @@ $nama_pengelola = $_SESSION['nama_penyelenggara'] ?? 'Pengelola';
                     labels: dashboardChartData.statusLabels,
                     datasets: [{
                         data: dashboardChartData.statusTotals,
-                        backgroundColor: ['#F59E0B', '#243D90', '#EF4444', '#64748B'],
+                        backgroundColor: ['#2563EB', '#E2E8F0'],
                         borderColor: '#FFFFFF',
                         borderWidth: 3
                     }]

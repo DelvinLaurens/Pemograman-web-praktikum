@@ -33,6 +33,7 @@ if (!function_exists('getAdminSummary')) {
             'collected_total' => 0,
             'verified_total' => 0,
             'pending_total' => 0,
+            'target_total' => 0,
         ];
 
         $stmt = mysqli_prepare(
@@ -40,11 +41,12 @@ if (!function_exists('getAdminSummary')) {
             "SELECT
                 COUNT(*) AS total_kampanye,
                 COALESCE(SUM(k.dana_terkumpul), 0) AS collected_total,
+                COALESCE(SUM(k.target_dana), 0) AS target_total,
                 (
                     SELECT COUNT(*)
                     FROM donasi d
                     INNER JOIN kampanye kd ON kd.id_kampanye = d.id_kampanye
-                    WHERE kd.id_penyelenggara = ? AND d.status = 'PENDING'
+                    WHERE kd.id_penyelenggara = ? AND d.status = 'PENDING' AND d.bukti_transfer IS NOT NULL AND d.bukti_transfer != ''
                 ) AS total_pending,
                 (
                     SELECT COALESCE(SUM(d.nominal_donasi), 0)
@@ -56,7 +58,7 @@ if (!function_exists('getAdminSummary')) {
                     SELECT COALESCE(SUM(d.nominal_donasi), 0)
                     FROM donasi d
                     INNER JOIN kampanye kd ON kd.id_kampanye = d.id_kampanye
-                    WHERE kd.id_penyelenggara = ? AND d.status = 'PENDING'
+                    WHERE kd.id_penyelenggara = ? AND d.status = 'PENDING' AND d.bukti_transfer IS NOT NULL AND d.bukti_transfer != ''
                 ) AS pending_total
              FROM kampanye k
              WHERE k.id_penyelenggara = ?"
@@ -78,6 +80,8 @@ if (!function_exists('getAdminSummary')) {
             $summary['collected_total'] = (float) $row['collected_total'];
             $summary['verified_total'] = (float) $row['verified_total'];
             $summary['pending_total'] = (float) $row['pending_total'];
+            $summary['target_total'] = (float) $row['target_total'];
+            $summary['target_total'] = (float) $row['target_total'];
         }
 
         return $summary;
@@ -491,7 +495,7 @@ if (!function_exists('deleteManagedCampaign')) {
 }
 
 if (!function_exists('updateManagedCampaignStatus')) {
-    function updateManagedCampaignStatus($conn, $id_penyelenggara, $id_kampanye, $status) {
+    function updateManagedCampaignStatus($conn, $id_penyelenggara, $id_kampanye, $status, $batas_waktu = null) {
         $allowed = ['active', 'completed'];
         $id_penyelenggara = (int) $id_penyelenggara;
         $id_kampanye = (int) $id_kampanye;
@@ -506,19 +510,30 @@ if (!function_exists('updateManagedCampaignStatus')) {
         }
 
         try {
-            $stmt = mysqli_prepare(
-                $conn,
-                "UPDATE kampanye
-                 SET status = ?
-                 WHERE id_kampanye = ?
-                   AND id_penyelenggara = ?"
-            );
-
-            if (!$stmt) {
-                return ['success' => false, 'errors' => ['Status kampanye belum bisa diperbarui. Pastikan struktur database sudah terbaru.']];
+            if ($batas_waktu !== null) {
+                $stmt = mysqli_prepare(
+                    $conn,
+                    "UPDATE kampanye
+                     SET status = ?, batas_waktu = ?
+                     WHERE id_kampanye = ? AND id_penyelenggara = ?"
+                );
+                if (!$stmt) {
+                    return ['success' => false, 'errors' => ['Gagal memperbarui kampanye.']];
+                }
+                mysqli_stmt_bind_param($stmt, "ssii", $status, $batas_waktu, $id_kampanye, $id_penyelenggara);
+            } else {
+                $stmt = mysqli_prepare(
+                    $conn,
+                    "UPDATE kampanye
+                     SET status = ?
+                     WHERE id_kampanye = ? AND id_penyelenggara = ?"
+                );
+                if (!$stmt) {
+                    return ['success' => false, 'errors' => ['Gagal memperbarui kampanye.']];
+                }
+                mysqli_stmt_bind_param($stmt, "sii", $status, $id_kampanye, $id_penyelenggara);
             }
 
-            mysqli_stmt_bind_param($stmt, "sii", $status, $id_kampanye, $id_penyelenggara);
             $ok = mysqli_stmt_execute($stmt);
             $affected = mysqli_stmt_affected_rows($stmt);
             mysqli_stmt_close($stmt);
@@ -554,7 +569,8 @@ if (!function_exists('getManagedDonations')) {
                 FROM donasi d
                 INNER JOIN kampanye k ON k.id_kampanye = d.id_kampanye
                 INNER JOIN donatur dn ON dn.id_donatur = d.id_donatur
-                WHERE k.id_penyelenggara = ?";
+                WHERE k.id_penyelenggara = ?
+                  AND NOT (d.status = 'PENDING' AND (d.bukti_transfer IS NULL OR d.bukti_transfer = '') AND d.waktu_kadaluarsa < NOW())";
         $types = "i";
         $params = [$id_penyelenggara];
 
@@ -619,7 +635,8 @@ if (!function_exists('countManagedDonations')) {
                 FROM donasi d
                 INNER JOIN kampanye k ON k.id_kampanye = d.id_kampanye
                 INNER JOIN donatur dn ON dn.id_donatur = d.id_donatur
-                WHERE k.id_penyelenggara = ?";
+                WHERE k.id_penyelenggara = ? 
+                  AND NOT (d.status = 'PENDING' AND (d.bukti_transfer IS NULL OR d.bukti_transfer = '') AND d.waktu_kadaluarsa < NOW())";
         $types = "i";
         $params = [$id_penyelenggara];
 

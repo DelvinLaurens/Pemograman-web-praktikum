@@ -130,7 +130,7 @@ $active_filter_count = ($search_query !== '' ? 1 : 0) + ($status_filter !== '' ?
                         </svg>
                     </span>
                     <div>
-                        <span>Total Dana Pending</span>
+                        <span>Dana Perlu Verifikasi</span>
                         <strong><?php echo formatRupiah($summary['pending_total']); ?></strong>
                     </div>
                 </article>
@@ -142,8 +142,8 @@ $active_filter_count = ($search_query !== '' ? 1 : 0) + ($status_filter !== '' ?
                         </svg>
                     </span>
                     <div>
-                        <span>Total Dana Verified</span>
-                        <strong><?php echo formatRupiah($summary['verified_total']); ?></strong>
+                        <span>Total Target Keseluruhan</span>
+                        <strong><?php echo formatRupiah($summary['target_total']); ?></strong>
                     </div>
                 </article>
 
@@ -259,8 +259,24 @@ $active_filter_count = ($search_query !== '' ? 1 : 0) + ($status_filter !== '' ?
                                     $has_proof = !empty($donasi['bukti_transfer']);
                                     $can_accept = $has_proof && $status !== 'VERIFIED';
                                     $can_reject = $status !== 'REJECTED';
+                                    $status_label = ucfirst(strtolower($status));
+                                    if ($is_pending) {
+                                        if ($has_proof) {
+                                            $status_label = 'Perlu Verifikasi';
+                                            $status_class = 'pending';
+                                        } else {
+                                            $status_label = 'Belum Bayar';
+                                            $status_class = 'expired';
+                                        }
+                                    }
+                                    $row_class = 'daftar-donasi-row';
+                                    if ($is_pending && $has_proof) {
+                                        $row_class = 'verification-row-pending daftar-donasi-row-pending';
+                                    } else if ($is_pending && !$has_proof) {
+                                        $row_class = 'verification-row-muted daftar-donasi-row-muted';
+                                    }
                                 ?>
-                                <tr class="<?php echo $is_pending ? 'verification-row-pending daftar-donasi-row-pending' : 'daftar-donasi-row'; ?>">
+                                <tr class="<?php echo $row_class; ?>" <?php echo ($is_pending && !$has_proof) ? 'style="opacity: 0.6;"' : ''; ?>>
                                     <td class="verification-donor">
                                         <strong><?php echo e($donasi['nama_lengkap']); ?></strong>
                                         <span class="verification-email"><?php echo e($donasi['email']); ?></span>
@@ -273,7 +289,7 @@ $active_filter_count = ($search_query !== '' ? 1 : 0) + ($status_filter !== '' ?
                                     </td>
                                     <td>
                                         <span class="verification-status-badge status-<?php echo e($status_class); ?>">
-                                            <?php echo e(ucfirst(strtolower($status))); ?>
+                                            <?php echo e($status_label ?? ucfirst(strtolower($status))); ?>
                                         </span>
                                     </td>
                                     <td>
